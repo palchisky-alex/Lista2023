@@ -3,55 +3,64 @@ package com.lista.automation.ui.tests;
 import com.lista.automation.ui.core.BaseTest;
 import com.lista.automation.ui.core.utils.CalendarView;
 import com.lista.automation.ui.core.utils.ViewStartOn;
+import groovy.lang.Category;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static com.lista.automation.ui.core.utils.BasePage.getCurrentTime;
+import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Epic("Calendar Settings")
-@Feature("Change Calendar View")
 public class SettingsPageTest extends BaseTest {
 
     @Test(dataProvider = "calendar_view")
-    public void testCalendar(String selector, CalendarView views) throws Exception {
-        calendar.routing()
-                .toSettingsPage()
-                .toCalendarSettings()
-                .changeCalendarView(views)
-                .backToSettingsPage();
+    public void testCalendar(String selector, CalendarView views) {
+        step("Change calendar view from UI", () -> {
+            calendar.routing()
+                    .toSettingsPage()
+                    .toCalendarSettings()
+                    .changeCalendarView(views)
+                    .backToSettingsPage();
 
-        assertThat(calendar.routing().toCalendarPage().verifyCalendarView(selector))
-                .as("calendar view changed to %s", views).isTrue();
+            step("calendar view has been changed from UI", () -> {
+                assertThat(calendar.routing().toCalendarPage().verifyCalendarView(selector))
+                        .as("calendar view changed to %s", views).isTrue();
+            });
+        });
     }
 
     @Test(dataProvider = "view_start_day")
-    public void testSettings(String dayOfWeek, ViewStartOn viewStartOn, String cellDuration) throws Exception {
-        calendar.routing()
-                .toSettingsPage()
-                .toCalendarSettings()
-                .changeCalendarView(CalendarView.Weekly)
+    public void testSettings(String dayOfWeek, ViewStartOn viewStartOn, String cellDuration) {
+        step("Change calendar week first day and cell duration from UI", () -> {
+            calendar.routing()
+                    .toSettingsPage()
+                    .toCalendarSettings()
+                    .changeCalendarView(CalendarView.Weekly)
 
-                .changeViewStartOn(viewStartOn)
+                    .changeViewStartOn(viewStartOn)
+                    .changeEachCell(cellDuration)
+                    .backToSettingsPage();
 
-                .changeEachCell(cellDuration)
-                .backToSettingsPage();
+            String calendarFirstDay = calendar.routing()
+                    .toCalendarPage()
+                    .getCalendarFirstDay();
+            step("Verify calendar first day", () -> {
+                assertThat(calendarFirstDay).isEqualTo(dayOfWeek);
+            });
 
-        String calendarFirstDay = calendar.routing()
-                .toCalendarPage()
-                .getCalendarFirstDay();
+            String cellDurationResult = calendar.routing()
+                    .toCalendarPage()
+                    .getCellDuration();
 
-        assertThat(calendarFirstDay).isEqualTo(dayOfWeek);
-
-        String cellDurationResult = calendar.routing()
-                .toCalendarPage()
-                .getCellDuration();
-
-        assertThat(cellDurationResult)
-                .as("cell duration changed to %s", cellDuration)
-                .isEqualTo(cellDuration);
+            step("Verify calendar cell duration", () -> {
+                assertThat(cellDurationResult)
+                        .as("cell duration changed to %s", cellDuration)
+                        .isEqualTo(cellDuration);
+            });
+        });
     }
 
 
