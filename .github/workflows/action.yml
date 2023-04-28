@@ -51,5 +51,3 @@ jobs:
         PERSONAL_TOKEN: ${{ secrets.LISTA }}
         PUBLISH_BRANCH: gh-pages
         PUBLISH_DIR: allure-history
-        
-      
