@@ -3,9 +3,11 @@ package com.lista.automation.ui.pages;
 import com.lista.automation.api.pojo.client.ClientCreateRequest;
 import com.lista.automation.ui.core.utils.BasePage;
 import com.lista.automation.ui.core.utils.Properties;
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Response;
 import com.microsoft.playwright.options.SelectOption;
+import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import java.nio.file.Paths;
@@ -49,8 +51,8 @@ public class AddClientPage extends BasePage {
         setBirthdate(Birthdate.Month);
         setBirthdate(Birthdate.Day);
         setStatus(simpleClient);
-        setNotes(simpleClient);
         setAddress(simpleClient);
+        setNotes(simpleClient);
         setDebts(simpleClient);
         return this;
     }
@@ -120,7 +122,7 @@ public class AddClientPage extends BasePage {
     @Step("set profile note")
     public AddClientPage setNotes(ClientCreateRequest data) {
         clickBy(notes);
-        getLocator(notes).locator("textarea").fill(data.getNotes());
+        typeIn(".notes textarea", data.getNotes());
         getLocator(notes).locator(btnApply).click();
         return this;
     }

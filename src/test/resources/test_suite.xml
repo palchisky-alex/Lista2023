@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Google Translate Tests Suite">
+    <test verbose="2" preserve-order="true" name="Lista">
+        <classes>
+<!--            <class name="com.lista.automation.ui.tests.ClientTest"></class>-->
+            <class name="com.lista.automation.ui.tests.SettingsPageTest"></class>
+        </classes>
+    </test>
+</suite>

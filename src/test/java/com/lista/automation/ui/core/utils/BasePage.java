@@ -47,6 +47,7 @@ public class BasePage {
         });
     }
     public void typeIn(String selector, String text) {
+        page.click(selector);
         page.locator(selector).fill(text);
     }
     public void waitForLoadState() {

@@ -22,7 +22,7 @@ public class ClientsPage extends BasePage {
     public ClientsPage findClient(String text) {
         page.waitForResponse(Response::ok, () -> {
             typeIn(CLIENT_SEARCHING, text);
-            waitForLoadState();
+            waitForTimeout(3000);
             System.out.println("GET- find Client запрос выполнен успешно");
         });
 
