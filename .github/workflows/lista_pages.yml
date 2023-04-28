@@ -48,6 +48,7 @@ jobs:
       if: always()
       uses: peaceiris/actions-gh-pages@v2
       env:
+        PERSONAL_TOKEN: ${{ LISTA }}
         PUBLISH_BRANCH: gh-pages
         PUBLISH_DIR: allure-history
         
