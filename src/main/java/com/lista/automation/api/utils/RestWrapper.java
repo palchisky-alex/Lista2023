@@ -1,9 +1,9 @@
-package com.lista.automation.api.utils.services;
+package com.lista.automation.api.utils;
 import com.lista.automation.api.pojo.UserLoginRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 
-import static com.lista.automation.api.utils.services.RestService.BASE_URL;
+import static com.lista.automation.api.utils.RestService.BASE_URL;
 import static io.restassured.RestAssured.given;
 import static io.restassured.config.EncoderConfig.encoderConfig;
 import static org.hamcrest.MatcherAssert.assertThat;

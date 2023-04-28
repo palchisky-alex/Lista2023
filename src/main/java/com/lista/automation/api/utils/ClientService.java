@@ -1,4 +1,4 @@
-package com.lista.automation.api.utils.services;
+package com.lista.automation.api.utils;
 
 import com.lista.automation.api.pojo.client.ClientCreateRequest;
 import com.lista.automation.api.pojo.client.ClientGetResponse;
@@ -48,13 +48,18 @@ public class ClientService extends RestService {
     }
 
     public ClientGetResponse find(String findBy, int expectStatus) {
-        return given().spec(REQ_SPEC).log().all()
+        List<ClientGetResponse> clientList = given().spec(REQ_SPEC).log().all()
                 .param("limit", 40)
                 .param("offset", 0)
                 .param("q", findBy)
                 .get()
                 .then().log().all().statusCode(expectStatus)
-                .extract().body().jsonPath().getList("", ClientGetResponse.class).get(0);
+                .extract().body().jsonPath().getList("", ClientGetResponse.class);
+
+        if (clientList.isEmpty()) {
+            throw new RuntimeException("Client ['"+findBy+"'] not found - сlient list is empty");
+        }
+        return clientList.get(0);
     }
 
     public void delete(String id, int expectStatus) {

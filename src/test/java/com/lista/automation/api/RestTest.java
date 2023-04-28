@@ -2,24 +2,19 @@ package com.lista.automation.api;
 
 import com.lista.automation.api.pojo.client.ClientCreateRequest;
 import com.lista.automation.api.pojo.client.ClientGetResponse;
-import com.lista.automation.api.utils.services.DataGenerator;
-import com.lista.automation.api.utils.services.RestWrapper;
+import com.lista.automation.api.utils.DataGenerator;
+import com.lista.automation.api.utils.RestWrapper;
 import io.qameta.allure.Description;
 import io.qameta.allure.Owner;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.*;
 
-@ExtendWith(TestListener.class)
+@Listeners(TestListener.class)
 public class RestTest {
     private static RestWrapper api;
 
-    @BeforeAll
-    public static void prepareTest() {
-        api = RestWrapper.loginAs("alex.palchisky@gmail.com", "123456");
-    }
 
     @Test
     @Owner("Alex")

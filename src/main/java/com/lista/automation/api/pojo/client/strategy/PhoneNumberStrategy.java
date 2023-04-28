@@ -10,6 +10,6 @@ import java.util.List;
 public class PhoneNumberStrategy implements AttributeStrategy<String> {
     @Override
     public String getValue(Class<?> aClass, List<Annotation> list) {
-        return "[\"" + new Faker().phoneNumber().cellPhone() + "\"]";
+        return "[\"" + new Faker().numerify("050#-##-##-##")+ "\"]";
     }
 }

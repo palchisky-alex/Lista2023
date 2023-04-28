@@ -1,37 +1,36 @@
 package com.lista.automation.ui.core;
 
-import com.lista.automation.ui.pages.ClientPage;
-import com.microsoft.playwright.Locator;
-import com.microsoft.playwright.Page;
+import com.lista.automation.api.utils.RestWrapper;
+import com.lista.automation.ui.core.utils.Properties;
 import com.lista.automation.ui.pages.CalendarPage;
-import com.lista.automation.ui.pages.SettingsAllPage;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInfo;
+import com.lista.automation.ui.pages.ClientsPage;
+import com.microsoft.playwright.Page;
+import org.testng.ITestResult;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import java.io.IOException;
+import java.lang.reflect.Method;
 
 public class BaseTest {
 
     PlaywrightFactory pf;
     Page page;
-    protected Locator locator;
-//    RouteHelper routing;
+    protected RestWrapper api;
     protected CalendarPage calendar;
-    protected SettingsAllPage settingsPage;
-    protected ClientPage clientPage;
+    protected ClientsPage clientsPage;
 
-    @BeforeEach
+    @BeforeMethod
     public void setUp() {
         pf = new PlaywrightFactory();
         page = pf.initBrowser();
         calendar = new CalendarPage(page);
-//        settings = new SettingsPage(page);
-//        routing = new RouteHelper(page);
-
+        api = RestWrapper.loginAs(Properties.getProp().username().replaceAll("\"",""),
+                Properties.getProp().password().replaceAll("\"",""));
     }
 
-    @AfterEach
-    public void tearDown(TestInfo testInfo){
-        pf.stop(testInfo);
+    @AfterMethod
+    public void tearDown(Method testInfo, ITestResult iTestResult) throws IOException {
+        pf.stop(testInfo, iTestResult);
 
     }
 

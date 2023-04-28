@@ -1,17 +1,22 @@
 package com.lista.automation.ui.pages;
 
-import com.microsoft.playwright.Page;
+import com.lista.automation.ui.core.utils.BasePage;
 import com.lista.automation.ui.core.utils.RouteHelper;
+import com.microsoft.playwright.Page;
 
-public class CalendarPage {
+import java.time.Duration;
+import java.time.LocalTime;
+
+public class CalendarPage extends BasePage {
     private Page page;
-    private RouteHelper route;
+
     private final String BTN_MENU_LOCATOR = ".more_wrap";
     private final String INPUT_PASSWORD_LOCATOR = "//input[@type='password']";
 
     public CalendarPage(Page page) {
+        super(page);
         this.page = page;
-        route = new RouteHelper(page);
+
     }
 
     public String getCalendarPageURL() {
@@ -19,10 +24,9 @@ public class CalendarPage {
     }
 
     public <T> T getPosition(Class<T> clazz) {
-        if (page.locator(BTN_MENU_LOCATOR).isVisible()) {
+        if (isVisible(BTN_MENU_LOCATOR)) {
             return clazz.cast(new MenuPage(page));
-        } else if (page.locator(INPUT_PASSWORD_LOCATOR).isVisible()) {
-
+        } else if (isVisible(INPUT_PASSWORD_LOCATOR)) {
             return clazz.cast(new LoginPage(page));
         } else {
             throw new IllegalArgumentException("Cannot determine page type");
@@ -30,13 +34,31 @@ public class CalendarPage {
     }
 
     public MenuPage clickMenuButton() {
-        page.locator(BTN_MENU_LOCATOR).click();
+        clickBy(BTN_MENU_LOCATOR);
         return new MenuPage(page);
     }
+    public boolean verifyCalendarView(String selector) {
+        waitForLoadState();
+        if(isVisible("#calendar [class*='"+selector+"']")) {
+            return true;
+        }
+        return false;
+    }
+    public String getCalendarFirstDay() {
+        return getInnerTextBy("(//*[contains(@class, 'day-header')])[1]").replaceAll("[\\d\\s]+", "");
+    }
+    public String getCellDuration() {
+        LocalTime time1 = LocalTime.parse(getInnerTextBy("tr[data-time]:nth-of-type(1)"));
+        LocalTime time2 = LocalTime.parse(getInnerTextBy("tr[data-time]:nth-of-type(2)"));
+        Duration duration = Duration.between(time1, time2).abs();
+        return String.valueOf(duration.toMinutes());
+    }
+
 
     public RouteHelper routing() {
         return new RouteHelper(page);
     }
+
 
 
 }

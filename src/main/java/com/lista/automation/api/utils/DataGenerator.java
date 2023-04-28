@@ -1,4 +1,4 @@
-package com.lista.automation.api.utils.services;
+package com.lista.automation.api.utils;
 
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;

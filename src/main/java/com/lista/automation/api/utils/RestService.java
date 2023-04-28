@@ -1,4 +1,4 @@
-package com.lista.automation.api.utils.services;
+package com.lista.automation.api.utils;
 
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
