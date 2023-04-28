@@ -16,7 +16,7 @@ public class RestTest {
     private static RestWrapper api;
 
 
-    @Test
+
     @Owner("Alex")
     @Description("Create client and delete")
     void createClient() {

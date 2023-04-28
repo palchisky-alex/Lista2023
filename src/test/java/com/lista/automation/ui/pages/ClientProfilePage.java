@@ -15,10 +15,10 @@ import static io.qameta.allure.Allure.step;
 
 public class ClientProfilePage extends BasePage {
     private Page page;
-    private final String birthdateYearOptions = "select.year option";
-    private final String birthdateMonthOptions = "select.month option";
-    private final String birthdateDayOptions = "select.day option";
-    private final String btnAddImage = ".camera";
+    private String birthdateYearOptions = "select.year option";
+    private String birthdateMonthOptions = "select.month option";
+    private String birthdateDayOptions = "select.day option";
+    private String btnAddImage = ".camera";
     private String profileInfo = "[id='profile']";
     private String profileName = "[id='name-input']";
     private String profilePhone = "[type='tel']";
