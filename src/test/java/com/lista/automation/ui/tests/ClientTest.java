@@ -59,29 +59,29 @@ public class ClientTest extends BaseTest {
         });
     }
 
-//    @Test
-//    public void testClientCreate() {
-//        step("Verify client can be created from UI", () -> {
-//
-//            ClientCreateRequest simpleClient = calendar.routing()
-//                    .toClientPage()
-//                    .initAddingNewClient()
-//                    .setSimpleClient(true)
-//                    .submitNewClient();
-//
-//            step("search the new client via api using phone", () -> {
-//                ClientGetResponse clientViaAPI = api.client.find(simpleClient.getPhone().replaceAll("\\D+", ""), 200);
-//
-//                step("assert via api that the client has been created by comparing name and address", () -> {
-//                    assertThat(simpleClient)
-//                            .usingRecursiveComparison()
-//                            .comparingOnlyFields("name", "address")
-//                            .isEqualTo(clientViaAPI);
-//                });
-//            });
-//        });
-//    }
-//
+    @Test
+    public void testClientCreate() {
+        step("Verify client can be created from UI", () -> {
+
+            ClientCreateRequest simpleClient = calendar.routing()
+                    .toClientPage()
+                    .initAddingNewClient()
+                    .setSimpleClient(true)
+                    .submitNewClient();
+
+            step("search the new client via api using phone", () -> {
+                ClientGetResponse clientViaAPI = api.client.find(simpleClient.getPhone().replaceAll("\\D+", ""), 200);
+
+                step("assert via api that the client has been created by comparing name and address", () -> {
+                    assertThat(simpleClient)
+                            .usingRecursiveComparison()
+                            .comparingOnlyFields("name", "address")
+                            .isEqualTo(clientViaAPI);
+                });
+            });
+        });
+    }
+
 //    @Test
 //    void testClientUpdatePersonalInfo() {
 //        step("Verify client personal info can be change from UI", () -> {
