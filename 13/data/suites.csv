@@ -1,2 +1,0 @@
-"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"passed","Sat Apr 29 10:58:01 GMT 2023","Sat Apr 29 10:58:19 GMT 2023","18739","Surefire suite","Surefire test","com.lista.automation.ui.tests.ClientTest","com.lista.automation.ui.tests.ClientTest","testDeleteClient","testDeleteClient",""
