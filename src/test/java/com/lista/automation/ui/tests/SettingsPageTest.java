@@ -13,7 +13,7 @@ import static com.lista.automation.ui.core.utils.BasePage.getCurrentTime;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Epic("Calendar Settings")
+@Epic("Calendar Settings!")
 public class SettingsPageTest extends BaseTest {
 
     @Test(dataProvider = "calendar_view")
