@@ -51,8 +51,8 @@ public class AddClientPage extends BasePage {
         setBirthdate(Birthdate.Month);
         setBirthdate(Birthdate.Day);
         setStatus(simpleClient);
-        setAddress(simpleClient);
         setNotes(simpleClient);
+        setAddress(simpleClient);
         setDebts(simpleClient);
         return this;
     }

@@ -4,8 +4,6 @@ import com.lista.automation.ui.core.utils.BasePage;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Response;
 import com.microsoft.playwright.options.AriaRole;
-import com.microsoft.playwright.options.LoadState;
-import java.util.regex.Pattern;
 import static io.qameta.allure.Allure.step;
 
 public class ClientsPage extends BasePage {
