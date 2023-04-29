@@ -22,7 +22,7 @@ public class ClientService extends RestService {
     }
 
     public String create(ClientCreateRequest client, int expectStatus) {
-        Response response = given().spec(REQ_SPEC).log().all()
+        Response response = given().spec(REQ_SPEC_FORM).log().all()
                 .multiPart("phone", client.getPhone())
                 .multiPart("name", client.getName())
                 .multiPart("email", client.getEmail())
@@ -39,7 +39,7 @@ public class ClientService extends RestService {
     }
 
     public List<ClientGetResponse> findList(int expectStatus) {
-        return given().spec(REQ_SPEC).log().all()
+        return given().spec(REQ_SPEC_FORM).log().all()
                 .param("limit", 40)
                 .param("offset", 0)
                 .get()
@@ -48,7 +48,7 @@ public class ClientService extends RestService {
     }
 
     public ClientGetResponse find(String findBy, int expectStatus) {
-        List<ClientGetResponse> clientList = given().spec(REQ_SPEC).log().all()
+        List<ClientGetResponse> clientList = given().spec(REQ_SPEC_FORM).log().all()
                 .param("limit", 40)
                 .param("offset", 0)
                 .param("q", findBy)
@@ -63,13 +63,8 @@ public class ClientService extends RestService {
     }
 
     public void delete(String id, int expectStatus) {
-        given()
-                .header("Content-Type", "application/x-www-form-urlencoded")
-                .config(RestAssured.config().encoderConfig(encoderConfig()
-                        .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-                .header("cookie", getCookie()).baseUri(BASE_URL)
-                .basePath("clients")
-                .formParam("clients", id).log().all()
+        given().spec(REQ_SPEC_ENCODED).log().all()
+                .formParam(getBasePath(), id).log().all()
                 .delete().then().log().all().statusCode(expectStatus);
     }
 
@@ -78,20 +73,15 @@ public class ClientService extends RestService {
         while (clientList.size() > 0) {
             List<String> IDs = clientList.stream().map(ClientGetResponse::getId).collect(Collectors.toList());
 
-            given()
-                    .header("Content-Type", "application/x-www-form-urlencoded")
-                    .config(RestAssured.config().encoderConfig(encoderConfig()
-                            .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-                    .header("cookie", getCookie()).baseUri(BASE_URL)
-                    .basePath("clients")
-                    .formParam("clients", String.join(",", IDs)).log().all()
+            given().spec(REQ_SPEC_ENCODED).log().all()
+                    .formParam(getBasePath(), String.join(",", IDs)).log().all()
                     .delete().then().log().all().statusCode(expectStatus);
             clientList = findList(200);
         }
     }
 
     private Response getResponse(ClientCreateRequest client) {
-        return given().spec(REQ_SPEC).log().all()
+        return given().spec(REQ_SPEC_FORM).log().all()
                 .multiPart("phone", client.getPhone())
                 .multiPart("name", client.getName())
                 .multiPart("email", client.getEmail())

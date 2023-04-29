@@ -7,22 +7,47 @@ import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
+import static io.restassured.config.EncoderConfig.encoderConfig;
+
 public abstract class RestService {
 
     protected static final String BASE_URL = "https://test.atzma.im/";
-    protected RequestSpecification REQ_SPEC;
+    protected RequestSpecification REQ_SPEC_FORM;
+    protected RequestSpecification REQ_SPEC_ENCODED;
+    protected RequestSpecification REQ_SPEC_ENCODED_DEL;
     private String cookie;
     protected abstract String getBasePath();
 
     public RestService(String cookie) {
         this.cookie = cookie;
-        REQ_SPEC = new RequestSpecBuilder()
+        REQ_SPEC_FORM = new RequestSpecBuilder()
                 .addHeader("cookie", cookie)
                 .setBaseUri(BASE_URL)
                 .setBasePath(getBasePath())
                 .setContentType(ContentType.MULTIPART)
                 .build();
+
+        REQ_SPEC_ENCODED = new RequestSpecBuilder()
+                .addHeader("cookie", cookie)
+                .setBaseUri(BASE_URL)
+                .setBasePath(getBasePath())
+                .setContentType(ContentType.URLENC).setConfig(RestAssured.config().encoderConfig(encoderConfig()
+                        .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+                .build();
+
     }
+
+    public RequestSpecification getSPEC_ENCODED_DEL(String id) {
+        REQ_SPEC_ENCODED = new RequestSpecBuilder()
+                .addHeader("cookie", cookie)
+                .setBaseUri(BASE_URL)
+                .setBasePath(getBasePath()+id)
+                .setContentType(ContentType.URLENC).setConfig(RestAssured.config().encoderConfig(encoderConfig()
+                        .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+                .build();
+        return REQ_SPEC_ENCODED;
+    }
+
 
     public String getCookie() {
         return cookie;

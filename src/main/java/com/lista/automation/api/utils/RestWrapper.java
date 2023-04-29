@@ -11,10 +11,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class RestWrapper {
     private String cookie;
     public ClientService client;
+    public GroupsService group;
 
     public RestWrapper(String cookie) {
         this.cookie = cookie;
         client = new ClientService(cookie);
+        group = new GroupsService(cookie);
     }
 
     public static RestWrapper loginAs(String login, String pass) {

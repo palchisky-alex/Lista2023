@@ -1,6 +1,7 @@
 package com.lista.automation.ui.core.utils;
 
 import com.lista.automation.api.pojo.client.ClientCreateRequest;
+import com.lista.automation.api.pojo.group.GroupCreateRequest;
 import com.lista.automation.api.utils.DataGenerator;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
@@ -16,6 +17,7 @@ import java.util.regex.Pattern;
 public class BasePage {
     private Page page;
     public static ClientCreateRequest simpleClient = null;
+    public static GroupCreateRequest simpleGroup = null;
 
     public BasePage(Page page) {
         this.page = page;
@@ -82,22 +84,28 @@ public class BasePage {
         return Thread.currentThread().getStackTrace()[1].getMethodName();
     }
 
-    public static ClientCreateRequest generateClient(boolean recreate) {
-        if(simpleClient == null || recreate) {
-            simpleClient = DataGenerator.getSimpleData(ClientCreateRequest.class);
-        }
-        return simpleClient;
-    }
     public void waitForURL(String regex) {
         page.waitForURL(Pattern.compile(regex));
     }
     public int countElements(String selector) {
         return page.locator(selector).count();
     }
-
     public static LocalDate getCurrentTime() {
         return LocalDate.now();
     }
 
+
+    public static ClientCreateRequest generateClient(boolean recreate) {
+        if(simpleClient == null || recreate) {
+            simpleClient = DataGenerator.getSimpleData(ClientCreateRequest.class);
+        }
+        return simpleClient;
+    }
+    public static GroupCreateRequest generateGroup(boolean recreate) {
+        if(simpleGroup == null || recreate) {
+            simpleGroup = DataGenerator.getSimpleData(GroupCreateRequest.class);
+        }
+        return simpleGroup;
+    }
 
 }
