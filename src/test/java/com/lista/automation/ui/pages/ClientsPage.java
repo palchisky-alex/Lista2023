@@ -4,6 +4,8 @@ import com.lista.automation.ui.core.utils.BasePage;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Response;
 import com.microsoft.playwright.options.AriaRole;
+import io.qameta.allure.Step;
+
 import static io.qameta.allure.Allure.step;
 
 public class ClientsPage extends BasePage {
@@ -17,6 +19,7 @@ public class ClientsPage extends BasePage {
         this.page = page;
     }
 
+    @Step("search client")
     public ClientsPage findClient(String text) {
         page.waitForResponse(Response::ok, () -> {
             typeIn(CLIENT_SEARCHING, text);
@@ -45,16 +48,19 @@ public class ClientsPage extends BasePage {
         return this;
     }
 
+    @Step("init new client adding")
     public AddClientPage initAddingNewClient() {
         clickBy("#root .floating-button");
         waitForURL("adding-client");
         return new AddClientPage(page);
     }
+    @Step("select client by ID")
     public ClientProfilePage selectClientById(String id) {
         clickBy("//a[contains(@href, '"+id+"')]");
         return new ClientProfilePage(page);
     }
 
+    @Step("count clients")
     public int countClients() {
         return countElements(CLIENT_SLOT);
     }

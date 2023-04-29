@@ -9,6 +9,7 @@ import com.microsoft.playwright.Response;
 import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.SelectOption;
 import io.qameta.allure.Step;
+
 import java.nio.file.Paths;
 
 import static io.qameta.allure.Allure.step;
@@ -61,14 +62,18 @@ public class ClientProfilePage extends BasePage {
         clickBy(notesEditBtn);
         return this;
     }
+
     @Step("initiate Profile gallery editing")
     public GalleryPage initGalleryEdit() {
-        String showAllFieldsBtn = "Show All Fields";
-        if(getByText(showAllFieldsBtn).isVisible()) {
-            getByText(showAllFieldsBtn).click();
-        }
-
-        getByText("Add New File").setInputFiles(Paths.get(Properties.getProp().imagePath2()));
+        step("open gallery slot", () -> {
+            String showAllFieldsBtn = "Show All Fields";
+            if (getByText(showAllFieldsBtn).isVisible()) {
+                getByText(showAllFieldsBtn).click();
+            }
+        });
+        step("load picture to gallery", () -> {
+            getByText("Add New File").setInputFiles(Paths.get(Properties.getProp().imagePath2()));
+        });
 
         return new GalleryPage(page);
     }

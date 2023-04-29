@@ -4,8 +4,6 @@ import com.lista.automation.api.pojo.client.ClientCreateRequest;
 import com.lista.automation.api.pojo.client.ClientGetResponse;
 import com.lista.automation.ui.core.BaseTest;
 import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Story;
 import org.testng.annotations.Test;
 import static com.lista.automation.ui.core.utils.BasePage.generateClient;
 import static io.qameta.allure.Allure.step;
@@ -62,7 +60,6 @@ public class ClientTest extends BaseTest {
     @Test
     public void testClientCreate() {
         step("Verify client can be created from UI", () -> {
-
             ClientCreateRequest simpleClient = calendar.routing()
                     .toClientPage()
                     .initAddingNewClient()
@@ -249,7 +246,7 @@ public class ClientTest extends BaseTest {
                         step("edit client gallery", () -> {
                             clientsPage.selectClientById(apiClient.getId())
                                     .initGalleryEdit()
-                                    .loadPicture(simpleClient.getNotes());
+                                    .addNotesToPicture(simpleClient.getNotes());
 
                             step("search client by new phone number via api", () -> {
                                 ClientGetResponse clientViaAPI = api.client.find(simpleClient.getPhone().replaceAll("\\D+", ""), 200);

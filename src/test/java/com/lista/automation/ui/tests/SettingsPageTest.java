@@ -18,14 +18,14 @@ public class SettingsPageTest extends BaseTest {
 
     @Test(dataProvider = "calendar_view")
     public void testCalendar(String selector, CalendarView views) {
-        step("Change calendar view from UI", () -> {
+        step("Change calendar view via UI", () -> {
             calendar.routing()
                     .toSettingsPage()
                     .toCalendarSettings()
                     .changeCalendarView(views)
                     .backToSettingsPage();
 
-            step("calendar view has been changed from UI", () -> {
+            step("Verify that calendar view has been changed from UI", () -> {
                 assertThat(calendar.routing().toCalendarPage().verifyCalendarView(selector))
                         .as("calendar view changed to %s", views).isTrue();
             });
@@ -34,7 +34,7 @@ public class SettingsPageTest extends BaseTest {
 
     @Test(dataProvider = "view_start_day")
     public void testSettings(String dayOfWeek, ViewStartOn viewStartOn, String cellDuration) {
-        step("Change calendar week first day and cell duration from UI", () -> {
+        step("Change calendar week first day and cell duration via UI", () -> {
             calendar.routing()
                     .toSettingsPage()
                     .toCalendarSettings()
@@ -48,7 +48,7 @@ public class SettingsPageTest extends BaseTest {
                     .toCalendarPage()
                     .getCalendarFirstDay();
             step("Verify calendar first day", () -> {
-                assertThat(calendarFirstDay).isEqualTo(dayOfWeek);
+                assertThat(calendarFirstDay).as("calendar first day is %s", dayOfWeek).isEqualTo(dayOfWeek);
             });
 
             String cellDurationResult = calendar.routing()
@@ -57,7 +57,7 @@ public class SettingsPageTest extends BaseTest {
 
             step("Verify calendar cell duration", () -> {
                 assertThat(cellDurationResult)
-                        .as("cell duration changed to %s", cellDuration)
+                        .as("cell duration changed to %s minutes", cellDuration)
                         .isEqualTo(cellDuration);
             });
         });

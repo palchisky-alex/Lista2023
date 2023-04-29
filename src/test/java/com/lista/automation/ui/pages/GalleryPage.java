@@ -2,6 +2,9 @@ package com.lista.automation.ui.pages;
 
 import com.lista.automation.ui.core.utils.BasePage;
 import com.microsoft.playwright.Page;
+import io.qameta.allure.Step;
+
+import static io.qameta.allure.Allure.step;
 
 
 public class GalleryPage extends BasePage {
@@ -12,8 +15,13 @@ public class GalleryPage extends BasePage {
         this.page = page;
     }
 
-    public void loadPicture(String notes) {
-        getByPlaceholder("Add a caption...").fill(notes);
-        clickBy("button .text-submit");
+    @Step("load gallery picture")
+    public void addNotesToPicture(String notes) {
+        step("type notes", () -> {
+            getByPlaceholder("Add a caption...").fill(notes);
+        });
+        step("click Send button", () -> {
+            clickBy("button .text-submit");
+        });
     }
 }

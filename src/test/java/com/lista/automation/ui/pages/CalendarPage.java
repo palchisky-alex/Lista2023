@@ -3,13 +3,13 @@ package com.lista.automation.ui.pages;
 import com.lista.automation.ui.core.utils.BasePage;
 import com.lista.automation.ui.core.utils.RouteHelper;
 import com.microsoft.playwright.Page;
+import io.qameta.allure.Step;
 
 import java.time.Duration;
 import java.time.LocalTime;
 
 public class CalendarPage extends BasePage {
     private Page page;
-
     private final String BTN_MENU_LOCATOR = ".more_wrap";
     private final String INPUT_PASSWORD_LOCATOR = "//input[@type='password']";
 
@@ -37,6 +37,7 @@ public class CalendarPage extends BasePage {
         clickBy(BTN_MENU_LOCATOR);
         return new MenuPage(page);
     }
+    @Step("verify CalendarView")
     public boolean verifyCalendarView(String selector) {
         waitForLoadState();
         if(isVisible("#calendar [class*='"+selector+"']")) {
@@ -44,9 +45,11 @@ public class CalendarPage extends BasePage {
         }
         return false;
     }
+    @Step("fetch calendar first day name")
     public String getCalendarFirstDay() {
         return getInnerTextBy("(//*[contains(@class, 'day-header')])[1]").replaceAll("[\\d\\s]+", "");
     }
+    @Step("fetch calendar cell duration")
     public String getCellDuration() {
         LocalTime time1 = LocalTime.parse(getInnerTextBy("tr[data-time]:nth-of-type(1)"));
         LocalTime time2 = LocalTime.parse(getInnerTextBy("tr[data-time]:nth-of-type(2)"));
