@@ -1,13 +1,11 @@
-package com.lista.automation.ui.pages;
+package com.lista.automation.ui.pages.client;
 
 import com.lista.automation.api.pojo.client.ClientCreateRequest;
 import com.lista.automation.ui.core.utils.BasePage;
 import com.lista.automation.ui.core.utils.Properties;
-import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Response;
 import com.microsoft.playwright.options.SelectOption;
-import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import java.nio.file.Paths;

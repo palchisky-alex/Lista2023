@@ -1,4 +1,4 @@
-package com.lista.automation.ui.pages;
+package com.lista.automation.ui.pages.client;
 
 import com.lista.automation.ui.core.utils.BasePage;
 import com.microsoft.playwright.Page;

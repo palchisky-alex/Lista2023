@@ -37,7 +37,7 @@ public abstract class RestService {
 
     }
 
-    public RequestSpecification getSPEC_ENCODED_DEL(String id) {
+    public RequestSpecification getSPEC_ENCODED_DEL(int id) {
         REQ_SPEC_ENCODED = new RequestSpecBuilder()
                 .addHeader("cookie", cookie)
                 .setBaseUri(BASE_URL)

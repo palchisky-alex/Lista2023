@@ -1,6 +1,10 @@
 package com.lista.automation.ui.core.utils;
 
 import com.lista.automation.ui.pages.*;
+import com.lista.automation.ui.pages.calendar.CalendarPage;
+import com.lista.automation.ui.pages.client.ClientsPage;
+import com.lista.automation.ui.pages.group.GroupsListPage;
+import com.lista.automation.ui.pages.settings.SettingsAllPage;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
 
@@ -54,6 +58,11 @@ public class RouteHelper {
     public CalendarPage toCalendarPage() throws Exception {
         openMenu().choosePage(Pages.Calendar, CalendarPage.class);
         return new CalendarPage(page);
+    }
+    @Step("go to groups page")
+    public GroupsListPage toGroupsListPage() throws Exception {
+        openMenu().choosePage(Pages.Groups, GroupsListPage.class);
+        return new GroupsListPage(page);
     }
 
 }

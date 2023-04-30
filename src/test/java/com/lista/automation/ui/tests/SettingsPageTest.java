@@ -1,17 +1,12 @@
 package com.lista.automation.ui.tests;
 
-import com.lista.automation.api.pojo.group.GroupCreateRequest;
 import com.lista.automation.ui.core.BaseTest;
 import com.lista.automation.ui.core.utils.CalendarView;
 import com.lista.automation.ui.core.utils.ViewStartOn;
-import groovy.lang.Category;
 import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import static com.lista.automation.ui.core.utils.BasePage.generateGroup;
-import static com.lista.automation.ui.core.utils.BasePage.getCurrentTime;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -65,12 +60,6 @@ public class SettingsPageTest extends BaseTest {
         });
     }
 
-    @Test
-    public void testGroups() {
-        String ID = api.group.create(generateGroup(true), 201);
-        api.group.delete(ID, 204);
-//        api.client.deleteAll(204);
-    }
 
     @DataProvider(name = "calendar_view")
     public Object[][] testDataCalendarView() {

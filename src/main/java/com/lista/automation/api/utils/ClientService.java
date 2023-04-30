@@ -2,14 +2,12 @@ package com.lista.automation.api.utils;
 
 import com.lista.automation.api.pojo.client.ClientCreateRequest;
 import com.lista.automation.api.pojo.client.ClientGetResponse;
-import io.restassured.RestAssured;
 import io.restassured.response.Response;
 
-import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.config.EncoderConfig.encoderConfig;
 
 public class ClientService extends RestService {
     public ClientService(String cookie) {

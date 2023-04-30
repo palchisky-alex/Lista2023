@@ -1,6 +1,7 @@
-package com.lista.automation.ui.pages;
+package com.lista.automation.ui.pages.calendar;
 
 import com.lista.automation.ui.core.utils.BasePage;
+import com.lista.automation.ui.pages.settings.SettingsAllPage;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;

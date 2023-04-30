@@ -2,8 +2,8 @@ package com.lista.automation.ui.core;
 
 import com.lista.automation.api.utils.RestWrapper;
 import com.lista.automation.ui.core.utils.Properties;
-import com.lista.automation.ui.pages.CalendarPage;
-import com.lista.automation.ui.pages.ClientsPage;
+import com.lista.automation.ui.pages.calendar.CalendarPage;
+import com.lista.automation.ui.pages.client.ClientsPage;
 import com.microsoft.playwright.Page;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;

@@ -1,6 +1,7 @@
-package com.lista.automation.ui.pages;
+package com.lista.automation.ui.pages.settings;
 
 import com.lista.automation.ui.core.utils.BasePage;
+import com.lista.automation.ui.pages.calendar.CalendarSettingsPage;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;

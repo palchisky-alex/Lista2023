@@ -9,7 +9,7 @@ import static com.lista.automation.ui.core.utils.BasePage.generateClient;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Epic("GRUD Client UI")
+@Epic("Client UI GRUD")
 public class ClientTest extends BaseTest {
 
     @Test

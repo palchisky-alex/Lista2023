@@ -27,9 +27,11 @@ public class BasePage {
         return ThreadLocalRandom.current()
                 .nextInt(from, to);
     }
+
     public Locator getByRoleWithText(AriaRole role, String htmlText) {
-        return page.getByRole(role, new Page.GetByRoleOptions().setName(Pattern.compile(htmlText, Pattern.CASE_INSENSITIVE)));
+        return page.getByRole(role, new Page.GetByRoleOptions().setName(Pattern.compile(htmlText, Pattern.CASE_INSENSITIVE)).setExact(true));
     }
+
     public Locator getByRole(AriaRole role) {
         return page.getByRole(role);
     }
@@ -43,15 +45,33 @@ public class BasePage {
         });
     }
 
+    public void clickBy(Locator locator, int delay) {
+        page.waitForLoadState(LoadState.NETWORKIDLE);
+        locator.scrollIntoViewIfNeeded();
+        page.waitForResponse(Response::ok, () -> {
+            locator.click(new Locator.ClickOptions().setDelay(delay));
+            System.out.println(">> api request from " + locator + "" +
+                    " completed successfully and delay " + delay + " sec");
+        });
+    }
+
     public void clickWithCoordinate(String selector, int x, int y) {
         page.waitForResponse(Response::ok, () -> {
             page.locator(selector).click(new Locator.ClickOptions().setPosition(x, y));
         });
     }
+
     public void typeIn(String selector, String text) {
         page.click(selector);
+        page.locator(selector).clear();
         page.locator(selector).fill(text);
     }
+
+    public void typeIn(Locator locator, String text) {
+        locator.clear();
+        locator.fill(text);
+    }
+
     public void waitForLoadState() {
         page.waitForLoadState(LoadState.NETWORKIDLE);
     }
@@ -72,8 +92,13 @@ public class BasePage {
         page.getByText(text).scrollIntoViewIfNeeded();
         return page.getByText(Pattern.compile(text, Pattern.CASE_INSENSITIVE));
     }
+
     public Locator getByPlaceholder(String text) {
         return page.getByPlaceholder(text);
+    }
+
+    public Locator getByPlaceholder(Locator locator, String text) {
+        return locator.getByPlaceholder(text);
     }
 
     public boolean isVisible(String selector) {
@@ -87,22 +112,25 @@ public class BasePage {
     public void waitForURL(String regex) {
         page.waitForURL(Pattern.compile(regex));
     }
+
     public int countElements(String selector) {
         return page.locator(selector).count();
     }
+
     public static LocalDate getCurrentTime() {
         return LocalDate.now();
     }
 
 
     public static ClientCreateRequest generateClient(boolean recreate) {
-        if(simpleClient == null || recreate) {
+        if (simpleClient == null || recreate) {
             simpleClient = DataGenerator.getSimpleData(ClientCreateRequest.class);
         }
         return simpleClient;
     }
+
     public static GroupCreateRequest generateGroup(boolean recreate) {
-        if(simpleGroup == null || recreate) {
+        if (simpleGroup == null || recreate) {
             simpleGroup = DataGenerator.getSimpleData(GroupCreateRequest.class);
         }
         return simpleGroup;

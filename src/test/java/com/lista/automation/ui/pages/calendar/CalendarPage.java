@@ -1,7 +1,9 @@
-package com.lista.automation.ui.pages;
+package com.lista.automation.ui.pages.calendar;
 
 import com.lista.automation.ui.core.utils.BasePage;
 import com.lista.automation.ui.core.utils.RouteHelper;
+import com.lista.automation.ui.pages.LoginPage;
+import com.lista.automation.ui.pages.MenuPage;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
 
