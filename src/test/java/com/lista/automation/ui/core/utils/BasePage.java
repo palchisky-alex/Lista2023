@@ -5,10 +5,14 @@ import com.lista.automation.api.pojo.group.GroupCreateRequest;
 import com.lista.automation.api.utils.DataGenerator;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.Response;
+import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.LoadState;
-
+import io.qameta.allure.Allure;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import java.io.ByteArrayInputStream;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
@@ -29,7 +33,10 @@ public class BasePage {
     }
 
     public Locator getByRoleWithText(AriaRole role, String htmlText) {
-        return page.getByRole(role, new Page.GetByRoleOptions().setName(Pattern.compile(htmlText, Pattern.CASE_INSENSITIVE)).setExact(true));
+        Locator locator = page.getByRole(role, new Page.GetByRoleOptions()
+                .setName(Pattern.compile(htmlText, Pattern.CASE_INSENSITIVE)).setExact(true));
+        attachAllureLog("get ByRole with text", locator, htmlText);
+        return locator;
     }
 
     public Locator getByRole(AriaRole role) {
@@ -37,21 +44,22 @@ public class BasePage {
     }
 
     public void clickBy(String selector) {
+        attachAllureLog("click on element and wait 30000ms for response OK", selector,"");
+        System.out.println(">> click on " + selector + " and wait for response OK <<");
         page.waitForLoadState(LoadState.NETWORKIDLE);
         page.locator(selector).scrollIntoViewIfNeeded();
         page.waitForResponse(Response::ok, () -> {
             page.click(selector);
-            System.out.println(">> api request from " + selector + " completed successfully");
         });
     }
 
     public void clickBy(Locator locator, int delay) {
+        attachAllureLog("click on element and wait 30000ms for response OK",locator,"");
+        System.out.println(">> click on " + locator + " and wait for response OK <<");
         page.waitForLoadState(LoadState.NETWORKIDLE);
         locator.scrollIntoViewIfNeeded();
         page.waitForResponse(Response::ok, () -> {
             locator.click(new Locator.ClickOptions().setDelay(delay));
-            System.out.println(">> api request from " + locator + "" +
-                    " completed successfully and delay " + delay + " sec");
         });
     }
 
@@ -62,12 +70,14 @@ public class BasePage {
     }
 
     public void typeIn(String selector, String text) {
+        attachAllureLog("type some text",selector,text);
         page.click(selector);
         page.locator(selector).clear();
         page.locator(selector).fill(text);
     }
 
     public void typeIn(Locator locator, String text) {
+        attachAllureLog("type some text",locator,text);
         locator.clear();
         locator.fill(text);
     }
@@ -81,27 +91,29 @@ public class BasePage {
     }
 
     public String getInnerTextBy(String path) {
+        attachAllureLog("get inner text",path,"");
         return page.locator(path).innerText().toLowerCase().trim();
     }
 
     public void waitForTimeout(int msec) {
+        Allure.addAttachment("wait msec", String.valueOf(msec));
         page.waitForTimeout(msec);
     }
 
     public Locator getByText(String text) {
-        page.getByText(text).scrollIntoViewIfNeeded();
-        return page.getByText(Pattern.compile(text, Pattern.CASE_INSENSITIVE));
+        Locator locator = page.getByText(Pattern.compile(text, Pattern.CASE_INSENSITIVE));
+        attachAllureLog("get element by text",locator,text);
+        return locator;
     }
 
     public Locator getByPlaceholder(String text) {
-        return page.getByPlaceholder(text);
-    }
-
-    public Locator getByPlaceholder(Locator locator, String text) {
-        return locator.getByPlaceholder(text);
+        Locator locator = page.getByPlaceholder(text);
+        attachAllureLog("get element by placeholder", locator, text);
+        return locator;
     }
 
     public boolean isVisible(String selector) {
+        attachAllureLog("is element visible", selector,"");
         return page.locator(selector).isVisible();
     }
 
@@ -110,17 +122,19 @@ public class BasePage {
     }
 
     public void waitForURL(String regex) {
+        Allure.addAttachment("wait for URL", regex);
         page.waitForURL(Pattern.compile(regex));
     }
 
     public int countElements(String selector) {
+        Allure.addAttachment("count element", selector);
         return page.locator(selector).count();
     }
 
-    public static LocalDate getCurrentTime() {
+    @Contract(" -> new")
+    public static @NotNull LocalDate getCurrentTime() {
         return LocalDate.now();
     }
-
 
     public static ClientCreateRequest generateClient(boolean recreate) {
         if (simpleClient == null || recreate) {
@@ -134,6 +148,21 @@ public class BasePage {
             simpleGroup = DataGenerator.getSimpleData(GroupCreateRequest.class);
         }
         return simpleGroup;
+    }
+
+    private void attachAllureLog(String description, Locator locator, String text) {
+        Allure.addAttachment(description, "locator/text: " + locator.toString()+"|"+text);
+
+        byte[] screenshot = locator.screenshot(new Locator.ScreenshotOptions()
+                .setPath(Paths.get(Properties.getProp().screenshotPath()+"screenshot.png")));
+        Allure.addAttachment("element screenshot", new ByteArrayInputStream(screenshot));
+    }
+    private void attachAllureLog(String description, String selector, String text) {
+        Allure.addAttachment(description, "selector/text: " + selector+"|"+text);
+
+        byte[] screenshot = page.locator(selector).screenshot(new Locator.ScreenshotOptions()
+                .setPath(Paths.get(Properties.getProp().screenshotPath()+"screenshot.png")));
+        Allure.addAttachment("element screenshot", new ByteArrayInputStream(screenshot));
     }
 
 }

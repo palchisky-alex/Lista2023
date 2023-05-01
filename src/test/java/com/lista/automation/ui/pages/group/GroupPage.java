@@ -31,13 +31,7 @@ public class GroupPage extends BasePage {
 
     @Step("initiate group menu")
     public Menu initMenuForMember() {
-        step("click on button icon-del-wrap", () -> {
-            clickBy(".icon-del-wrap");
-        });
-        step("select member in group", () -> {
-            getLocator("li.client").click();
-            waitForTimeout(2000);
-        });
+        clickBy(".icon-del-wrap");
         return new Menu(page);
     }
 
@@ -46,20 +40,22 @@ public class GroupPage extends BasePage {
             super(page);
         }
 
-        public void setMenuOptions(Opts opts) {
+        public Menu setMenuOptions(Opts opts) {
+            step("click on button '" + opts.name() + "'", () -> {
+                clickBy(getByRole(AriaRole.BUTTON).filter(new Locator.FilterOptions().setHasText(opts.name().replace("_", " "))), 0);
+
+            });
             if (opts.name().equals("Delete")) {
-                step("click on button Delete clients from the group", () -> {
-                    getByRole(AriaRole.BUTTON).filter(new Locator.FilterOptions().setHasText(opts.name())).click();
-                });
-                step("click on button Delete", () -> {
+                step("confirm deletion", () -> {
                     clickBy(getLocator(".confirm-block button")
                             .getByText(GroupsListPage.SubmitForm.LAST_ACTION.DELETE.name()), 0);
                 });
             }
+            return this;
         }
 
         public enum Opts {
-            Select,
+            Select_All,
             Cancel,
             Delete
         }

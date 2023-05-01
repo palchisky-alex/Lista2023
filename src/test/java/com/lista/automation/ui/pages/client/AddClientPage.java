@@ -81,7 +81,8 @@ public class AddClientPage extends BasePage {
 
     @Step("set profile gender")
     public AddClientPage setGender() {
-        getLocator(checkboxGenders).nth(getRandomInt(1, 3)).click();
+        int random = getRandomInt(1, 3);
+        clickBy(getLocator(checkboxGenders).nth(random), 0);
         return this;
     }
 
@@ -119,7 +120,7 @@ public class AddClientPage extends BasePage {
 
     @Step("set profile note")
     public AddClientPage setNotes(ClientCreateRequest data) {
-        clickBy(notes);
+        getLocator(notes).click();
         typeIn(".notes textarea", data.getNotes());
         getLocator(notes).locator(btnApply).click();
         return this;

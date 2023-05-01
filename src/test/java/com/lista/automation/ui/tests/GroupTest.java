@@ -92,7 +92,7 @@ public class GroupTest extends BaseTest {
 
     @Test
     @Description("Add member into group")
-    public void testGroupAddMember() {
+    public void testAddMemberIntoGroup() {
         step("generate simple client via api", () -> {
             ClientCreateRequest simpleClient = generateClient(true);
             String clientID = api.client.create(simpleClient, 201);
@@ -125,7 +125,7 @@ public class GroupTest extends BaseTest {
     }
 
     @Test
-    public void testGroupDeleteMember() {
+    public void testDeleteMemberFromGroup() {
         step("generate client via api", () -> {
             ClientCreateRequest simpleClient = generateClient(true);
             String clientID = api.client.create(simpleClient, 201);
@@ -141,7 +141,8 @@ public class GroupTest extends BaseTest {
                         calendar.routing()
                                 .toGroupsListPage()
                                 .selectGroup(simpleGroup.getName())
-                                .initMenuForMember().setMenuOptions(GroupPage.Menu.Opts.Delete);
+                                .initMenuForMember()
+                                .setMenuOptions(GroupPage.Menu.Opts.Select_All);
 
                         step("get group with member via api", () -> {
                             assertThat(api.group.getClientsOfGroup(groupID, "clients", 200))
