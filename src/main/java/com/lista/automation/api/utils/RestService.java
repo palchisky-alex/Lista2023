@@ -47,12 +47,12 @@ public abstract class RestService {
                 .build();
         return REQ_SPEC_ENCODED;
     }
-    public RequestSpecification getSPEC_ENCODED_PATH(int id, String path) {
+    public RequestSpecification getSPEC_ENCODED_PATH(int id, String path, ContentType type) {
         REQ_SPEC_ENCODED = new RequestSpecBuilder()
                 .addHeader("cookie", cookie)
                 .setBaseUri(BASE_URL)
                 .setBasePath(getBasePath()+id+"/"+ path)
-                .setContentType(ContentType.URLENC).setConfig(RestAssured.config().encoderConfig(encoderConfig()
+                .setContentType(type).setConfig(RestAssured.config().encoderConfig(encoderConfig()
                         .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
                 .build();
         return REQ_SPEC_ENCODED;

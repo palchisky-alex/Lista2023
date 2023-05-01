@@ -4,7 +4,9 @@ import com.lista.automation.api.pojo.client.ClientGetResponse;
 import com.lista.automation.api.pojo.group.GroupCreateRequest;
 import com.lista.automation.api.pojo.group.GroupsGetResponse;
 import io.qameta.allure.Step;
+import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,11 +36,13 @@ public class GroupsService extends RestService {
         given().spec(getSPEC_ENCODED_ID(id)).log().all()
                 .delete().then().log().all().statusCode(expectStatus);
     }
+
     @Step("delete all client groups")
     public void deleteAll(int expectStatus) {
-        List<GroupsGetResponse> clientGroups = getClientGroups();
-        clientGroups.forEach(g->delete(g.getId(), expectStatus));
+        List<GroupsGetResponse> clientGroups = getGroupsOfClient();
+        clientGroups.forEach(g -> delete(g.getId(), expectStatus));
     }
+
     @Step("get list of all groups")
     public List<GroupsGetResponse> getAllGroups(int expectStatus) {
         return given().spec(REQ_SPEC_FORM).log().all()
@@ -46,18 +50,26 @@ public class GroupsService extends RestService {
                 .then().log().all().statusCode(expectStatus)
                 .extract().body().jsonPath().getList("", GroupsGetResponse.class);
     }
+
     @Step("get group clients")
-    public List<ClientGetResponse> getGroupClients(int id, String path, int expectStatus) {
-        return given().spec(getSPEC_ENCODED_PATH(id, path)).log().all()
+    public List<ClientGetResponse> getClientsOfGroup(int id, String path, int expectStatus) {
+        return given().spec(getSPEC_ENCODED_PATH(id, path, ContentType.URLENC)).log().all()
                 .get().then().log().all().statusCode(expectStatus)
                 .extract().body().jsonPath().getList("", ClientGetResponse.class);
     }
 
+    @Step("get group clients")
+    public void putClientToGroup(int groupID, String path, String clientID, int expectStatus) {
+        given().spec(getSPEC_ENCODED_PATH(groupID, path, ContentType.JSON)).log().all().body("[" + clientID + "]")
+                .put().then().log().all().statusCode(expectStatus);
+    }
+
     @Step("get list of client groups")
-    public List<GroupsGetResponse> getClientGroups() {
+    public List<GroupsGetResponse> getGroupsOfClient() {
         List<GroupsGetResponse> groups = getAllGroups(200);
         return groups.stream().filter(group -> !group.isAutomatic()).collect(Collectors.toList());
     }
+
     @Step("get list of automatic groups")
     public List<GroupsGetResponse> getAutomaticGroups() {
         List<GroupsGetResponse> groups = getAllGroups(200);

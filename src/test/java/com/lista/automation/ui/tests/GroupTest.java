@@ -9,12 +9,11 @@ import com.lista.automation.api.pojo.client.ClientGetResponse;
 import com.lista.automation.api.pojo.group.GroupCreateRequest;
 import com.lista.automation.api.pojo.group.GroupsGetResponse;
 import com.lista.automation.ui.core.BaseTest;
+import com.lista.automation.ui.pages.group.GroupPage;
 import com.lista.automation.ui.pages.group.GroupsListPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import org.testng.annotations.Test;
-
-import java.util.List;
 
 @Epic("Group UI GRUD")
 public class GroupTest extends BaseTest {
@@ -33,7 +32,7 @@ public class GroupTest extends BaseTest {
                             .configureGroup(simpleGroup.getName(), GroupsListPage.ACTION.Rename);
 
                     step("search renamed group via api", () -> {
-                        assertThat(api.group.getClientGroups())
+                        assertThat(api.group.getGroupsOfClient())
                                 .extracting(GroupsGetResponse::getName)
                                 .contains(generateGroup(false).getName());
                     });
@@ -57,7 +56,7 @@ public class GroupTest extends BaseTest {
                             .configureGroup(simpleGroup.getName(), GroupsListPage.ACTION.Delete);
 
                     step("search deleted group via api", () -> {
-                        assertThat(api.group.getClientGroups())
+                        assertThat(api.group.getGroupsOfClient())
                                 .extracting(GroupsGetResponse::getId)
                                 .doesNotContain(ID);
                     });
@@ -81,7 +80,7 @@ public class GroupTest extends BaseTest {
                             .returnToListGroups();
 
                     step("search deleted group via api", () -> {
-                        assertThat(api.group.getClientGroups())
+                        assertThat(api.group.getGroupsOfClient())
                                 .extracting(GroupsGetResponse::getId)
                                 .contains(ID);
                     });
@@ -115,7 +114,7 @@ public class GroupTest extends BaseTest {
                             .addToGroup();
 
                     step("get group with member via api", () -> {
-                        assertThat(api.group.getGroupClients(ID, "clients", 200))
+                        assertThat(api.group.getClientsOfGroup(ID, "clients", 200))
                                 .as("group contains ID of api client")
                                 .extracting(ClientGetResponse::getId)
                                 .contains(clientID);
@@ -123,6 +122,36 @@ public class GroupTest extends BaseTest {
                 });
             });
         });
+    }
 
+    @Test
+    public void testGroupDeleteMember() {
+        step("generate client via api", () -> {
+            ClientCreateRequest simpleClient = generateClient(true);
+            String clientID = api.client.create(simpleClient, 201);
+
+            step("generate group via api", () -> {
+                GroupCreateRequest simpleGroup = generateGroup(true);
+                int groupID = api.group.create(simpleGroup, 201);
+
+                step("put member into group via api", () -> {
+                    api.group.putClientToGroup(groupID, "clients", clientID, 204);
+
+                    step("delete member from group via UI", () -> {
+                        calendar.routing()
+                                .toGroupsListPage()
+                                .selectGroup(simpleGroup.getName())
+                                .initMenuForMember().setMenuOptions(GroupPage.Menu.Opts.Delete);
+
+                        step("get group with member via api", () -> {
+                            assertThat(api.group.getClientsOfGroup(groupID, "clients", 200))
+                                    .as("group not contains ID of api client")
+                                    .extracting(ClientGetResponse::getId)
+                                    .doesNotContain(clientID);
+                        });
+                    });
+                });
+            });
+        });
     }
 }
