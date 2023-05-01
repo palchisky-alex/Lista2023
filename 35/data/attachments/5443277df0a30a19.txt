@@ -1,0 +1,1 @@
+locator/text: Locator@internal:attr=[placeholder="Group name"i]|k1_Y1QsvM2
