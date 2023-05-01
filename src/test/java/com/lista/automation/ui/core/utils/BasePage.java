@@ -17,7 +17,6 @@ import java.time.LocalDate;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
-
 public class BasePage {
     private Page page;
     public static ClientCreateRequest simpleClient = null;
