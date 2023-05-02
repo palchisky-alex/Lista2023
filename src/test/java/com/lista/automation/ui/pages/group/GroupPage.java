@@ -41,7 +41,10 @@ public class GroupPage extends BasePage {
 
         public Menu setMenuOptions(Opts opts) {
             step("click on button '" + opts.name() + "'", () -> {
-                clickBy(getByRole(AriaRole.BUTTON).filter(new Locator.FilterOptions().setHasText(opts.name().replace("_", " "))),0,false);
+                clickBy(getByRole(AriaRole.BUTTON)
+                        .filter(new Locator.FilterOptions()
+                                .setHasText(opts.name()
+                                        .replace("_", " "))),0,false);
 
             });
             if (opts.name().equals("Delete")) {

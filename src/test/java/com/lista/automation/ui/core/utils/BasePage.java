@@ -126,9 +126,10 @@ public class BasePage {
     }
 
     public Locator getByText(String text) {
-        Locator locator = page.getByText(Pattern.compile(text, Pattern.CASE_INSENSITIVE));
-        attachAllureLog("get element by text",locator,text);
-        return locator;
+        return page.getByText(Pattern.compile(text, Pattern.CASE_INSENSITIVE));
+    }
+    public Locator getByExactText(String text) {
+        return page.getByText(text, new Page.GetByTextOptions().setExact(true));
     }
 
     public Locator getByPlaceholder(String text) {

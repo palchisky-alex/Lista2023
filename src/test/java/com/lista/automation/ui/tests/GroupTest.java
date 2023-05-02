@@ -15,6 +15,9 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import org.testng.annotations.Test;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Epic("Group UI GRUD")
 public class GroupTest extends BaseTest {
 
@@ -29,7 +32,8 @@ public class GroupTest extends BaseTest {
                 step("UI: rename group", () -> {
                     calendar.routing()
                             .toGroupsListPage()
-                            .configureGroup(simpleGroup.getName(), GroupsListPage.ACTION.Rename);
+                            .longPressOnGroup(simpleGroup.getName())
+                            .configureGroup(GroupsListPage.ACTION.Rename);
 
                     step("API: search renamed group", () -> {
                         assertThat(api.group.getGroupsOfClient())
@@ -53,7 +57,8 @@ public class GroupTest extends BaseTest {
                 step("UI: delete group", () -> {
                     calendar.routing()
                             .toGroupsListPage()
-                            .configureGroup(simpleGroup.getName(), GroupsListPage.ACTION.Delete);
+                            .longPressOnGroup(simpleGroup.getName())
+                            .configureGroup(GroupsListPage.ACTION.Delete);
 
                     step("API: search deleted group", () -> {
                         assertThat(api.group.getGroupsOfClient())
@@ -156,6 +161,30 @@ public class GroupTest extends BaseTest {
                         });
                     });
                 });
+            });
+        });
+    }
+
+    @Test
+    @Description("UI: Menu of default groups")
+    public void testMenuDefaultGroups() {
+        step("API: get all Lista's default groups", () -> {
+            List<String> defaultGroupsName =
+                    api.group.getAutomaticGroups()
+                            .stream().map(GroupsGetResponse::getName)
+                            .collect(Collectors.toList());
+
+            assertThat(defaultGroupsName.size()).as("The Lista contains 8 default groups").isEqualTo(8);
+
+            step("UI: init menu of all default groups one by one", () -> {
+                GroupsListPage groupsListPage = calendar.routing().toGroupsListPage();
+
+                for (String name : defaultGroupsName) {
+                    groupsListPage
+                            .longPressOnGroup(name)
+                            .configureGroup(GroupsListPage.ACTION.ClosePopup);
+                }
+
             });
         });
     }
