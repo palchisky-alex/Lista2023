@@ -1,0 +1,1 @@
+selector/text: (//*[contains(@class, 'day-header')])[1]|
