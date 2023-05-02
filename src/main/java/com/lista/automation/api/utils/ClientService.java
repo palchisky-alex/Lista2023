@@ -2,6 +2,7 @@ package com.lista.automation.api.utils;
 
 import com.lista.automation.api.pojo.client.ClientCreateRequest;
 import com.lista.automation.api.pojo.client.ClientGetResponse;
+import io.qameta.allure.Step;
 import io.restassured.response.Response;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class ClientService extends RestService {
         return "clients";
     }
 
+    @Step("api: client post")
     public String create(ClientCreateRequest client, int expectStatus) {
         Response response = given().spec(REQ_SPEC_FORM).log().all()
                 .multiPart("phone", client.getPhone())
@@ -36,6 +38,7 @@ public class ClientService extends RestService {
         return response.then().statusCode(expectStatus).extract().body().htmlPath().get().toString();
     }
 
+    @Step("api: get list of clients")
     public List<ClientGetResponse> findList(int expectStatus) {
         return given().spec(REQ_SPEC_FORM).log().all()
                 .param("limit", 40)
@@ -45,6 +48,7 @@ public class ClientService extends RestService {
                 .extract().body().jsonPath().getList("", ClientGetResponse.class);
     }
 
+    @Step("api: get client by")
     public ClientGetResponse find(String findBy, int expectStatus) {
         List<ClientGetResponse> clientList = given().spec(REQ_SPEC_FORM).log().all()
                 .param("limit", 40)
@@ -60,12 +64,14 @@ public class ClientService extends RestService {
         return clientList.get(0);
     }
 
+    @Step("api: delete client by id")
     public void delete(String id, int expectStatus) {
         given().spec(REQ_SPEC_ENCODED).log().all()
                 .formParam(getBasePath(), id).log().all()
                 .delete().then().log().all().statusCode(expectStatus);
     }
 
+    @Step("api: delete all clients")
     public void deleteAll(int expectStatus) {
         List<ClientGetResponse> clientList = findList(200);
         while (clientList.size() > 0) {

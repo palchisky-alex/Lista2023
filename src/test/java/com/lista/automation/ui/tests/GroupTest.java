@@ -19,7 +19,7 @@ import org.testng.annotations.Test;
 public class GroupTest extends BaseTest {
 
     @Test
-    @Description("Rename client group")
+    @Description("UI: Rename client group")
     public void testGroupRename() {
         step("UI: verify that client group can be rename", () -> {
             step("API: generate group", () -> {
@@ -42,7 +42,7 @@ public class GroupTest extends BaseTest {
     }
 
     @Test
-    @Description("Delete client group")
+    @Description("UI: Delete client group")
     public void testGroupDelete() {
         step("UI: verify that client group can be delete", () -> {
 
@@ -66,7 +66,7 @@ public class GroupTest extends BaseTest {
     }
 
     @Test
-    @Description("Create client group")
+    @Description("UI: Create client group")
     public void testGroupCreate() {
         step("UI: verify that client group can be created", () -> {
 
@@ -91,7 +91,7 @@ public class GroupTest extends BaseTest {
     }
 
     @Test
-    @Description("Add member into group")
+    @Description("UI: Add member into group")
     public void testAddMemberIntoGroup() {
         step("API: generate simple client", () -> {
             ClientCreateRequest simpleClient = generateClient(true);
@@ -125,7 +125,7 @@ public class GroupTest extends BaseTest {
     }
 
     @Test
-    @Description("Delete member from group")
+    @Description("UI: Delete member from group")
     public void testDeleteMemberFromGroup() {
         step("API: generate client", () -> {
             ClientCreateRequest simpleClient = generateClient(true);
@@ -136,7 +136,7 @@ public class GroupTest extends BaseTest {
                 int groupID = api.group.create(simpleGroup, 201);
 
                 step("API: put member into group", () -> {
-                    api.group.putClientToGroup(groupID, "clients", clientID, 204);
+                    api.group.putClientIntoGroup(groupID, "clients", clientID, 204);
 
                     step("UI: delete member from group", () -> {
                         calendar.routing()

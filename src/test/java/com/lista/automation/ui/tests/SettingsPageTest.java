@@ -3,6 +3,7 @@ package com.lista.automation.ui.tests;
 import com.lista.automation.ui.core.BaseTest;
 import com.lista.automation.ui.core.utils.CalendarView;
 import com.lista.automation.ui.core.utils.ViewStartOn;
+import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -14,6 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SettingsPageTest extends BaseTest {
 
     @Test(dataProvider = "calendar_view")
+    @Description("UI: Change Calendar view")
     public void testCalendarView(String selector, CalendarView views) {
         step("UI: Change calendar view", () -> {
             calendar.routing()
@@ -30,6 +32,7 @@ public class SettingsPageTest extends BaseTest {
     }
 
     @Test(dataProvider = "view_start_day")
+    @Description("UI: Change Calendar first day")
     public void testCalendarSettings(String dayOfWeek, ViewStartOn viewStartOn, String cellDuration) {
         step("UI: change calendar week first day and cell duration", () -> {
             calendar.routing()

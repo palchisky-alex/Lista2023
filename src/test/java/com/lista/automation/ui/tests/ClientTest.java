@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ClientTest extends BaseTest {
 
     @Test
-    @Description("Delete client from UI")
+    @Description("UI: Delete client from UI")
     public void testDeleteClient() {
         step("UI: verify client can be deleted", () -> {
 
@@ -63,7 +63,7 @@ public class ClientTest extends BaseTest {
     }
 
     @Test
-    @Description("Create client from UI")
+    @Description("UI: Create client from UI")
     public void testClientCreate() {
         step("UI: verify client can be created", () -> {
             ClientCreateRequest simpleClient = calendar.routing()
@@ -88,7 +88,7 @@ public class ClientTest extends BaseTest {
     }
 
     @Test
-    @Description("Update personal info of client from UI")
+    @Description("UI: Update personal info of client from UI")
     void testClientUpdatePersonalInfo() {
         step("UI: verify client personal info can be change", () -> {
 
@@ -139,7 +139,7 @@ public class ClientTest extends BaseTest {
     }
 
     @Test
-    @Description("Update debts of client from UI")
+    @Description("UI: Update debts of client from UI")
     void testClientUpdateDebts() {
         step("UI: verify client debts can be change", () -> {
 
@@ -190,7 +190,7 @@ public class ClientTest extends BaseTest {
     }
 
     @Test
-    @Description("Update notes of client from UI")
+    @Description("UI: Update notes of client from UI")
     void testClientUpdateNotes() {
         step("UI: verify client notes can be change", () -> {
 
@@ -239,7 +239,7 @@ public class ClientTest extends BaseTest {
     }
 
     @Test
-    @Description("Update gallery of client from UI")
+    @Description("UI: Update gallery of client from UI")
     void testClientUpdateGallery() {
         step("UI: verify client gallery can be change", () -> {
 
