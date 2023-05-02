@@ -126,10 +126,14 @@ public class BasePage {
     }
 
     public Locator getByText(String text) {
-        return page.getByText(Pattern.compile(text, Pattern.CASE_INSENSITIVE));
+        Locator locator = page.getByText(Pattern.compile(text, Pattern.CASE_INSENSITIVE));
+        locator.scrollIntoViewIfNeeded();
+        return locator;
     }
     public Locator getByExactText(String text) {
-        return page.getByText(text, new Page.GetByTextOptions().setExact(true));
+        Locator locator = page.getByText(text, new Page.GetByTextOptions().setExact(true));
+        locator.scrollIntoViewIfNeeded();
+        return locator;
     }
 
     public Locator getByPlaceholder(String text) {

@@ -3,7 +3,6 @@ package com.lista.automation.ui.tests;
 import static com.lista.automation.ui.core.utils.BasePage.*;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
-
 import com.lista.automation.api.pojo.client.ClientCreateRequest;
 import com.lista.automation.api.pojo.client.ClientGetResponse;
 import com.lista.automation.api.pojo.group.GroupCreateRequest;
