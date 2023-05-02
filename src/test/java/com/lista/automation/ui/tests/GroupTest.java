@@ -21,17 +21,17 @@ public class GroupTest extends BaseTest {
     @Test
     @Description("Rename client group")
     public void testGroupRename() {
-        step("Verify that client group can be rename via UI", () -> {
-            step("generate api group", () -> {
+        step("UI: verify that client group can be rename", () -> {
+            step("API: generate group", () -> {
                 GroupCreateRequest simpleGroup = generateGroup(true);
                 api.group.create(simpleGroup, 201);
 
-                step("rename group via UI", () -> {
+                step("UI: rename group", () -> {
                     calendar.routing()
                             .toGroupsListPage()
                             .configureGroup(simpleGroup.getName(), GroupsListPage.ACTION.Rename);
 
-                    step("search renamed group via api", () -> {
+                    step("API: search renamed group", () -> {
                         assertThat(api.group.getGroupsOfClient())
                                 .extracting(GroupsGetResponse::getName)
                                 .contains(generateGroup(false).getName());
@@ -44,18 +44,18 @@ public class GroupTest extends BaseTest {
     @Test
     @Description("Delete client group")
     public void testGroupDelete() {
-        step("Verify that client group can be delete via UI", () -> {
+        step("UI: verify that client group can be delete", () -> {
 
-            step("generate api group", () -> {
+            step("API: generate group", () -> {
                 GroupCreateRequest simpleGroup = generateGroup(true);
                 int ID = api.group.create(simpleGroup, 201);
 
-                step("delete group via UI", () -> {
+                step("UI: delete group", () -> {
                     calendar.routing()
                             .toGroupsListPage()
                             .configureGroup(simpleGroup.getName(), GroupsListPage.ACTION.Delete);
 
-                    step("search deleted group via api", () -> {
+                    step("API: search deleted group", () -> {
                         assertThat(api.group.getGroupsOfClient())
                                 .extracting(GroupsGetResponse::getId)
                                 .doesNotContain(ID);
@@ -68,18 +68,18 @@ public class GroupTest extends BaseTest {
     @Test
     @Description("Create client group")
     public void testGroupCreate() {
-        step("Verify that client group can be created via UI", () -> {
+        step("UI: verify that client group can be created", () -> {
 
-            step("generate api group", () -> {
+            step("API: generate group", () -> {
                 GroupCreateRequest simpleGroup = generateGroup(true);
                 int ID = api.group.create(simpleGroup, 201);
 
-                step("add new group via UI", () -> {
+                step("UI: add new group", () -> {
                     calendar.routing().toGroupsListPage()
                             .addGroup(simpleGroup.getName())
                             .returnToListGroups();
 
-                    step("search deleted group via api", () -> {
+                    step("API: search deleted group", () -> {
                         assertThat(api.group.getGroupsOfClient())
                                 .extracting(GroupsGetResponse::getId)
                                 .contains(ID);
@@ -93,19 +93,19 @@ public class GroupTest extends BaseTest {
     @Test
     @Description("Add member into group")
     public void testAddMemberIntoGroup() {
-        step("generate simple client via api", () -> {
+        step("API: generate simple client", () -> {
             ClientCreateRequest simpleClient = generateClient(true);
             String clientID = api.client.create(simpleClient, 201);
 
-            step("check via api that the simple client has been created", () -> {
+            step("API: check that the simple client has been created", () -> {
                 api.client.find(simpleClient.getPhone().replaceAll("\\D+", ""), 200);
             });
 
-            step("generate simple group via api", () -> {
+            step("API: generate simple group", () -> {
                 GroupCreateRequest simpleGroup = generateGroup(true);
                 int ID = api.group.create(simpleGroup, 201);
 
-                step("add member into group via UI", () -> {
+                step("UI: add member into group", () -> {
                     calendar.routing()
                             .toGroupsListPage()
                             .selectGroup(simpleGroup.getName())
@@ -113,7 +113,7 @@ public class GroupTest extends BaseTest {
                             .searchMember(simpleClient.getName())
                             .addToGroup();
 
-                    step("get group with member via api", () -> {
+                    step("API: get group with member", () -> {
                         assertThat(api.group.getClientsOfGroup(ID, "clients", 200))
                                 .as("group contains ID of api client")
                                 .extracting(ClientGetResponse::getId)
@@ -125,26 +125,30 @@ public class GroupTest extends BaseTest {
     }
 
     @Test
+    @Description("Delete member from group")
     public void testDeleteMemberFromGroup() {
-        step("generate client via api", () -> {
+        step("API: generate client", () -> {
             ClientCreateRequest simpleClient = generateClient(true);
             String clientID = api.client.create(simpleClient, 201);
 
-            step("generate group via api", () -> {
+            step("API: generate group", () -> {
                 GroupCreateRequest simpleGroup = generateGroup(true);
                 int groupID = api.group.create(simpleGroup, 201);
 
-                step("put member into group via api", () -> {
+                step("API: put member into group", () -> {
                     api.group.putClientToGroup(groupID, "clients", clientID, 204);
 
-                    step("delete member from group via UI", () -> {
+                    step("UI: delete member from group", () -> {
                         calendar.routing()
                                 .toGroupsListPage()
                                 .selectGroup(simpleGroup.getName())
                                 .initMenuForMember()
-                                .setMenuOptions(GroupPage.Menu.Opts.Select_All);
+                                .setMenuOptions(GroupPage.Menu.Opts.Select_All)
+                                .setMenuOptions(GroupPage.Menu.Opts.Cancel)
+                                .setMenuOptions(GroupPage.Menu.Opts.Select_All)
+                                .setMenuOptions(GroupPage.Menu.Opts.Delete);
 
-                        step("get group with member via api", () -> {
+                        step("API: get group with member", () -> {
                             assertThat(api.group.getClientsOfGroup(groupID, "clients", 200))
                                     .as("group not contains ID of api client")
                                     .extracting(ClientGetResponse::getId)

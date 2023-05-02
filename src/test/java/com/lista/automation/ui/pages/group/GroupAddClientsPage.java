@@ -24,10 +24,10 @@ public class GroupAddClientsPage extends BasePage {
 
     public GroupAddClientsPage addToGroup() {
         step("click on searching result", () -> {
-            clickBy("li.client");
+            clickBy("li.client",0,true);
         });
         step("click on button Done", () -> {
-            clickBy(getByRoleWithText(AriaRole.BUTTON, "done"), 0);
+            clickBy(getByRoleWithText(AriaRole.BUTTON, "done"),0,true);
         });
         return this;
     }

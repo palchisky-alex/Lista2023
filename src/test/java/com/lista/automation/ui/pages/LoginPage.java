@@ -29,11 +29,11 @@ public class LoginPage extends BasePage {
         String pass = "123456";
         typeIn(INPUT_EMAIL_LOCATOR, email);
         typeIn(INPUT_PASSWORD_LOCATOR, pass);
-        getByRoleWithText(AriaRole.BUTTON, "login").click();
+        clickBy(getByRoleWithText(AriaRole.BUTTON, "login"),0,true);
         return new CalendarPage(page);
     }
     public MenuPage clickMenuButton() {
-        clickBy(BTN_MENU_LOCATOR);
+        clickBy(BTN_MENU_LOCATOR, 0, true);
         return new MenuPage(page);
     }
 

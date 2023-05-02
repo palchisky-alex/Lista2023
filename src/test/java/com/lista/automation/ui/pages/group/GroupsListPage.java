@@ -21,13 +21,13 @@ public class GroupsListPage extends BasePage {
             initGroupMenu(groupName, act);
             step("type new name", () -> {
                 typeIn(getByPlaceholder("Group name"), generateGroup(true).getName());
-                clickBy(getByRoleWithText(AriaRole.BUTTON, SubmitForm.LAST_ACTION.SAVE.name()), 0);
+                clickBy(getByRoleWithText(AriaRole.BUTTON, SubmitForm.LAST_ACTION.SAVE.name()),0,true);
             });
         } else if (act.name().equals("Delete")) {
             initGroupMenu(groupName, act);
             step("click on button Delete", () -> {
                 clickBy(getLocator(".confirm-block button")
-                        .getByText(SubmitForm.LAST_ACTION.DELETE.name()), 0);
+                        .getByText(SubmitForm.LAST_ACTION.DELETE.name()),0,true);
             });
         }
         return this;
@@ -36,29 +36,29 @@ public class GroupsListPage extends BasePage {
     @Step("add new group and save")
     public GroupPage addGroup(String name) {
         step("click on button +", () -> {
-            clickBy("#add-button");
+            clickBy("#add-button",0,true);
         });
         step("type group name", () -> {
             typeIn(getByPlaceholder("Group name"), name);
         });
         step("click on button Save", () -> {
-            clickBy(getLocator("form button").getByText(SubmitForm.LAST_ACTION.SAVE.name()), 0);
+            clickBy(getLocator("form button").getByText(SubmitForm.LAST_ACTION.SAVE.name()),0,true);
         });
         return new GroupPage(page);
     }
 
     public void initGroupMenu(String groupName, ACTION act) {
         step("init group menu", () -> {
-            clickBy(getByText(groupName), 2000);
+            clickBy(getByText(groupName),2000,true);
         });
         step("click on button Rename or Delete", () -> {
-            clickBy(getByRoleWithText(AriaRole.BUTTON, act.name()), 0);
+            clickBy(getByRoleWithText(AriaRole.BUTTON, act.name()),0,true);
         });
     }
 
     @Step("select group by name")
     public GroupPage selectGroup(String groupName) {
-        clickBy(getByText(groupName), 0);
+        clickBy(getByText(groupName),0,true);
         return new GroupPage(page);
     }
 

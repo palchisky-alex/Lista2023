@@ -18,7 +18,7 @@ public class SettingsAllPage extends BasePage {
 
     @Step("go to Calendar Settings")
     public CalendarSettingsPage toCalendarSettings() {
-        getByRoleWithText(AriaRole.LINK, "Calendar Settings").click();
+        clickBy(getByRoleWithText(AriaRole.LINK, "Calendar Settings"),0,true);
         return new CalendarSettingsPage(page);
     }
 

@@ -8,13 +8,14 @@ import com.lista.automation.ui.pages.settings.SettingsAllPage;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
 
-public class RouteHelper {
+public class RouteHelper extends BasePage {
     private final Page page;
     private final String MENU_LIST_LOCATOR = ".menu-list";
     private final String BTN_MENU_LOCATOR = ".more_wrap";
     private final String BTN_MENU_LOCATOR2 = "button.menu_btn";
 
     public RouteHelper(Page page) {
+        super(page);
         this.page = page;
     }
 
@@ -30,9 +31,9 @@ public class RouteHelper {
     @Step("click on menu")
     private MenuPage clickMenuButton() {
         if(!page.url().contains("settings")) {
-            page.locator(BTN_MENU_LOCATOR).click();
+            clickBy(BTN_MENU_LOCATOR,0,false);
         }
-        else page.locator(BTN_MENU_LOCATOR2).click();
+        else clickBy(BTN_MENU_LOCATOR2,0,false);
 
         return new MenuPage(page);
     }

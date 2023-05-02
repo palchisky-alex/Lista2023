@@ -21,7 +21,7 @@ public class GalleryPage extends BasePage {
             getByPlaceholder("Add a caption...").fill(notes);
         });
         step("click Send button", () -> {
-            clickBy("button .text-submit");
+            clickBy("button .text-submit",0,true);
         });
     }
 }

@@ -36,7 +36,7 @@ public class CalendarPage extends BasePage {
     }
 
     public MenuPage clickMenuButton() {
-        clickBy(BTN_MENU_LOCATOR);
+        clickBy(BTN_MENU_LOCATOR,0,true);
         return new MenuPage(page);
     }
     @Step("verify CalendarView")

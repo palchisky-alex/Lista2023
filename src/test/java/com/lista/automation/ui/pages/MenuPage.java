@@ -25,9 +25,9 @@ public class MenuPage extends BasePage {
 
     @Step("select submenu")
     public <T> T choosePage(Pages calendarPages, Class<T> clazz) throws Exception {
-        getLocator(MENU_LIST_LOCATOR)
+        clickBy(getLocator(MENU_LIST_LOCATOR)
                 .getByRole(AriaRole.LINK)
-                .filter(new Locator.FilterOptions().setHasText(Pattern.compile(calendarPages.name()))).click();
+                .filter(new Locator.FilterOptions().setHasText(Pattern.compile(calendarPages.name()))),0,true);
 
 
         T pageInstance = clazz.getDeclaredConstructor(Page.class).newInstance(page);

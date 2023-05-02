@@ -38,28 +38,26 @@ public class ClientProfilePage extends BasePage {
 
     @Step("initiate Profile Info editing")
     public ClientProfilePage initProfileInfoEdit() {
-        page.waitForResponse(Response::ok, () -> {
-            getLocator("#profile-header").getByRole(AriaRole.BUTTON).click();
-        });
+        clickBy(getLocator("#profile-header").getByRole(AriaRole.BUTTON),0,true);
         return this;
     }
 
     @Step("clean all inputs of profile info")
     public ClientProfilePage cleanProfileInfo() {
         for (Locator li : getLocator("[class^='del-info']").all())
-            li.click();
+            clickBy(li,0,false);
         return this;
     }
 
     @Step("initiate Profile debts editing")
     public ClientProfilePage initDebtsEdit() {
-        clickBy(debtsEditBtn);
+        clickBy(debtsEditBtn,0,true);
         return this;
     }
 
     @Step("initiate Profile notes editing")
     public ClientProfilePage initNotesEdit() {
-        clickBy(notesEditBtn);
+        clickBy(notesEditBtn,0,true);
         return this;
     }
 
@@ -68,7 +66,7 @@ public class ClientProfilePage extends BasePage {
         step("open gallery slot", () -> {
             String showAllFieldsBtn = "Show All Fields";
             if (getByText(showAllFieldsBtn).isVisible()) {
-                getByText(showAllFieldsBtn).click();
+                clickBy(getByText(showAllFieldsBtn),0,true);
             }
         });
         step("load picture to gallery", () -> {
@@ -103,13 +101,13 @@ public class ClientProfilePage extends BasePage {
             typeIn(debtsDescriptions, data.getNotes());
         });
         step("click on button minus", () -> {
-            getLocator(".debt-active .ink").first().click();
+            clickBy(getLocator(".debt-active .ink").first(),0,false);
         });
         step("click on button plus", () -> {
-            getLocator(".debt-active .ink").nth(1).dblclick();
+            dblClickBy(getLocator(".debt-active .ink").nth(1),false);
         });
         step("click on Success button", () -> {
-            getLocator("#debts").getByText("Success").click();
+            clickBy(getLocator("#debts").getByText("Success"),0,false);
         });
         return this;
     }
@@ -141,7 +139,7 @@ public class ClientProfilePage extends BasePage {
     @Step("set profile gender")
     public ClientProfilePage setGender() {
         int random = getRandomInt(1, 2);
-        getLocator(profileGender).nth(random).click();
+        clickBy(getLocator(profileGender).nth(random),0,false);
         return this;
     }
 
@@ -178,7 +176,7 @@ public class ClientProfilePage extends BasePage {
     @Step("save profile info")
     public ClientCreateRequest saveProfileInfo() {
         page.waitForResponse(Response::ok, () -> {
-            clickBy(profileInfoSaveBtn);
+            clickBy(profileInfoSaveBtn,0,true);
         });
         return simpleClient;
     }
@@ -189,7 +187,7 @@ public class ClientProfilePage extends BasePage {
             getLocator("#notes").locator("textarea").fill(data.getNotes());
         });
         step("click on button Success", () -> {
-            getLocator("#notes").getByText("Success").click();
+            clickBy(getLocator("#notes").getByText("Success"),0,true);
         });
         return this;
     }

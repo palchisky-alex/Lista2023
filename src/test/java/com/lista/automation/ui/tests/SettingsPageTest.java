@@ -14,15 +14,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SettingsPageTest extends BaseTest {
 
     @Test(dataProvider = "calendar_view")
-    public void testCalendar(String selector, CalendarView views) {
-        step("Change calendar view via UI", () -> {
+    public void testCalendarView(String selector, CalendarView views) {
+        step("UI: Change calendar view", () -> {
             calendar.routing()
                     .toSettingsPage()
                     .toCalendarSettings()
                     .changeCalendarView(views)
                     .backToSettingsPage();
 
-            step("Verify that calendar view has been changed from UI", () -> {
+            step("UI: verify that calendar view has been changed", () -> {
                 assertThat(calendar.routing().toCalendarPage().verifyCalendarView(selector))
                         .as("calendar view changed to %s", views).isTrue();
             });
@@ -30,8 +30,8 @@ public class SettingsPageTest extends BaseTest {
     }
 
     @Test(dataProvider = "view_start_day")
-    public void testSettings(String dayOfWeek, ViewStartOn viewStartOn, String cellDuration) {
-        step("Change calendar week first day and cell duration via UI", () -> {
+    public void testCalendarSettings(String dayOfWeek, ViewStartOn viewStartOn, String cellDuration) {
+        step("UI: change calendar week first day and cell duration", () -> {
             calendar.routing()
                     .toSettingsPage()
                     .toCalendarSettings()
@@ -44,7 +44,7 @@ public class SettingsPageTest extends BaseTest {
             String calendarFirstDay = calendar.routing()
                     .toCalendarPage()
                     .getCalendarFirstDay();
-            step("Verify calendar first day", () -> {
+            step("UI: verify calendar first day", () -> {
                 assertThat(calendarFirstDay).as("calendar first day is %s", dayOfWeek).isEqualTo(dayOfWeek);
             });
 
@@ -52,7 +52,7 @@ public class SettingsPageTest extends BaseTest {
                     .toCalendarPage()
                     .getCellDuration();
 
-            step("Verify calendar cell duration", () -> {
+            step("UI: verify calendar cell duration", () -> {
                 assertThat(cellDurationResult)
                         .as("cell duration changed to %s minutes", cellDuration)
                         .isEqualTo(cellDuration);

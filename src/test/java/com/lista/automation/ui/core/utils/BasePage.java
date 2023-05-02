@@ -42,24 +42,50 @@ public class BasePage {
         return page.getByRole(role);
     }
 
-    public void clickBy(String selector) {
+    public void clickBy(String selector,int delay, boolean request) {
         attachAllureLog("click on element and wait 30000ms for response OK", selector,"");
         System.out.println(">> click on " + selector + " and wait for response OK <<");
         page.waitForLoadState(LoadState.NETWORKIDLE);
         page.locator(selector).scrollIntoViewIfNeeded();
-        page.waitForResponse(Response::ok, () -> {
-            page.click(selector);
-        });
+
+        if(request) {
+            page.waitForResponse(Response::ok, () -> {
+                page.locator(selector).click(new Locator.ClickOptions().setDelay(delay));
+            });
+        }
+        else {
+            page.locator(selector).click(new Locator.ClickOptions().setDelay(delay));
+        }
     }
 
-    public void clickBy(Locator locator, int delay) {
+    public void clickBy(Locator locator, int delay, boolean request) {
         attachAllureLog("click on element and wait 30000ms for response OK",locator,"");
         System.out.println(">> click on " + locator + " and wait for response OK <<");
         page.waitForLoadState(LoadState.NETWORKIDLE);
         locator.scrollIntoViewIfNeeded();
-        page.waitForResponse(Response::ok, () -> {
+
+        if(request) {
+            page.waitForResponse(Response::ok, () -> {
+                locator.click(new Locator.ClickOptions().setDelay(delay));
+            });
+        }
+        else {
             locator.click(new Locator.ClickOptions().setDelay(delay));
-        });
+        }
+    }
+
+    public void dblClickBy(Locator locator, boolean request) {
+        System.out.println(">> click on " + locator + " and wait for response OK <<");
+        attachAllureLog("double click on element and wait 30000ms for response OK", locator,"");
+        page.waitForLoadState(LoadState.NETWORKIDLE);
+        locator.scrollIntoViewIfNeeded();
+
+        if(request) {
+            page.waitForResponse(Response::ok, locator::dblclick);
+        }
+        else {
+            locator.dblclick();
+        }
     }
 
     public void clickWithCoordinate(String selector, int x, int y) {
