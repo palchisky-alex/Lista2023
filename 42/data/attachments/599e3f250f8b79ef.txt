@@ -1,0 +1,1 @@
+locator/text: Locator@internal:attr=[placeholder="Search by name or mobile"i]|Search by name or mobile
