@@ -18,7 +18,6 @@ public class CalendarPage extends BasePage {
     public CalendarPage(Page page) {
         super(page);
         this.page = page;
-
     }
 
     public String getCalendarPageURL() {

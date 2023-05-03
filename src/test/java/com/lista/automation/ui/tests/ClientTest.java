@@ -6,10 +6,10 @@ import com.lista.automation.ui.core.BaseTest;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import org.testng.annotations.Test;
-
 import static com.lista.automation.ui.core.utils.BasePage.generateClient;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 
 @Epic("Client UI GRUD")
 public class ClientTest extends BaseTest {
@@ -77,11 +77,9 @@ public class ClientTest extends BaseTest {
                         .find(simpleClient.getPhone()
                                 .replaceAll("\\D+", ""), 200);
 
-                step("API: assert that the client has been created by comparing name and address", () -> {
-                    assertThat(simpleClient)
-                            .usingRecursiveComparison()
-                            .comparingOnlyFields("name", "address")
-                            .isEqualTo(clientViaAPI);
+                step("API: assert that the client has been created", () -> {
+                    assertThat(clientViaAPI).extracting("name", "address")
+                            .contains(simpleClient.getName(), simpleClient.getAddress());
                 });
             });
         });
@@ -91,7 +89,7 @@ public class ClientTest extends BaseTest {
     @Description("UI: Update personal info of client from UI")
     void testClientUpdatePersonalInfo() {
         step("UI: verify client personal info can be change", () -> {
-
+            api.client.deleteAll(204);
             step("API: generate simple client", () -> {
                 ClientCreateRequest simpleClient = generateClient(true);
                 String phoneNumber = simpleClient.getPhone().replaceAll("\\D+", "");
@@ -123,12 +121,9 @@ public class ClientTest extends BaseTest {
                                 ClientGetResponse clientViaAPI = api.client.find(simpleClient2.getPhone()
                                         .replaceAll("\\D+", ""), 200);
 
-                                step("API: assert that the client profile info has been updated by comparing name and address", () -> {
-
-                                    assertThat(simpleClient2)
-                                            .usingRecursiveComparison()
-                                            .comparingOnlyFields("name", "address")
-                                            .isEqualTo(clientViaAPI);
+                                step("API: assert that the client exists after personal info update", () -> {
+                                    assertThat(clientViaAPI).extracting("name", "address")
+                                            .contains(simpleClient2.getName(), simpleClient2.getAddress());
                                 });
                             });
                         });
@@ -174,12 +169,9 @@ public class ClientTest extends BaseTest {
                                         .find(simpleClient.getPhone()
                                                 .replaceAll("\\D+", ""), 200);
 
-                                step("assert via api that the client debts has been updated by comparing name and address", () -> {
-
-                                    assertThat(simpleClient)
-                                            .usingRecursiveComparison()
-                                            .comparingOnlyFields("name", "address")
-                                            .isEqualTo(clientViaAPI);
+                                step("API: assert that the client exists after debts update", () -> {
+                                    assertThat(clientViaAPI).extracting("name", "address", "phone")
+                                            .contains(simpleClient.getName(), simpleClient.getAddress(), phoneNumber);
                                 });
                             });
                         });
@@ -196,6 +188,7 @@ public class ClientTest extends BaseTest {
 
             step("API: generate simple client", () -> {
                 ClientCreateRequest simpleClient = generateClient(true);
+                ClientCreateRequest simpleClient2 = generateClient(true);
                 String phoneNumber = simpleClient.getPhone().replaceAll("\\D+", "");
 
                 api.client.create(simpleClient, 201);
@@ -204,31 +197,28 @@ public class ClientTest extends BaseTest {
                 step("API: check that the simple client has been created", () -> {
                     assertThat(apiClient.getName()).as("client was created").isEqualTo(simpleClient.getName());
 
-                    step("UI: search a new client by phone number", () -> {
+                    step("UI: search a client by phone number", () -> {
                         clientsPage = calendar
                                 .routing()
                                 .toClientPage()
                                 .findClient(phoneNumber);
 
-                        step("UI: search returns one customer", () -> {
+                        step("UI: search returns one client", () -> {
                             assertThat(clientsPage.countClients()).as("one client founded").isEqualTo(1);
                         });
                         step("UI: edit client notes", () -> {
                             clientsPage.selectClientById(apiClient.getId())
                                     .initNotesEdit()
-                                    .setNotes(simpleClient);
+                                    .setNotes(simpleClient2);
 
-                            step("API: search client by new phone number", () -> {
+                            step("API: search client by phone number", () -> {
                                 ClientGetResponse clientViaAPI = api.client
                                         .find(simpleClient.getPhone()
                                                 .replaceAll("\\D+", ""), 200);
 
-                                step("API: assert that the client notes has been updated by comparing name and address", () -> {
-
-                                    assertThat(simpleClient)
-                                            .usingRecursiveComparison()
-                                            .comparingOnlyFields("name", "address")
-                                            .isEqualTo(clientViaAPI);
+                                step("API: assert that the client exists after notes update", () -> {
+                                    assertThat(clientViaAPI).extracting("name", "address", "phone")
+                                            .contains(simpleClient.getName(), simpleClient.getAddress(), phoneNumber);
                                 });
                             });
                         });
@@ -253,7 +243,7 @@ public class ClientTest extends BaseTest {
                 step("API: check that the simple client has been created", () -> {
                     assertThat(apiClient.getName()).isEqualTo(simpleClient.getName());
 
-                    step("UI: search a new client by phone number", () -> {
+                    step("UI: search a client by phone number", () -> {
                         clientsPage = calendar
                                 .routing()
                                 .toClientPage()
@@ -262,22 +252,21 @@ public class ClientTest extends BaseTest {
                         step("UI: search returns one client", () -> {
                             assertThat(clientsPage.countClients()).isEqualTo(1);
                         });
+
                         step("UI: edit client gallery", () -> {
                             clientsPage.selectClientById(apiClient.getId())
-                                    .initGalleryEdit()
+                                    .editGallery()
                                     .addNotesToPicture(simpleClient.getNotes());
 
-                            step("API: search client by new phone number", () -> {
+                            step("API: search client by phone number", () -> {
                                 ClientGetResponse clientViaAPI = api.client
                                         .find(simpleClient.getPhone()
                                                 .replaceAll("\\D+", ""), 200);
 
-                                step("API: assert that the client notes has been updated by comparing name and address", () -> {
+                                step("API: assert that the client exists after gallery update", () -> {
+                                    assertThat(clientViaAPI).extracting("name", "address", "phone")
+                                            .contains(simpleClient.getName(), simpleClient.getAddress(), phoneNumber);
 
-                                    assertThat(simpleClient)
-                                            .usingRecursiveComparison()
-                                            .comparingOnlyFields("name", "address")
-                                            .isEqualTo(clientViaAPI);
                                 });
                             });
                         });

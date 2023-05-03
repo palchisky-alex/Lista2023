@@ -62,10 +62,11 @@ public class ClientProfilePage extends BasePage {
     }
 
     @Step("initiate Profile gallery editing")
-    public GalleryPage initGalleryEdit() {
+    public GalleryPage editGallery() {
         step("open gallery slot", () -> {
             String showAllFieldsBtn = "Show All Fields";
-            if (getByText(showAllFieldsBtn).isVisible()) {
+            boolean visible = isVisible(getByText(showAllFieldsBtn));
+            if (visible) {
                 clickBy(getByText(showAllFieldsBtn),0,true);
             }
         });

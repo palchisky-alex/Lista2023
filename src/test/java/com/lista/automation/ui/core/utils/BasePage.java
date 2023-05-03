@@ -1,5 +1,6 @@
 package com.lista.automation.ui.core.utils;
 
+import com.lista.automation.api.pojo.service.ServiceCreateRequest;
 import com.lista.automation.api.pojo.client.ClientCreateRequest;
 import com.lista.automation.api.pojo.group.GroupCreateRequest;
 import com.lista.automation.api.utils.DataGenerator;
@@ -21,6 +22,7 @@ public class BasePage {
     private Page page;
     public static ClientCreateRequest simpleClient = null;
     public static GroupCreateRequest simpleGroup = null;
+    public static ServiceCreateRequest simpleService = null;
 
     public BasePage(Page page) {
         this.page = page;
@@ -32,10 +34,8 @@ public class BasePage {
     }
 
     public Locator getByRoleWithText(AriaRole role, String htmlText) {
-        Locator locator = page.getByRole(role, new Page.GetByRoleOptions()
+        return page.getByRole(role, new Page.GetByRoleOptions()
                 .setName(Pattern.compile(htmlText, Pattern.CASE_INSENSITIVE)).setExact(true));
-        attachAllureLog("get ByRole with text", locator, htmlText);
-        return locator;
     }
 
     public Locator getByRole(AriaRole role) {
@@ -116,7 +116,6 @@ public class BasePage {
     }
 
     public String getInnerTextBy(String path) {
-        attachAllureLog("get inner text",path,"");
         return page.locator(path).innerText().toLowerCase().trim();
     }
 
@@ -143,8 +142,10 @@ public class BasePage {
     }
 
     public boolean isVisible(String selector) {
-        attachAllureLog("is element visible", selector,"");
         return page.locator(selector).isVisible();
+    }
+    public boolean isVisible(Locator locator) {
+        return locator.isVisible();
     }
 
     public static String getMethodName() {
@@ -178,6 +179,12 @@ public class BasePage {
             simpleGroup = DataGenerator.getSimpleData(GroupCreateRequest.class);
         }
         return simpleGroup;
+    }
+    public static ServiceCreateRequest generateService(boolean recreate) {
+        if (simpleService == null || recreate) {
+            simpleService = DataGenerator.getSimpleData(ServiceCreateRequest.class);
+        }
+        return simpleService;
     }
 
     private void attachAllureLog(String description, Locator locator, String text) {

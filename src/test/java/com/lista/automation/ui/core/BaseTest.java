@@ -4,6 +4,7 @@ import com.lista.automation.api.utils.RestWrapper;
 import com.lista.automation.ui.core.utils.Properties;
 import com.lista.automation.ui.pages.calendar.CalendarPage;
 import com.lista.automation.ui.pages.client.ClientsPage;
+import com.lista.automation.ui.pages.service.ServicesListPage;
 import com.microsoft.playwright.Page;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
@@ -18,6 +19,7 @@ public class BaseTest {
     protected RestWrapper api;
     protected CalendarPage calendar;
     protected ClientsPage clientsPage;
+    protected ServicesListPage servicesListPage;
 
     @BeforeMethod
     public void setUp() {

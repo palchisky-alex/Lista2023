@@ -4,10 +4,8 @@ import com.lista.automation.api.pojo.client.ClientCreateRequest;
 import com.lista.automation.api.pojo.client.ClientGetResponse;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
-
 import java.util.List;
 import java.util.stream.Collectors;
-
 import static io.restassured.RestAssured.given;
 
 public class ClientService extends RestService {

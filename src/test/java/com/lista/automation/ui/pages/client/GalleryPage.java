@@ -15,13 +15,14 @@ public class GalleryPage extends BasePage {
         this.page = page;
     }
 
-    @Step("load gallery picture")
-    public void addNotesToPicture(String notes) {
+    @Step("add note to picture")
+    public GalleryPage addNotesToPicture(String notes) {
         step("type notes", () -> {
             getByPlaceholder("Add a caption...").fill(notes);
         });
         step("click Send button", () -> {
             clickBy("button .text-submit",0,true);
         });
+        return this;
     }
 }

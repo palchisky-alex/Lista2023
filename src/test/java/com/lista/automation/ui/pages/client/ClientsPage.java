@@ -19,12 +19,11 @@ public class ClientsPage extends BasePage {
         this.page = page;
     }
 
-    @Step("search client")
+    @Step("customer search")
     public ClientsPage findClient(String text) {
         page.waitForResponse(Response::ok, () -> {
             typeIn(CLIENT_SEARCHING, text);
             waitForTimeout(3000);
-            System.out.println("GET- find Client запрос выполнен успешно");
         });
 
         return this;

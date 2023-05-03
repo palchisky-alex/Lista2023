@@ -12,11 +12,13 @@ public class RestWrapper {
     private String cookie;
     public ClientService client;
     public GroupsService group;
+    public ServService service;
 
     public RestWrapper(String cookie) {
         this.cookie = cookie;
         client = new ClientService(cookie);
         group = new GroupsService(cookie);
+        service = new ServService(cookie);
     }
 
     public static RestWrapper loginAs(String login, String pass) {
