@@ -7,6 +7,7 @@ import com.lista.automation.ui.pages.service.ServicesListPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
+@Story("Verify services")
 @Epic("Service UI GRUD")
 @Feature("Service")
 public class ServiceTest extends BaseTest {

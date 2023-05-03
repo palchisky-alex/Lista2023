@@ -6,12 +6,14 @@ import com.lista.automation.ui.core.utils.ViewStartOn;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Story("Verify calendar settings")
 @Epic("Calendar Settings")
 @Feature("Settings")
 public class SettingsPageTest extends BaseTest {
