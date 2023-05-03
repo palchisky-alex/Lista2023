@@ -5,6 +5,7 @@ import com.lista.automation.api.pojo.client.ClientGetResponse;
 import com.lista.automation.ui.core.BaseTest;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.testng.annotations.Test;
 import static com.lista.automation.ui.core.utils.BasePage.generateClient;
 import static io.qameta.allure.Allure.step;
@@ -12,10 +13,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
 @Epic("Client UI GRUD")
+@Feature("Client")
 public class ClientTest extends BaseTest {
 
     @Test
-    @Description("UI: Delete client from UI")
+    @Description("UI: Delete client")
     public void testDeleteClient() {
         step("UI: verify client can be deleted", () -> {
 
@@ -63,7 +65,7 @@ public class ClientTest extends BaseTest {
     }
 
     @Test
-    @Description("UI: Create client from UI")
+    @Description("UI: Create client")
     public void testClientCreate() {
         step("UI: verify client can be created", () -> {
             ClientCreateRequest simpleClient = calendar.routing()
@@ -86,7 +88,7 @@ public class ClientTest extends BaseTest {
     }
 
     @Test
-    @Description("UI: Update personal info of client from UI")
+    @Description("UI: Update personal info of client")
     void testClientUpdatePersonalInfo() {
         step("UI: verify client personal info can be change", () -> {
             api.client.deleteAll(204);
@@ -134,7 +136,7 @@ public class ClientTest extends BaseTest {
     }
 
     @Test
-    @Description("UI: Update debts of client from UI")
+    @Description("UI: Update debts of client")
     void testClientUpdateDebts() {
         step("UI: verify client debts can be change", () -> {
 
@@ -182,7 +184,7 @@ public class ClientTest extends BaseTest {
     }
 
     @Test
-    @Description("UI: Update notes of client from UI")
+    @Description("UI: Update notes of client")
     void testClientUpdateNotes() {
         step("UI: verify client notes can be change", () -> {
 
@@ -229,7 +231,7 @@ public class ClientTest extends BaseTest {
     }
 
     @Test
-    @Description("UI: Update gallery of client from UI")
+    @Description("UI: Update gallery of client")
     void testClientUpdateGallery() {
         step("UI: verify client gallery can be change", () -> {
 

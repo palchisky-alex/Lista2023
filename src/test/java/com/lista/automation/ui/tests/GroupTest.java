@@ -12,12 +12,14 @@ import com.lista.automation.ui.pages.group.GroupPage;
 import com.lista.automation.ui.pages.group.GroupsListPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.testng.annotations.Test;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Epic("Group UI GRUD")
+@Feature("Group")
 public class GroupTest extends BaseTest {
 
     @Test

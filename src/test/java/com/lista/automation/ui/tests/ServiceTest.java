@@ -4,6 +4,9 @@ import com.lista.automation.api.pojo.service.ServiceCreateRequest;
 import com.lista.automation.ui.core.BaseTest;
 import com.lista.automation.ui.pages.service.ServicePage;
 import com.lista.automation.ui.pages.service.ServicesListPage;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -13,9 +16,12 @@ import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
+@Epic("Service UI GRUD")
+@Feature("Service")
 public class ServiceTest extends BaseTest {
 
     @Test
+    @Description("UI: Delete service")
     public void testServiceDelete() {
         step("API: generate service", () -> {
             ServiceCreateRequest simpleService = generateService(true);
@@ -55,6 +61,7 @@ public class ServiceTest extends BaseTest {
     }
 
     @Test
+    @Description("UI: Create service")
     public void testServiceCreate() {
         step("API: generate service", () -> {
             ServiceCreateRequest simpleService = generateService(true);
@@ -84,6 +91,7 @@ public class ServiceTest extends BaseTest {
     }
 
     @Test
+    @Description("UI: Update service")
     public void testServiceUpdate() {
         step("API: generate service", () -> {
             ServiceCreateRequest simpleService = generateService(true);
