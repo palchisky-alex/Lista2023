@@ -27,18 +27,18 @@ public class ServicePage extends BasePage {
     @Step("set simple service")
     public ServicePage setSimpleService(ServiceCreateRequest simpleService) {
         step("set service name", () -> {
-            typeIn(inputServiceName, simpleService.getName());
+            typeIn(inputServiceName, simpleService.getServiceName());
             clickBy(btnCategory, 0, false);
         });
 
         step("set a new category", () -> {
-            typeIn(getByPlaceholder("Pls enter the name of the new category"), simpleService.getName());
+            typeIn(getByPlaceholder("Pls enter the name of the new category"), simpleService.getServiceName());
             clickBy(btnAddCategory, 0, true);
         });
 
         step("set service duration", () -> {
             clickBy(inputDuration, 0, false);
-            typeIn("[name='duration-input']", String.valueOf(simpleService.getDuration()));
+            typeIn("[name='duration-input']", String.valueOf(simpleService.getServiceDuration()));
         });
 
         step("set service price", () -> {

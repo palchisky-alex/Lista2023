@@ -57,6 +57,23 @@ public abstract class RestService {
                 .build();
         return REQ_SPEC_ENCODED;
     }
+    public RequestSpecification getSPEC_HTML() {
+        return REQ_SPEC_FORM = new RequestSpecBuilder()
+                .addHeader("cookie", cookie)
+                .setBaseUri(BASE_URL)
+                .setBasePath(getBasePath())
+                .setContentType(ContentType.HTML)
+                .build();
+    }
+    public RequestSpecification getSPEC_ENCODED_ID_slash (int id) {
+        return new RequestSpecBuilder()
+                .addHeader("cookie", cookie)
+                .setBaseUri(BASE_URL)
+                .setBasePath(getBasePath()+"/"+id)
+                .setContentType(ContentType.URLENC).setConfig(RestAssured.config().encoderConfig(encoderConfig()
+                        .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+                .build();
+    }
 
 
     public String getCookie() {

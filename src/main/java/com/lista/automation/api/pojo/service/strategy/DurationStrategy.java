@@ -10,6 +10,6 @@ public class DurationStrategy implements AttributeStrategy<Integer> {
     @Override
     public Integer getValue(Class<?> attrType, List<Annotation> attrAnnotations) {
         return  ThreadLocalRandom.current()
-                .nextInt(10, 900);
+                .nextInt(10, 60);
     }
 }

@@ -13,7 +13,7 @@ import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
-@Story("Verify clients")
+
 @Epic("Client UI GRUD")
 @Feature("Client")
 public class ClientTest extends BaseTest {

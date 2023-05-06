@@ -193,35 +193,7 @@ public class ClientProfilePage extends BasePage {
         return this;
     }
 
-//    @Step("set profile status")
-//    public AddClientPage setStatus() {
-//        page.locator(status).click();
-//        page.locator(status).locator(input).fill(simpleNotes);
-//        page.locator(status).locator(btnApply).click();
-//        return this;
 
-//    }
-
-//
-//    @Step("set profile debts")
-//    public AddClientPage setDebts() {
-//        page.locator(debts).click();
-//        page.locator(debts).locator(input).fill(simpleNotes + randomInt);
-//        page.locator(debts).locator(debtsValueContainer).click();
-//        page.locator(debts).locator(debtsValueContainerInput).fill(String.valueOf(randomInt));
-//        page.locator(debts).locator(debtsBtnPlus).dblclick();
-//        page.locator(debts).locator(debtsBtnMinus).click();
-//        page.locator(debts).locator(btnApply).click();
-//        return this;
-//    }
-//
-//    @Step("save new client profile")
-//    public AddClientPage saveNewClient() {
-//        page.waitForResponse(Response::ok, () -> {
-//            page.locator(".active_button").click();
-//        });
-//        return this;
-//    }
 
     public enum Birthdate {
         Year,

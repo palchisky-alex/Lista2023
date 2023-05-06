@@ -33,7 +33,7 @@ public class ServiceTest extends BaseTest {
                 ServicesListPage servicesPage = calendar
                         .routing()
                         .toServicesListPage()
-                        .findService(simpleService.getName());
+                        .findService(simpleService.getServiceName());
 
                 step("UI: search returns a one service", () -> {
                     assertThat(servicesPage.countServices())
@@ -42,7 +42,7 @@ public class ServiceTest extends BaseTest {
 
                     step("UI: delete service", () -> {
                         servicesPage
-                                .findService(simpleService.getName())
+                                .findService(simpleService.getServiceName())
                                 .delete();
                     });
                 });
@@ -51,7 +51,7 @@ public class ServiceTest extends BaseTest {
                 ServicesListPage servicesPage = calendar
                         .routing()
                         .toServicesListPage()
-                        .findService(simpleService.getName());
+                        .findService(simpleService.getServiceName());
 
                 step("UI: search for deleted service", () -> {
                     assertThat(servicesPage.countServices())
@@ -79,7 +79,7 @@ public class ServiceTest extends BaseTest {
                     ServicesListPage servicesPage = calendar
                             .routing()
                             .toServicesListPage()
-                            .findService(simpleService.getName());
+                            .findService(simpleService.getServiceName());
 
                     step("UI: assert - search returns a one service", () -> {
                         assertThat(servicesPage.countServices())
@@ -105,7 +105,7 @@ public class ServiceTest extends BaseTest {
                 ServicesListPage servicesPage = calendar
                         .routing()
                         .toServicesListPage()
-                        .findService(simpleService.getName());
+                        .findService(simpleService.getServiceName());
 
                 step("UI: assert - search returns a one service", () -> {
                     assertThat(servicesPage.countServices())
@@ -114,7 +114,7 @@ public class ServiceTest extends BaseTest {
 
                     step("UI: update service", () -> {
                         servicesPage
-                                .findService(simpleService.getName())
+                                .findService(simpleService.getServiceName())
                                 .selectService()
                                 .setSimpleService(simpleService2)
                                 .submitService(ServicePage.Act.Update);
@@ -123,7 +123,7 @@ public class ServiceTest extends BaseTest {
                             List<ServiceCreateRequest> servicesViaAPI = api.service.getServiceList(200);
 
                             assertThat(servicesViaAPI).extracting("name", "duration", "price")
-                                    .contains(tuple(simpleService2.getName(), simpleService2.getDuration(), simpleService2.getPrice()));
+                                    .contains(tuple(simpleService2.getServiceName(), simpleService2.getServiceDuration(), simpleService2.getPrice()));
 
                         });
                     });

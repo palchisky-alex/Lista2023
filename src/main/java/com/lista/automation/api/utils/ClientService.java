@@ -57,7 +57,7 @@ public class ClientService extends RestService {
                 .extract().body().jsonPath().getList("", ClientGetResponse.class);
 
         if (clientList.isEmpty()) {
-            throw new RuntimeException("Client ['"+findBy+"'] not found - сlient list is empty");
+            throw new RuntimeException("Client ['"+findBy+"'] not found - list of clients is empty");
         }
         return clientList.get(0);
     }

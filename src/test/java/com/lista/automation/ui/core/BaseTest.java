@@ -16,6 +16,7 @@ public class BaseTest {
 
     PlaywrightFactory pf;
     Page page;
+
     protected RestWrapper api;
     protected CalendarPage calendar;
     protected ClientsPage clientsPage;

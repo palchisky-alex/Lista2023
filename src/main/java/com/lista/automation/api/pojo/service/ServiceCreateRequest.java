@@ -3,8 +3,6 @@ package com.lista.automation.api.pojo.service;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lista.automation.api.pojo.client.strategy.DataTimeStrategy;
-import com.lista.automation.api.pojo.client.strategy.MailStrategy;
-import com.lista.automation.api.pojo.client.strategy.NameStrategy;
 import com.lista.automation.api.pojo.service.strategy.DurationStrategy;
 import com.lista.automation.api.pojo.service.strategy.LongNameStrategy;
 import lombok.Data;
@@ -20,10 +18,13 @@ import uk.co.jemos.podam.common.PodamStrategyValue;
 @EqualsAndHashCode
 public class ServiceCreateRequest {
 
+    private String id;
     @PodamStrategyValue(LongNameStrategy.class)
-    private String name;
+    @JsonProperty("name")
+    private String serviceName;
     @PodamStrategyValue(DurationStrategy.class)
-    private int duration;
+    @JsonProperty("duration")
+    private int serviceDuration;
     @PodamStrategyValue(DurationStrategy.class)
     private int price;
     private String color;

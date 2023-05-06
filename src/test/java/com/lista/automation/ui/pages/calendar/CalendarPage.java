@@ -4,7 +4,11 @@ import com.lista.automation.ui.core.utils.BasePage;
 import com.lista.automation.ui.core.utils.RouteHelper;
 import com.lista.automation.ui.pages.LoginPage;
 import com.lista.automation.ui.pages.MenuPage;
+import com.lista.automation.ui.pages.appointment.AppointmentCreation;
+import com.microsoft.playwright.ElementHandle;
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.MouseButton;
 import io.qameta.allure.Step;
 
 import java.time.Duration;
@@ -35,21 +39,24 @@ public class CalendarPage extends BasePage {
     }
 
     public MenuPage clickMenuButton() {
-        clickBy(BTN_MENU_LOCATOR,0,true);
+        clickBy(BTN_MENU_LOCATOR, 0, true);
         return new MenuPage(page);
     }
+
     @Step("verify CalendarView")
     public boolean verifyCalendarView(String selector) {
         waitForLoadState();
-        if(isVisible("#calendar [class*='"+selector+"']")) {
+        if (isVisible("#calendar [class*='" + selector + "']")) {
             return true;
         }
         return false;
     }
+
     @Step("fetch calendar first day name")
     public String getCalendarFirstDay() {
         return getInnerTextBy("(//*[contains(@class, 'day-header')])[1]").replaceAll("[\\d\\s]+", "");
     }
+
     @Step("fetch calendar cell duration")
     public String getCellDuration() {
         LocalTime time1 = LocalTime.parse(getInnerTextBy("tr[data-time]:nth-of-type(1)"));
@@ -58,11 +65,20 @@ public class CalendarPage extends BasePage {
         return String.valueOf(duration.toMinutes());
     }
 
+    public AppointmentCreation setAppointment(String time) {
+        String fullPrefix = time + ":00";
+        Locator locator = page.locator(".fc-nonbusiness.fc-bgevent");
+        locator.evaluate("element => element.style.display = 'none'");
+        clickBy("tr[data-time= '" + fullPrefix + "']", 0, false);
+
+        waitForURL("creating-appointment/choosing-client");
+        return new AppointmentCreation(page);
+    }
+
 
     public RouteHelper routing() {
         return new RouteHelper(page);
     }
-
 
 
 }
