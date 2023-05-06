@@ -1,0 +1,6 @@
+"Epic","Feature","Story","FAILED","BROKEN","PASSED","SKIPPED","UNKNOWN"
+"Group UI GRUD","Group","Verify groups","0","0","6","0","0"
+"Service UI GRUD","Service","Verify services","0","2","1","0","0"
+"Calendar Settings","Settings","Verify calendar settings","0","0","11","0","0"
+"Appointment UI GRUD","Appointment","","1","1","0","0","0"
+"Client UI GRUD","Client","","0","0","6","0","0"
