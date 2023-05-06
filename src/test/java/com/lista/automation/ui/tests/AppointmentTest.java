@@ -23,63 +23,63 @@ public class AppointmentTest extends BaseTest {
     @Test
     public void testCreateAppointment() {
         String appointmentTime = "12:30";
-//        step("Preconditions: get calendar settings -> delete all appointments -> create client & service", () -> {
-//
-//            step("API: get calendar settings", () -> {
-//                SettingsPojo calendarSettings = api.settingsService.getCalendarSettings(200);
-//                String dayOfTest = getCurrentTime("yyyy-MM-dd") + "T";
-//                String from = dayOfTest + calendarSettings.getShowCalendarFrom();
-//                String to = dayOfTest + calendarSettings.getShowCalendarTo();
-//
-//                step("API: delete all appointments", () -> {
-//                    api.appointment.deleteAll(from, to, 200);
-//
-//                    step("API: create client & service", () -> {
-//                        ClientCreateRequest simpleClient = generateClient(true);
-//                        ServiceCreateRequest simpleService = generateService(true);
-//
-//                        String clientID = api.client.create(simpleClient, 201);
-//                        String serviceID = api.service.create(simpleService, 201);
-//                        List<ServiceCreateRequest> serviceByID = api.service.getServiceByID(serviceID, 200);
-//
-//                        step("UI: create appointment", () -> {
-//                            calendar.routing()
-//                                    .toCalendarPage()
-//                                    .setAppointment(appointmentTime)
-//                                    .setClient()
-//                                    .searchClientAndPick(simpleClient.getName())
-//                                    .chooseServiceAndPick(simpleService.getServiceName())
-//                                    .next()
-//                                    .save();
-//
-//                            step("API: get appointment", () -> {
-//                                List<AppointmentCreateRequest> appointmentsByDate = api.appointment.getAppointmentsByDate(from, to, 200);
-//                                LocalTime time = LocalTime.parse(appointmentTime, DateTimeFormatter.ofPattern("HH:mm"));
-//                                LocalTime modifiedTime = time.plusMinutes(simpleService.getServiceDuration());
-//                                String modifiedTimeString = modifiedTime.format(DateTimeFormatter.ofPattern("HH:mm"));
-//
-//                                step("API: assert created appointment", () -> {
-//                                    assertThat(appointmentsByDate)
-//                                            .as("create appointment at %s", appointmentTime).flatExtracting(
-//                                                    AppointmentCreateRequest::getClientName,
-//                                                    AppointmentCreateRequest::getStart,
-//                                                    AppointmentCreateRequest::getPhone,
-//                                                    appointment -> appointment.getServices().get(0).getServiceName(),
-//                                                    appointment -> appointment.getServices().get(0).getServiceDuration())
-//
-//                                            .contains(simpleClient.getName(),
-//                                                    appointmentsByDate.get(0).getClientName(),
-//                                                    appointmentsByDate.get(0).getStart(),
-//                                                    appointmentsByDate.get(0).getPhone(),
-//                                                    serviceByID.get(0).getServiceName(),
-//                                                    serviceByID.get(0).getServiceDuration());
-//                                });
-//                            });
-//                        });
-//                    });
-//                });
-//            });
-//        });
+        step("Preconditions: get calendar settings -> delete all appointments -> create client & service", () -> {
+
+            step("API: get calendar settings", () -> {
+                SettingsPojo calendarSettings = api.settingsService.getCalendarSettings(200);
+                String dayOfTest = getCurrentTime("yyyy-MM-dd") + "T";
+                String from = dayOfTest + calendarSettings.getShowCalendarFrom();
+                String to = dayOfTest + calendarSettings.getShowCalendarTo();
+
+                step("API: delete all appointments", () -> {
+                    api.appointment.deleteAll(from, to, 200);
+
+                    step("API: create client & service", () -> {
+                        ClientCreateRequest simpleClient = generateClient(true);
+                        ServiceCreateRequest simpleService = generateService(true);
+
+                        String clientID = api.client.create(simpleClient, 201);
+                        String serviceID = api.service.create(simpleService, 201);
+                        List<ServiceCreateRequest> serviceByID = api.service.getServiceByID(serviceID, 200);
+
+                        step("UI: create appointment", () -> {
+                            calendar.routing()
+                                    .toCalendarPage()
+                                    .setAppointment(appointmentTime)
+                                    .setClient()
+                                    .searchClientAndPick(simpleClient.getName())
+                                    .chooseServiceAndPick(simpleService.getServiceName())
+                                    .next()
+                                    .save();
+
+                            step("API: get appointment", () -> {
+                                List<AppointmentCreateRequest> appointmentsByDate = api.appointment.getAppointmentsByDate(from, to, 200);
+                                LocalTime time = LocalTime.parse(appointmentTime, DateTimeFormatter.ofPattern("HH:mm"));
+                                LocalTime modifiedTime = time.plusMinutes(simpleService.getServiceDuration());
+                                String modifiedTimeString = modifiedTime.format(DateTimeFormatter.ofPattern("HH:mm"));
+
+                                step("API: assert created appointment", () -> {
+                                    assertThat(appointmentsByDate)
+                                            .as("create appointment at %s", appointmentTime).flatExtracting(
+                                                    AppointmentCreateRequest::getClientName,
+                                                    AppointmentCreateRequest::getStart,
+                                                    AppointmentCreateRequest::getPhone,
+                                                    appointment -> appointment.getServices().get(0).getServiceName(),
+                                                    appointment -> appointment.getServices().get(0).getServiceDuration())
+
+                                            .contains(simpleClient.getName(),
+                                                    appointmentsByDate.get(0).getClientName(),
+                                                    appointmentsByDate.get(0).getStart(),
+                                                    appointmentsByDate.get(0).getPhone(),
+                                                    serviceByID.get(0).getServiceName(),
+                                                    serviceByID.get(0).getServiceDuration());
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
     }
 
     @Test
