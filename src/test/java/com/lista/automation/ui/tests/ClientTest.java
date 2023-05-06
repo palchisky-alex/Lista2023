@@ -6,12 +6,10 @@ import com.lista.automation.ui.core.BaseTest;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
-import io.qameta.allure.Story;
 import org.testng.annotations.Test;
 import static com.lista.automation.ui.core.utils.BasePage.generateClient;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
 
 
 @Epic("Client UI GRUD")
