@@ -94,9 +94,7 @@ public class BasePage {
     }
 
     public void clickWithCoordinate(String selector, int x, int y) {
-        page.waitForResponse(Response::ok, () -> {
             page.locator(selector).click(new Locator.ClickOptions().setPosition(x, y));
-        });
     }
 
     public void typeIn(String selector, String text) {
@@ -106,6 +104,7 @@ public class BasePage {
     }
 
     public void typeIn(Locator locator, String text) {
+        locator.click();
         locator.clear();
         locator.fill(text);
     }
@@ -144,8 +143,7 @@ public class BasePage {
     }
 
     public Locator getByPlaceholder(String text) {
-        Locator locator = page.getByPlaceholder(text);
-        return locator;
+        return page.getByPlaceholder(text);
     }
 
     public boolean isVisible(String selector) {

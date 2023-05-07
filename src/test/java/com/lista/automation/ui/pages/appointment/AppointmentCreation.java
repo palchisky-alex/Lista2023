@@ -1,5 +1,6 @@
 package com.lista.automation.ui.pages.appointment;
 
+import com.lista.automation.api.pojo.client.ClientCreateRequest;
 import com.lista.automation.ui.core.utils.BasePage;
 import com.lista.automation.ui.pages.calendar.CalendarPage;
 import com.microsoft.playwright.Page;
@@ -40,6 +41,11 @@ public class AppointmentCreation extends BasePage {
             clickBy(getByRoleWithText(AriaRole.BUTTON, "Back"), 0, true);
             return this;
         }
+        @Step("Menu: ADD AND CONTINUE")
+        public SetService addAndContinue() {
+            clickBy(getByRoleWithText(AriaRole.BUTTON, "ADD AND CONTINUE"), 1, false);
+            return new SetService(page);
+        }
 
         public SetService searchClientAndPick(String clientName) {
             step("search client by name", () -> {
@@ -51,6 +57,16 @@ public class AppointmentCreation extends BasePage {
                 waitForURL("creating-appointment/selecting-procedure");
             });
             return new SetService(page);
+        }
+        public SetClient searchClientAndCreate(ClientCreateRequest client) {
+            step("search client by name", () -> {
+                typeIn(getByPlaceholder("Search by name or phone"), client.getName());
+                waitForTimeout(2000);
+            });
+            step("fill client phone", () -> {
+                typeIn(getByPlaceholder("Type phone number"), client.getPhone().replaceAll("\\D+", ""));
+            });
+            return this;
         }
 
         @Step("create a new client")
@@ -69,7 +85,7 @@ public class AppointmentCreation extends BasePage {
 
             public SetService chooseServiceAndPick(String serviceName) {
                 step("search service by name", () -> {
-                    typeIn(getByPlaceholder("Search a service or create one"), serviceName);
+                    typeIn(getByPlaceholder("Search a service or create one"), "service_" + serviceName);
                     waitForTimeout(2000);
                 });
                 step("select service", () -> {

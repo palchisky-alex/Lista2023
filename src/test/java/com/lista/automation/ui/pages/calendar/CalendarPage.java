@@ -5,14 +5,18 @@ import com.lista.automation.ui.core.utils.RouteHelper;
 import com.lista.automation.ui.pages.LoginPage;
 import com.lista.automation.ui.pages.MenuPage;
 import com.lista.automation.ui.pages.appointment.AppointmentCreation;
+import com.lista.automation.ui.pages.appointment.AppointmentPage;
 import com.microsoft.playwright.ElementHandle;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.MouseButton;
 import io.qameta.allure.Step;
+import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.time.LocalTime;
+
+import static io.qameta.allure.Allure.step;
 
 public class CalendarPage extends BasePage {
     private Page page;
@@ -65,15 +69,34 @@ public class CalendarPage extends BasePage {
         return String.valueOf(duration.toMinutes());
     }
 
+    @Step("enter the empty slot")
     public AppointmentCreation setAppointment(String time) {
-
-        Locator locator = page.locator(".fc-nonbusiness.fc-bgevent");
-        locator.evaluate("element => element.style.display = 'none'");
+        step("remove element form DOM for weekend", () -> {
+            Locator locator = page.locator(".fc-nonbusiness.fc-bgevent");
+            if (locator.isVisible()) {
+                locator.evaluate("element => element.style.display = 'none'");
+            }
+        });
         String fullPrefix = time + ":00";
         clickBy("tr[data-time= '" + fullPrefix + "']", 0, false);
 
         waitForURL("creating-appointment/choosing-client");
         return new AppointmentCreation(page);
+    }
+    @Step("enter the appointment slot")
+    public AppointmentPage enterTheAppointmentSlot(int appointmentID) {
+        clickBy("[data-appointment_id='"+appointmentID+"']", 0, true);
+        waitForURL("appointments");
+        return new AppointmentPage(page);
+    }
+    @Step("enter the appointment slot")
+    public AppointmentPage dragAndDropSlot(int appointmentID, String time) {
+        String fullPrefix = time + ":00";
+        getLocator("[data-appointment_id='"+appointmentID+"']")
+                .dragTo(getLocator("tr[data-time= '" + fullPrefix + "']"));
+
+        clickBy(getLocator("#modal-background .yes-btn"),0,true);
+        return new AppointmentPage(page);
     }
 
 

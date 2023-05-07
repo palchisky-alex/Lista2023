@@ -6,6 +6,7 @@ import com.lista.automation.ui.pages.calendar.CalendarPage;
 import com.lista.automation.ui.pages.client.ClientsPage;
 import com.lista.automation.ui.pages.service.ServicesListPage;
 import com.microsoft.playwright.Page;
+import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -20,15 +21,14 @@ public class BaseTest {
     protected RestWrapper api;
     protected CalendarPage calendar;
     protected ClientsPage clientsPage;
-    protected ServicesListPage servicesListPage;
 
     @BeforeMethod
     public void setUp() {
+        api = RestWrapper.loginAs(Properties.getProp().username().replaceAll("\"",""),
+                Properties.getProp().password().replaceAll("\"",""));
         pf = new PlaywrightFactory();
         page = pf.initBrowser();
         calendar = new CalendarPage(page);
-        api = RestWrapper.loginAs(Properties.getProp().username().replaceAll("\"",""),
-                Properties.getProp().password().replaceAll("\"",""));
     }
 
     @AfterMethod

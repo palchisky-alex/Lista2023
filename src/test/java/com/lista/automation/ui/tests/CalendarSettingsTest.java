@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Story("Verify calendar settings")
 @Epic("Calendar Settings")
 @Feature("Settings")
-public class SettingsPageTest extends BaseTest {
+public class CalendarSettingsTest extends BaseTest {
 
     @Test(dataProvider = "calendar_view")
     @Description("UI: Change Calendar view")

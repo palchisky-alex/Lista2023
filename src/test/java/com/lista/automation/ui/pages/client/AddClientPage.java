@@ -4,10 +4,10 @@ import com.lista.automation.api.pojo.client.ClientCreateRequest;
 import com.lista.automation.ui.core.utils.BasePage;
 import com.lista.automation.ui.core.utils.Properties;
 import com.microsoft.playwright.Page;
-import com.microsoft.playwright.Response;
 import com.microsoft.playwright.options.SelectOption;
 import io.qameta.allure.Step;
 import lombok.Getter;
+
 import java.nio.file.Paths;
 
 @Getter
@@ -82,7 +82,7 @@ public class AddClientPage extends BasePage {
     @Step("set profile gender")
     public AddClientPage setGender() {
         int random = getRandomInt(1, 3);
-        clickBy(getLocator(checkboxGenders).nth(random),0,true);
+        clickBy(getLocator(checkboxGenders).nth(random), 0, true);
         return this;
     }
 
@@ -112,45 +112,43 @@ public class AddClientPage extends BasePage {
 
     @Step("set profile status")
     public AddClientPage setStatus(ClientCreateRequest data) {
-        clickBy(status,0,true);
+        clickBy(status, 0, true);
         getLocator(status).locator(input).fill(data.getNotes());
-        clickBy(getLocator(status).locator(btnApply),0,true);
+        clickBy(getLocator(status).locator(btnApply), 0, true);
         return this;
     }
 
     @Step("set profile note")
     public AddClientPage setNotes(ClientCreateRequest data) {
-        clickBy(getLocator(notes),0,false);
+        clickBy(getLocator(notes), 0, false);
         typeIn(".notes textarea", data.getNotes());
-        clickBy(getLocator(notes).locator(btnApply),0,false);
+        clickBy(getLocator(notes).locator(btnApply), 0, false);
         return this;
     }
 
     @Step("set profile address")
     public AddClientPage setAddress(ClientCreateRequest data) {
-        clickBy(address,0,true);
+        clickBy(address, 0, true);
         getLocator(address).locator(input).fill(data.getAddress());
-        clickBy(getLocator(address).locator(btnApply),0,false);
+        clickBy(getLocator(address).locator(btnApply), 0, false);
         return this;
     }
 
     @Step("set profile debts")
     public AddClientPage setDebts(ClientCreateRequest data) {
-        clickBy(debts,0,true);
+        clickBy(debts, 0, true);
         getLocator(debts).locator(input).fill(data.getNotes());
-        clickBy(getLocator(debts).locator(debtsValueContainer),0,false);
-        getLocator(debts).locator(debtsValueContainerInput).fill(String.valueOf(getRandomInt(1,999999)));
-        dblClickBy(getLocator(debts).locator(debtsBtnPlus),false);
-        clickBy(getLocator(debts).locator(debtsBtnMinus),0,false);
-        clickBy(getLocator(debts).locator(btnApply),0,false);
+        clickBy(getLocator(debts).locator(debtsValueContainer), 0, false);
+        getLocator(debts).locator(debtsValueContainerInput).fill(String.valueOf(getRandomInt(1, 999999)));
+        dblClickBy(getLocator(debts).locator(debtsBtnPlus), false);
+        clickBy(getLocator(debts).locator(debtsBtnMinus), 0, false);
+        clickBy(getLocator(debts).locator(btnApply), 0, false);
         return this;
     }
 
     @Step("save new client profile")
     public ClientCreateRequest submitNewClient() {
-        page.waitForResponse(Response::ok, () -> {
-            clickBy(".active_button",0,true);
-        });
+        clickBy(".active_button", 0, true);
         return simpleClient;
     }
 

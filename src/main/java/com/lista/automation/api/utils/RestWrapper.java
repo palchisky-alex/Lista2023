@@ -14,7 +14,8 @@ public class RestWrapper {
     public GroupsService group;
     public ServService service;
     public AppointmentService appointment;
-    public SettingsService settingsService;
+    public GeneralSettingsService generalSettingsService;
+    private CalendarSettingsService calendarSettingsService;
 
     public RestWrapper(String cookie) {
         this.cookie = cookie;
@@ -22,7 +23,7 @@ public class RestWrapper {
         group = new GroupsService(cookie);
         service = new ServService(cookie);
         appointment = new AppointmentService(cookie);
-        settingsService = new SettingsService(cookie);
+        generalSettingsService = new GeneralSettingsService(cookie);
     }
 
     public static RestWrapper loginAs(String login, String pass) {
@@ -52,5 +53,12 @@ public class RestWrapper {
 
         System.out.println("<< end of method: " + Thread.currentThread().getStackTrace()[1].getMethodName().toUpperCase());
         return new RestWrapper(key + "=" + myCookie);
+    }
+
+    public CalendarSettingsService calendarSettingsService() {
+        if(calendarSettingsService == null) {
+            calendarSettingsService = new CalendarSettingsService(cookie);
+        }
+        return calendarSettingsService;
     }
 }

@@ -1,7 +1,7 @@
 package com.lista.automation.api.utils;
 
-import com.lista.automation.api.pojo.appointment.AppointmentCreateRequest;
 import com.lista.automation.api.pojo.appointment.AppointmentCreateResponse;
+import com.lista.automation.api.pojo.appointment.AppointmentGetRequest;
 import com.lista.automation.api.pojo.client.ClientCreateRequest;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
-import static org.assertj.core.api.Assertions.tuple;
 import static org.awaitility.Awaitility.await;
 import static org.awaitility.Awaitility.waitAtMost;
 
@@ -29,44 +28,56 @@ public class AppointmentService extends RestService {
     }
 
     @Step("api: post appointment")
-    public void create(ClientCreateRequest client, String clientID, List<String> service, String dateTime, int expectStatus) {
+    public String create(ClientCreateRequest client, String clientID, List<String> service, String dateTime, int expectStatus) {
+        Response response;
+        if(clientID.equals("-1")) {
+            response = given().spec(REQ_SPEC_ENCODED).log().all()
+                    .formParam("start", dateTime)
+                    .formParam("client_id", clientID)
+                    .formParam("worker_id", 1)
+                    .formParam("total_price", 0)
+                    .formParam("services", "[]")
+                    .formParam("duration", 60)
+                    .when().post();
+        }
+        else {
 
-        Response response = given().spec(REQ_SPEC_ENCODED).log().all()
-                .formParam("start", dateTime)
-                .formParam("client_id", clientID)
-                .formParam("worker_id", 1)
-                .formParam("total_price", 10)
-                .formParam("services", service)
-                .formParam("note", client.getNotes())
-                .formParam("address", client.getAddress())
-                .formParam("duration", 60)
-                .formParam("phone", client.getPhone())
-                .when().post();
+            response = given().spec(REQ_SPEC_ENCODED).log().all()
+                    .formParam("start", dateTime)
+                    .formParam("client_id", clientID)
+                    .formParam("worker_id", 1)
+                    .formParam("total_price", 10)
+                    .formParam("services", service)
+                    .formParam("note", client.getNotes())
+                    .formParam("address", client.getAddress())
+                    .formParam("duration", 60)
+                    .formParam("phone", client.getPhone())
+                    .when().post();
+        }
 
-        System.out.println("!!! " + response.then().statusCode(expectStatus).extract().body().htmlPath().get().toString());
+        return response.then().statusCode(expectStatus).extract().body().htmlPath().get().toString();
     }
 
     @Step("api: get appointment by date")
-    public List<AppointmentCreateRequest> getAppointmentsByDate(String start, String end, int expectStatus) {
+    public List<AppointmentGetRequest> getAppointmentsByDate(String start, String end, int expectStatus) {
         return given().spec(REQ_SPEC_ENCODED).log().all()
                 .param("start", start)
                 .param("end", end)
                 .param("worker_id", "1")
                 .get()
                 .then().log().all().statusCode(expectStatus)
-                .extract().body().jsonPath().getList("", AppointmentCreateRequest.class);
+                .extract().body().jsonPath().getList("", AppointmentGetRequest.class);
     }
 
     @Step("api: delete all today's appointments")
     public void deleteAll(String start, String end, int expectStatus)  {
-        List<AppointmentCreateRequest> apointmentsList = getAppointmentsByDate(start, end, 200);
+        List<AppointmentGetRequest> appointmentList = getAppointmentsByDate(start, end, 200);
+
+        List<Integer> appointmentIDs = appointmentList.stream()
+                .map(AppointmentGetRequest::getAppointmentID).collect(Collectors.toList());
 
 
-        List<Integer> IDs = apointmentsList.stream()
-                .map(AppointmentCreateRequest::getAppointmentID)
-                .collect(Collectors.toList());
-
-        for (int id : IDs) {
+        for (int id : appointmentIDs) {
             AppointmentCreateResponse response = given().spec(getSPEC_ENCODED_ID_slash(id)).log().all()
                     .delete().then().log().all().statusCode(expectStatus)
                     .extract().body().jsonPath().getObject("", AppointmentCreateResponse.class);

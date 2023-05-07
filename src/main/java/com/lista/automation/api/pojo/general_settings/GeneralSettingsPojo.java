@@ -1,4 +1,4 @@
-package com.lista.automation.api.pojo.calendar_settings;
+package com.lista.automation.api.pojo.general_settings;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
@@ -11,7 +11,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class SettingsPojo {
+public class GeneralSettingsPojo {
 
     private String currency;
     private String lang;
