@@ -66,9 +66,10 @@ public class CalendarPage extends BasePage {
     }
 
     public AppointmentCreation setAppointment(String time) {
-        String fullPrefix = time + ":00";
+
         Locator locator = page.locator(".fc-nonbusiness.fc-bgevent");
         locator.evaluate("element => element.style.display = 'none'");
+        String fullPrefix = time + ":00";
         clickBy("tr[data-time= '" + fullPrefix + "']", 0, false);
 
         waitForURL("creating-appointment/choosing-client");
