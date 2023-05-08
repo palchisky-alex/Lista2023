@@ -19,17 +19,23 @@ import uk.co.jemos.podam.common.PodamStrategyValue;
 public class ServiceCreateRequest {
 
     private String id;
-    @PodamStrategyValue(LongNameStrategy.class)
+
     @JsonProperty("name")
+    @PodamStrategyValue(LongNameStrategy.class)
     private String serviceName;
-    @PodamStrategyValue(DurationStrategy.class)
+
     @JsonProperty("duration")
+    @PodamStrategyValue(DurationStrategy.class)
     private int serviceDuration;
+
     @PodamStrategyValue(DurationStrategy.class)
     private int price;
+
     private String color;
+
     @JsonProperty("category_id")
     private int categoryID;
+
     @PodamStrategyValue(DataTimeStrategy.class)
     private String added;
 

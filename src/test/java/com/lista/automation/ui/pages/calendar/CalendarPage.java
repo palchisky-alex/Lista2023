@@ -1,17 +1,16 @@
 package com.lista.automation.ui.pages.calendar;
 
 import com.lista.automation.ui.core.utils.BasePage;
+import com.lista.automation.ui.core.utils.CalendarView;
 import com.lista.automation.ui.core.utils.RouteHelper;
 import com.lista.automation.ui.pages.LoginPage;
 import com.lista.automation.ui.pages.MenuPage;
 import com.lista.automation.ui.pages.appointment.AppointmentCreation;
 import com.lista.automation.ui.pages.appointment.AppointmentPage;
-import com.microsoft.playwright.ElementHandle;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import com.microsoft.playwright.options.MouseButton;
+import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
-import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.time.LocalTime;
@@ -56,6 +55,15 @@ public class CalendarPage extends BasePage {
         return false;
     }
 
+    @Step("go to current date")
+    public void goToCurrentDate() {
+        String btnToday = "button[class*='today_wrap']:not([disabled])";
+        if(isVisible(btnToday)){
+            System.out.println("button TODAY is visible");
+            clickBy(btnToday,0,false);
+        }
+    }
+
     @Step("fetch calendar first day name")
     public String getCalendarFirstDay() {
         return getInnerTextBy("(//*[contains(@class, 'day-header')])[1]").replaceAll("[\\d\\s]+", "");
@@ -83,19 +91,27 @@ public class CalendarPage extends BasePage {
         waitForURL("creating-appointment/choosing-client");
         return new AppointmentCreation(page);
     }
+
     @Step("enter the appointment slot")
-    public AppointmentPage enterTheAppointmentSlot(int appointmentID) {
-        clickBy("[data-appointment_id='"+appointmentID+"']", 0, true);
+    public AppointmentPage enterTheAppointmentSlot(int appointmentID, CalendarView views) {
+        clickBy("[data-appointment_id='" + appointmentID + "']", 0, true);
+
+        step("if calendar view is Monthly, need click twice", () -> {
+            if (views.name().equals("Monthly")) {
+                clickBy("[data-appointment_id='" + appointmentID + "']", 0, true);
+            }
+        });
         waitForURL("appointments");
         return new AppointmentPage(page);
     }
+
     @Step("enter the appointment slot")
     public AppointmentPage dragAndDropSlot(int appointmentID, String time) {
         String fullPrefix = time + ":00";
-        getLocator("[data-appointment_id='"+appointmentID+"']")
+        getLocator("[data-appointment_id='" + appointmentID + "']")
                 .dragTo(getLocator("tr[data-time= '" + fullPrefix + "']"));
 
-        clickBy(getLocator("#modal-background .yes-btn"),0,true);
+        clickBy(getLocator("#modal-background .yes-btn"), 0, true);
         return new AppointmentPage(page);
     }
 

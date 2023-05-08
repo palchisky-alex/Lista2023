@@ -31,7 +31,7 @@ public class AppointmentTest extends BaseTest {
     @Test
     @Description("Create appointment in UI")
     public void testCreateAppointment() {
-        String appointmentTime = "12:30";
+        String appointmentTime = "12:00";
         step("Preconditions: change calendar view -> get calendar settings ->" +
                 " delete all appointments -> create client & service", () -> {
 
@@ -40,7 +40,7 @@ public class AppointmentTest extends BaseTest {
                         .toSettingsPage()
                         .toCalendarSettings()
                         .changeCalendarView(CalendarView.Daily)
-                        .changeEachCell("30")
+                        .changeEachCell("5")
                         .backToSettingsPage();
 
                 step("API: get calendar settings", () -> {
@@ -74,13 +74,18 @@ public class AppointmentTest extends BaseTest {
                                     List<AppointmentGetRequest> appointmentsByDate = api.appointment.getAppointmentsByDate(from, to, 200);
                                     LocalTime time = LocalTime.parse(appointmentTime, DateTimeFormatter.ofPattern("HH:mm"));
                                     LocalTime modifiedTime = time.plusMinutes(simpleService.getServiceDuration());
-                                    String modifiedTimeString = modifiedTime.format(DateTimeFormatter.ofPattern("HH:mm"));
+                                    String appointmentEND = modifiedTime.format(DateTimeFormatter.ofPattern("HH:mm"));
 
                                     step("API: assert created appointment", () -> {
                                         assertThat(appointmentsByDate)
-                                                .as("create appointment at %s", appointmentTime).flatMap(
+                                                .as("create appointment at %s", appointmentTime)
+                                                .as("verify appointment: " +
+                                                        "client name, start time, end time," +
+                                                        " service name, service duration, total price")
+                                                .flatMap(
                                                         AppointmentGetRequest::getClientName,
                                                         AppointmentGetRequest::getStart,
+                                                        AppointmentGetRequest::getEnd,
                                                         app -> app.getServices().get(0).getServiceName(),
                                                         app -> app.getServices().get(0).getDuration(),
                                                         app -> app.getServices().get(0).getPrice())
@@ -88,6 +93,7 @@ public class AppointmentTest extends BaseTest {
                                                 .contains(
                                                         simpleClient.getName(),
                                                         dayOfTest + " " + appointmentTime,
+                                                        dayOfTest + " " + appointmentEND,
                                                         "service_" + simpleService.getServiceName(),
                                                         simpleService.getServiceDuration(),
                                                         simpleService.getPrice());
@@ -268,7 +274,7 @@ public class AppointmentTest extends BaseTest {
                                         step("UI: delete appointment", () -> {
                                             calendar.routing()
                                                     .toCalendarPage()
-                                                    .enterTheAppointmentSlot(appID)
+                                                    .enterTheAppointmentSlot(appID, views)
                                                     .configureAppointment(generalSettings, AppointmentPage.ACTION.DELETE);
 
                                             step("API: get appointment from day of test and verify deletion", () -> {
@@ -298,8 +304,8 @@ public class AppointmentTest extends BaseTest {
     @Test
     @Description("Change appointment time by drag and drop in UI")
     public void testDragAndDropAppointment() {
-        String appointmentTime = "12:30";
-        String appointmentTime2 = "15:30";
+        String appointmentTime = "12:00";
+        String appointmentTime2 = "16:00";
 
         step("Preconditions: change calendar view -> get calendar settings ->" +
                 "delete all appointments -> create client & service", () -> {
@@ -309,6 +315,7 @@ public class AppointmentTest extends BaseTest {
                         .toSettingsPage()
                         .toCalendarSettings()
                         .changeCalendarView(CalendarView.Daily)
+                        .changeEachCell("60")
                         .backToSettingsPage();
 
                 step("API: get calendar settings", () -> {
@@ -347,6 +354,8 @@ public class AppointmentTest extends BaseTest {
                                             step("API: assert dragged appointment", () -> {
                                                 assertThat(appointmentsByDateAfterDragging)
                                                         .as("appointment moved from %s to %s", appointmentTime, appointmentTime2)
+                                                        .as("Calendar view: %s", CalendarView.Daily)
+                                                        .as("Calendar cell duration: 60 min")
                                                         .flatMap(AppointmentGetRequest::getStart)
                                                         .contains(dayOfTest + " " + appointmentTime2);
                                             });

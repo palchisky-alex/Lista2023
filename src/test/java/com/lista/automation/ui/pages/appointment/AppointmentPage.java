@@ -26,11 +26,6 @@ public class AppointmentPage extends BasePage {
         if (action.name().equals("DELETE")) {
             clickBy(btnDeleteAppointment, 0, true);
 
-            if(generalSettings.getCalendarDefaultView().equals("Monthly")) {
-                page.reload();
-                clickBy(getLocator(btnDeleteAppointment), 0,false);
-            }
-
             step("confirm deletion", () -> {
                 clickBy(getLocator(".confirm-block button")
                         .getByText(action.name()), 0, true);

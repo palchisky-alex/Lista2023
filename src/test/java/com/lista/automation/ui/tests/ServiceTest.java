@@ -2,6 +2,7 @@ package com.lista.automation.ui.tests;
 
 import com.lista.automation.api.pojo.service.ServiceCreateRequest;
 import com.lista.automation.ui.core.BaseTest;
+import com.lista.automation.ui.core.utils.CalendarView;
 import com.lista.automation.ui.pages.service.ServicePage;
 import com.lista.automation.ui.pages.service.ServicesListPage;
 import io.qameta.allure.Description;
@@ -73,7 +74,8 @@ public class ServiceTest extends BaseTest {
                         .toServicesListPage()
                         .initAddingNewService()
                         .setSimpleService(simpleService)
-                        .submitService(ServicePage.Act.ADD);;
+                        .submitService(ServicePage.Act.ADD);
+                ;
 
                 step("UI: search a service", () -> {
                     ServicesListPage servicesPage = calendar
@@ -95,36 +97,49 @@ public class ServiceTest extends BaseTest {
     @Test
     @Description("UI: Update service")
     public void testServiceUpdate() {
-        step("API: generate service", () -> {
+        step("API: create service", () -> {
             ServiceCreateRequest simpleService = generateService(true);
             ServiceCreateRequest simpleService2 = generateService(true);
 
             api.service.create(simpleService, 201);
 
-            step("UI: search a service", () -> {
-                ServicesListPage servicesPage = calendar
-                        .routing()
-                        .toServicesListPage()
-                        .findService(simpleService.getServiceName());
+            step("UI: Change calendar cell duration", () -> {
+                calendar.routing()
+                        .toSettingsPage()
+                        .toCalendarSettings()
+                        .changeEachCell("5")
+                        .backToSettingsPage();
 
-                step("UI: assert - search returns a one service", () -> {
-                    assertThat(servicesPage.countServices())
-                            .as("one service was found")
-                            .isEqualTo(1);
+                step("UI: search a service", () -> {
+                    ServicesListPage servicesPage = calendar
+                            .routing()
+                            .toServicesListPage()
+                            .findService(simpleService.getServiceName());
 
-                    step("UI: update service", () -> {
-                        servicesPage
-                                .findService(simpleService.getServiceName())
-                                .selectService()
-                                .setSimpleService(simpleService2)
-                                .submitService(ServicePage.Act.Update);
+                    step("UI: assert - search returns a one service", () -> {
+                        assertThat(servicesPage.countServices())
+                                .as("one service was found")
+                                .isEqualTo(1);
 
-                        step("API: assert - updated service has been found", () -> {
-                            List<ServiceCreateRequest> servicesViaAPI = api.service.getServiceList(200);
+                        step("UI: update service", () -> {
+                            servicesPage
+                                    .findService(simpleService.getServiceName())
+                                    .selectService()
+                                    .setSimpleService(simpleService2)
+                                    .submitService(ServicePage.Act.Update);
 
-                            assertThat(servicesViaAPI).extracting("serviceName", "serviceDuration", "price")
-                                    .contains(tuple(simpleService2.getServiceName(), simpleService2.getServiceDuration(), simpleService2.getPrice()));
+                            step("API: assert - updated service has been found", () -> {
+                                List<ServiceCreateRequest> servicesViaAPI = api.service.getServiceList(200);
 
+                                assertThat(servicesViaAPI)
+                                        .as("verify that serviceName,serviceDuration,price updated")
+                                        .as("Calendar cell duration - 5 min")
+                                        .extracting("serviceName", "serviceDuration", "price")
+                                        .contains(tuple(simpleService2.getServiceName(),
+                                                simpleService2.getServiceDuration(),
+                                                simpleService2.getPrice()));
+
+                            });
                         });
                     });
                 });

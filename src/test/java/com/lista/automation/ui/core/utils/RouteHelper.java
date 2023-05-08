@@ -48,27 +48,34 @@ public class RouteHelper extends BasePage {
     @Step("go to settings page")
     public SettingsAllPage toSettingsPage() throws Exception {
         openMenu().choosePage(Pages.Settings, SettingsAllPage.class);
+        waitForURL("settings");
         return new SettingsAllPage(page);
     }
 
     @Step("go to client page")
     public ClientsPage toClientPage() throws Exception {
         openMenu().choosePage(Pages.Client, ClientsPage.class);
+        waitForURL("clients");
         return new ClientsPage(page);
     }
     @Step("go to calendar page")
     public CalendarPage toCalendarPage() throws Exception {
         openMenu().choosePage(Pages.Calendar, CalendarPage.class);
-        return new CalendarPage(page);
+        waitForURL("calendar");
+        CalendarPage calendar = new CalendarPage(page);
+        calendar.goToCurrentDate();
+        return calendar;
     }
     @Step("go to groups page")
     public GroupsListPage toGroupsListPage() throws Exception {
         openMenu().choosePage(Pages.Groups, GroupsListPage.class);
+        waitForURL("groups");
         return new GroupsListPage(page);
     }
-    @Step("go to groups page")
+    @Step("go to services page")
     public ServicesListPage toServicesListPage() throws Exception {
         openMenu().choosePage(Pages.Services, ServicesListPage.class);
+        waitForURL("catalog/services/categories");
         return new ServicesListPage(page);
     }
 
