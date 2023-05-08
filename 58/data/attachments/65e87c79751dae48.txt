@@ -1,0 +1,1 @@
+selector/text: button[class*='today_wrap']:not([disabled])|
