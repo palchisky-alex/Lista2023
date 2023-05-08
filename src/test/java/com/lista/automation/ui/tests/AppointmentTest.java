@@ -275,7 +275,7 @@ public class AppointmentTest extends BaseTest {
                                             calendar.routing()
                                                     .toCalendarPage()
                                                     .enterTheAppointmentSlot(appID, views)
-                                                    .configureAppointment(generalSettings, AppointmentPage.ACTION.DELETE);
+                                                    .configureAppointment(AppointmentPage.ACTION.DELETE);
 
                                             step("API: get appointment from day of test and verify deletion", () -> {
                                                 List<Integer> appointmentIDs = api.appointment.getAppointmentsByDate(from, to, 200).stream()

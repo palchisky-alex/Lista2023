@@ -176,6 +176,7 @@ public class ClientProfilePage extends BasePage {
     @Step("save profile info")
     public ClientCreateRequest saveProfileInfo() {
         clickBy(profileInfoSaveBtn, 0, true);
+        waitForTimeout(3000);
         return simpleClient;
     }
 

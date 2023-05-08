@@ -22,7 +22,7 @@ public class AppointmentPage extends BasePage {
         this.page = page;
     }
 
-    public CalendarPage configureAppointment(GeneralSettingsPojo generalSettings, ACTION action) {
+    public CalendarPage configureAppointment(ACTION action) {
         if (action.name().equals("DELETE")) {
             clickBy(btnDeleteAppointment, 0, true);
 
@@ -32,6 +32,7 @@ public class AppointmentPage extends BasePage {
                 page.reload();
             });
         }
+        waitForTimeout(3000);
         return new CalendarPage(page);
     }
 
