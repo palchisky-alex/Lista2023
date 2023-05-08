@@ -122,7 +122,7 @@ public class ServiceTest extends BaseTest {
                         step("API: assert - updated service has been found", () -> {
                             List<ServiceCreateRequest> servicesViaAPI = api.service.getServiceList(200);
 
-                            assertThat(servicesViaAPI).extracting("name", "duration", "price")
+                            assertThat(servicesViaAPI).extracting("serviceName", "serviceDuration", "price")
                                     .contains(tuple(simpleService2.getServiceName(), simpleService2.getServiceDuration(), simpleService2.getPrice()));
 
                         });

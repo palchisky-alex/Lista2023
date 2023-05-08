@@ -43,7 +43,8 @@ public class AppointmentCreation extends BasePage {
         }
         @Step("Menu: ADD AND CONTINUE")
         public SetService addAndContinue() {
-            clickBy(getByRoleWithText(AriaRole.BUTTON, "ADD AND CONTINUE"), 1, false);
+            page.locator("//*[contains(text(), 'ADD AND CONTINUE')]/..").click();
+//            clickBy(getByRoleWithText(AriaRole.BUTTON, "ADD AND CONTINUE"), 2, true);
             return new SetService(page);
         }
 

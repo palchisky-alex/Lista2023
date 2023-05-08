@@ -68,7 +68,6 @@ public class RouteHelper extends BasePage {
     }
     @Step("go to groups page")
     public ServicesListPage toServicesListPage() throws Exception {
-        page.pause();
         openMenu().choosePage(Pages.Services, ServicesListPage.class);
         return new ServicesListPage(page);
     }

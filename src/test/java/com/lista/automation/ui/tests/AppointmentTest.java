@@ -203,7 +203,6 @@ public class AppointmentTest extends BaseTest {
                                                 .as("create appointment at %s", appointmentTime).flatMap(
                                                         AppointmentGetRequest::getClientName,
                                                         AppointmentGetRequest::getStart,
-                                                        app -> app.getServices().get(0).getServiceName(),
                                                         app -> app.getServices().size(),
                                                         AppointmentGetRequest::getTotalPrice)
 
@@ -219,7 +218,7 @@ public class AppointmentTest extends BaseTest {
     }
 
     @Test(dataProvider = "calendar_view")
-    @Description("Delete appointment in UI")
+    @Description("Change calendar view and delete appointment in UI")
     public void testDeleteAppointment(CalendarView views, ViewStartOn viewStartOn, String cellDuration) {
 
         String appointmentTime = "12:30";

@@ -1,6 +1,7 @@
 package com.lista.automation.ui.pages;
 
 import com.lista.automation.ui.core.utils.BasePage;
+import com.lista.automation.ui.core.utils.Properties;
 import com.lista.automation.ui.pages.calendar.CalendarPage;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
@@ -25,8 +26,8 @@ public class LoginPage extends BasePage {
     }
 
     public CalendarPage login() {
-        String email = "alex.palchisky@gmail.com";
-        String pass = "123456";
+        String email = Properties.getProp().username();
+        String pass = Properties.getProp().password();
         typeIn(INPUT_EMAIL_LOCATOR, email);
         typeIn(INPUT_PASSWORD_LOCATOR, pass);
         clickBy(getByRoleWithText(AriaRole.BUTTON, "login"),0,true);
