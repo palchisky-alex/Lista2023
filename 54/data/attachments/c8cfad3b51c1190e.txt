@@ -1,0 +1,1 @@
+selector/text: //a[contains(@href, '3620')]|
