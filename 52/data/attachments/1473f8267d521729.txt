@@ -1,0 +1,1 @@
+locator/text: Locator@.gender_item .select >> nth=2|
