@@ -1,5 +1,6 @@
-package com.lista.automation.ui.core.utils;
+package com.lista.automation.api;
 
+import com.lista.automation.api.utils.Prop;
 import org.aeonbits.owner.ConfigFactory;
 
 public class Properties {

@@ -5,20 +5,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lista.automation.api.pojo.client.strategy.DataTimeStrategy;
 import com.lista.automation.api.pojo.service.strategy.DurationStrategy;
 import com.lista.automation.api.pojo.service.strategy.LongNameStrategy;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.Accessors;
 import uk.co.jemos.podam.common.PodamStrategyValue;
 
 @Data
+@Accessors(chain = true)
 @JsonIgnoreProperties(ignoreUnknown=true)
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
+@Builder(setterPrefix = "set")
+@AllArgsConstructor
 public class ServiceCreateRequest {
 
-    private String id;
+    @JsonProperty("id")
+    private String serviceID;
 
     @JsonProperty("name")
     @PodamStrategyValue(LongNameStrategy.class)
@@ -44,7 +46,15 @@ public class ServiceCreateRequest {
     @Data
     @JsonIgnoreProperties(ignoreUnknown=true)
     public static class CategoryRequestCreate {
-        private String name;
+        @JsonProperty("name")
+        private String categoryName;
         private String id;
     }
+
+//    public static ServiceCreateRequest getInstance() {
+//        ServiceCreateRequest servicesBody = ServiceCreateRequest.builder().build();
+//
+//        return servicesBody;
+//
+//    }
 }

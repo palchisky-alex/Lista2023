@@ -1,19 +1,16 @@
 package com.lista.automation.ui.core;
 
-import com.lista.automation.ui.core.utils.Properties;
+import com.lista.automation.api.Properties;
 import com.lista.automation.ui.pages.LoginPage;
 import com.microsoft.playwright.*;
 import io.qameta.allure.Allure;
-import org.testng.ITestContext;
 import org.testng.ITestResult;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;

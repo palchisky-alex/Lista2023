@@ -1,7 +1,7 @@
 package com.lista.automation.ui.pages;
 
 import com.lista.automation.ui.core.utils.BasePage;
-import com.lista.automation.ui.core.utils.Properties;
+import com.lista.automation.api.Properties;
 import com.lista.automation.ui.pages.calendar.CalendarPage;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;

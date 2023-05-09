@@ -1,9 +1,10 @@
-package com.lista.automation.api.utils;
+package com.lista.automation.api.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.lista.automation.api.pojo.general_settings.GeneralSettingsPojo;
+import com.lista.automation.api.utils.RestService;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 

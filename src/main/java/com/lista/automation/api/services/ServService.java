@@ -1,8 +1,9 @@
-package com.lista.automation.api.utils;
+package com.lista.automation.api.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lista.automation.api.pojo.service.ServiceCreateRequest;
+import com.lista.automation.api.utils.RestService;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 
@@ -25,7 +26,7 @@ public class ServService extends RestService {
     public String create(ServiceCreateRequest simpleService, int expectStatus) {
         int categoryID = Integer.parseInt(new CategoryService(getCookie()).createCategory(simpleService));
 
-        Response response = given().spec(REQ_SPEC_ENCODED).log().all()
+        Response response = given().spec(getREQ_SPEC_ENCODED()).log().all()
                 .formParam("name", "service_"+simpleService.getServiceName())
                 .formParam("duration", simpleService.getServiceDuration())
                 .formParam("price", simpleService.getPrice())
@@ -37,7 +38,7 @@ public class ServService extends RestService {
     }
     @Step("api: get services")
     public List<ServiceCreateRequest> getServiceList(int expectStatus) {
-        Response response = given().spec(REQ_SPEC_ENCODED).log().all().get();
+        Response response = given().spec(getREQ_SPEC_ENCODED()).log().all().get();
         List<ServiceCreateRequest> services = response.then().log().all().statusCode(expectStatus)
                 .extract().body().jsonPath().getList("", ServiceCreateRequest.class);
         if (services.isEmpty()) {
@@ -48,11 +49,11 @@ public class ServService extends RestService {
     }
     @Step("api: get service by ID")
     public List<ServiceCreateRequest> getServiceByID(String serviceID, int expectStatus) {
-        Response response = given().spec(REQ_SPEC_ENCODED).log().all().get();
+        Response response = given().spec(getREQ_SPEC_ENCODED()).log().all().get();
         List<ServiceCreateRequest> services = response.then().log().all().statusCode(expectStatus)
                 .extract().body().jsonPath().getList("", ServiceCreateRequest.class);
 
-        List<ServiceCreateRequest> service = services.stream().filter(s -> s.getId().equals(serviceID)).collect(Collectors.toList());
+        List<ServiceCreateRequest> service = services.stream().filter(s -> s.getServiceID().equals(serviceID)).collect(Collectors.toList());
         if (service.isEmpty()) {
             throw new RuntimeException("Can't find service by ID = '"+serviceID+"'");
         }
@@ -65,11 +66,11 @@ public class ServService extends RestService {
             throw new RuntimeException("Can't convert Services to json - list of services pojo class is empty");
         }
         Map<String, Object> category = new HashMap<>();
-        category.put("name", serviceByName.get(0).getCategory().getName());
+        category.put("name", serviceByName.get(0).getCategory().getCategoryName());
         category.put("id", serviceByName.get(0).getCategory().getId());
 
         Map<String, Object> jsonMap = new HashMap<>();
-        jsonMap.put("id", serviceByName.get(0).getId());
+        jsonMap.put("id", serviceByName.get(0).getServiceID());
         jsonMap.put("name", serviceByName.get(0).getServiceName());
         jsonMap.put("price", serviceByName.get(0).getPrice());
         jsonMap.put("duration", serviceByName.get(0).getServiceDuration());
@@ -92,7 +93,7 @@ public class ServService extends RestService {
         }
 
         public String createCategory(ServiceCreateRequest simpleService) {
-            Response response = given().spec(REQ_SPEC_ENCODED).log().all()
+            Response response = given().spec(getREQ_SPEC_ENCODED()).log().all()
                     .formParam("name", "category_" + simpleService.getServiceName())
                     .when().post();
 

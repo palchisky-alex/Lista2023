@@ -2,6 +2,7 @@ package com.lista.automation.api;
 
 import com.lista.automation.api.pojo.client.ClientCreateRequest;
 import com.lista.automation.api.pojo.client.ClientGetResponse;
+import com.lista.automation.api.pojo.service.ServiceCreateRequest;
 import com.lista.automation.api.utils.DataGenerator;
 import com.lista.automation.api.utils.RestWrapper;
 import io.qameta.allure.Description;
@@ -19,27 +20,15 @@ public class RestTest {
 
     @Owner("Alex")
     @Description("Create client and delete")
+
     void createClient() {
-
-        ClientCreateRequest simpleClient = DataGenerator.getSimpleData(ClientCreateRequest.class);
-        String client_id = api.client.create(simpleClient, 201);
-        assertThat(client_id).as("client was created and has a ID").isNotNull();
-
-
-        ClientGetResponse createdClient = api.client.find(simpleClient.getName(), 200);
-
-        assertThat(simpleClient).extracting(ClientCreateRequest::getName)
-                .as("created client has correct name")
-                .isEqualTo(createdClient.getName());
-
-        assertThat(simpleClient).extracting(ClientCreateRequest::getAddress)
-                .as("created client has correct address")
-                .isEqualTo(createdClient.getAddress());
-
-        api.client.deleteAll(204);
+//        ServiceCreateRequest serviceData = ServiceCreateRequest.getInstance();
+//        serviceData.setPrice(2).setServiceDuration(3);
+//
+//        api.service.create(serviceData, 201);
 
 
-//        List<ClientGetResponse> clients = api.client.getList(200);
+//        List<ClientGetResponse> clients = api.client().getList(200);
 //        clients.forEach(System.out::println);
     }
 

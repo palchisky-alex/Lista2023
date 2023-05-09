@@ -1,5 +1,6 @@
 package com.lista.automation.ui.core.utils;
 
+import com.lista.automation.api.Properties;
 import com.lista.automation.api.pojo.appointment.AppointmentCreateRequest;
 import com.lista.automation.api.pojo.service.ServiceCreateRequest;
 import com.lista.automation.api.pojo.client.ClientCreateRequest;
@@ -48,47 +49,50 @@ public class BasePage {
     }
 
     public void clickBy(String selector,int delay, boolean request) {
-        attachAllureLog("click on element and wait 30000ms for response OK", selector,"");
-        System.out.println(">> click on " + selector + " and wait for response OK <<");
+        attachAllureLog("click on element: ", selector,"");
         page.waitForLoadState(LoadState.NETWORKIDLE);
         page.locator(selector).scrollIntoViewIfNeeded();
 
         if(request) {
+            System.out.println(">> click on " + selector + " and wait for response OK <<");
             page.waitForResponse(Response::ok, () -> {
                 page.locator(selector).click(new Locator.ClickOptions().setDelay(delay));
             });
         }
         else {
+            System.out.println(">> click on " + selector + " <<");
             page.locator(selector).click(new Locator.ClickOptions().setDelay(delay));
         }
     }
 
     public void clickBy(Locator locator, int delay, boolean request) {
         attachAllureLog("click on element and wait 30000ms for response OK",locator,"");
-        System.out.println(">> click on " + locator + " and wait for response OK <<");
         page.waitForLoadState(LoadState.NETWORKIDLE);
         locator.scrollIntoViewIfNeeded();
 
         if(request) {
+            System.out.println(">> click on " + locator + " and wait for response OK <<");
             page.waitForResponse(Response::ok, () -> {
                 locator.click(new Locator.ClickOptions().setDelay(delay));
             });
         }
         else {
+            System.out.println(">> click on " + locator + " <<");
             locator.click(new Locator.ClickOptions().setDelay(delay));
         }
     }
 
     public void dblClickBy(Locator locator, boolean request) {
-        System.out.println(">> click on " + locator + " and wait for response OK <<");
         attachAllureLog("double click on element and wait 30000ms for response OK", locator,"");
         page.waitForLoadState(LoadState.NETWORKIDLE);
         locator.scrollIntoViewIfNeeded();
 
         if(request) {
+            System.out.println(">> click on " + locator + " and wait for response OK <<");
             page.waitForResponse(Response::ok, locator::dblclick);
         }
         else {
+            System.out.println(">> click on " + locator + " <<");
             locator.dblclick();
         }
     }
@@ -159,6 +163,7 @@ public class BasePage {
 
     public void waitForURL(String regex) {
         Allure.addAttachment("wait for URL", regex);
+        System.out.println("wait for URL: " + regex);
         page.waitForURL(Pattern.compile(regex));
     }
 

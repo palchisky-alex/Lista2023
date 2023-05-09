@@ -1,4 +1,4 @@
-package com.lista.automation.ui.core.utils;
+package com.lista.automation.api.utils;
 
 
 import org.aeonbits.owner.Config;
@@ -32,11 +32,11 @@ public interface Prop extends Config {
     @Key("date.time.pattern")
     String dateTimePattern();
 
-    @Key("tenant")
-    String tenant();
-    @DefaultValue("${tenant}/calendar")
+    @Key("baseURL")
+    String baseURL();
+    @DefaultValue("${baseURL}/en/calendar")
     String pageCalendar();
-    @DefaultValue("${tenant}/login")
+    @DefaultValue("${baseURL}/en/login")
     String pageLogin();
 
     @Key("path.trace")

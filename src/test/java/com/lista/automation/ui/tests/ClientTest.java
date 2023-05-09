@@ -25,8 +25,8 @@ public class ClientTest extends BaseTest {
                 ClientCreateRequest simpleClient = generateClient(true);
                 String phoneNumber = simpleClient.getPhone().replaceAll("\\D+", "");
 
-                api.client.create(simpleClient, 201);
-                ClientGetResponse client = api.client.find(phoneNumber, 200);
+                api.client().create(simpleClient, 201);
+                ClientGetResponse client = api.client().find(phoneNumber, 200);
 
                 step("API: check that the simple client has been created", () -> {
                     assertThat(client.getName()).isEqualTo(simpleClient.getName());
@@ -75,7 +75,7 @@ public class ClientTest extends BaseTest {
                     .submitNewClient();
 
             step("API: search the new client by phone", () -> {
-                ClientGetResponse clientViaAPI = api.client
+                ClientGetResponse clientViaAPI = api.client()
                         .find(simpleClient.getPhone()
                                 .replaceAll("\\D+", ""), 200);
 
@@ -91,13 +91,13 @@ public class ClientTest extends BaseTest {
     @Description("UI: Update personal info of client")
     void testClientUpdatePersonalInfo() {
         step("UI: verify client personal info can be change", () -> {
-            api.client.deleteAll(204);
+            api.client().deleteAll(204);
             step("API: generate simple client", () -> {
                 ClientCreateRequest simpleClient = generateClient(true);
                 String phoneNumber = simpleClient.getPhone().replaceAll("\\D+", "");
 
-                api.client.create(simpleClient, 201);
-                ClientGetResponse apiClient = api.client.find(phoneNumber, 200);
+                api.client().create(simpleClient, 201);
+                ClientGetResponse apiClient = api.client().find(phoneNumber, 200);
 
                 step("API: check that the simple client has been created", () -> {
                     assertThat(apiClient.getName()).isEqualTo(simpleClient.getName());
@@ -120,7 +120,7 @@ public class ClientTest extends BaseTest {
                                     .saveProfileInfo();
 
                             step("API: search client by new phone number", () -> {
-                                ClientGetResponse clientViaAPI = api.client.find(simpleClient2.getPhone()
+                                ClientGetResponse clientViaAPI = api.client().find(simpleClient2.getPhone()
                                         .replaceAll("\\D+", ""), 200);
 
                                 step("API: assert that the client exists after personal info update", () -> {
@@ -144,8 +144,8 @@ public class ClientTest extends BaseTest {
                 ClientCreateRequest simpleClient = generateClient(true);
                 String phoneNumber = simpleClient.getPhone().replaceAll("\\D+", "");
 
-                api.client.create(simpleClient, 201);
-                ClientGetResponse apiClient = api.client.find(phoneNumber, 200);
+                api.client().create(simpleClient, 201);
+                ClientGetResponse apiClient = api.client().find(phoneNumber, 200);
 
                 step("API: check that the simple client has been created", () -> {
                     assertThat(apiClient.getName()).isEqualTo(simpleClient.getName());
@@ -167,7 +167,7 @@ public class ClientTest extends BaseTest {
                                     .setDebts(simpleClient);
 
                             step("search client by new phone number via api", () -> {
-                                ClientGetResponse clientViaAPI = api.client
+                                ClientGetResponse clientViaAPI = api.client()
                                         .find(simpleClient.getPhone()
                                                 .replaceAll("\\D+", ""), 200);
 
@@ -193,8 +193,8 @@ public class ClientTest extends BaseTest {
                 ClientCreateRequest simpleClient2 = generateClient(true);
                 String phoneNumber = simpleClient.getPhone().replaceAll("\\D+", "");
 
-                api.client.create(simpleClient, 201);
-                ClientGetResponse apiClient = api.client.find(phoneNumber, 200);
+                api.client().create(simpleClient, 201);
+                ClientGetResponse apiClient = api.client().find(phoneNumber, 200);
 
                 step("API: check that the simple client has been created", () -> {
                     assertThat(apiClient.getName()).as("client was created").isEqualTo(simpleClient.getName());
@@ -214,7 +214,7 @@ public class ClientTest extends BaseTest {
                                     .setNotes(simpleClient2);
 
                             step("API: search client by phone number", () -> {
-                                ClientGetResponse clientViaAPI = api.client
+                                ClientGetResponse clientViaAPI = api.client()
                                         .find(simpleClient.getPhone()
                                                 .replaceAll("\\D+", ""), 200);
 
@@ -239,8 +239,8 @@ public class ClientTest extends BaseTest {
                 ClientCreateRequest simpleClient = generateClient(true);
                 String phoneNumber = simpleClient.getPhone().replaceAll("\\D+", "");
 
-                api.client.create(simpleClient, 201);
-                ClientGetResponse apiClient = api.client.find(phoneNumber, 200);
+                api.client().create(simpleClient, 201);
+                ClientGetResponse apiClient = api.client().find(phoneNumber, 200);
 
                 step("API: check that the simple client has been created", () -> {
                     assertThat(apiClient.getName()).isEqualTo(simpleClient.getName());
@@ -261,7 +261,7 @@ public class ClientTest extends BaseTest {
                                     .addNotesToPicture(simpleClient.getNotes());
 
                             step("API: search client by phone number", () -> {
-                                ClientGetResponse clientViaAPI = api.client
+                                ClientGetResponse clientViaAPI = api.client()
                                         .find(simpleClient.getPhone()
                                                 .replaceAll("\\D+", ""), 200);
 

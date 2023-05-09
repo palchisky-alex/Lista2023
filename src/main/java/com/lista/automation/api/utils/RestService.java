@@ -7,69 +7,93 @@ import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
+import static com.lista.automation.api.Properties.getProp;
 import static io.restassured.config.EncoderConfig.encoderConfig;
 
 public abstract class RestService {
 
-    protected static final String BASE_URL = "https://test.atzma.im/";
-    protected RequestSpecification REQ_SPEC_FORM;
-    protected RequestSpecification REQ_SPEC_ENCODED;
-    protected RequestSpecification REQ_SPEC_ENCODED_DEL;
+    public final String BASE_URL = getProp().baseURL();
+    private RequestSpecification REQ_SPEC_FORM;
+    private RequestSpecification REQ_SPEC_HTML;
+    private RequestSpecification REQ_SPEC_ENCODED;
+    private RequestSpecification REQ_SPEC_ENCODED_PATH;
+    private RequestSpecification REQ_SPEC_ENCODED_ID;
     private String cookie;
+
     protected abstract String getBasePath();
 
     public RestService(String cookie) {
         this.cookie = cookie;
-        REQ_SPEC_FORM = new RequestSpecBuilder()
-                .addHeader("cookie", cookie)
-                .setBaseUri(BASE_URL)
-                .setBasePath(getBasePath())
-                .setContentType(ContentType.MULTIPART)
-                .build();
+    }
 
-        REQ_SPEC_ENCODED = new RequestSpecBuilder()
-                .addHeader("cookie", cookie)
-                .setBaseUri(BASE_URL)
-                .setBasePath(getBasePath())
-                .setContentType(ContentType.URLENC).setConfig(RestAssured.config().encoderConfig(encoderConfig()
-                        .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-                .build();
 
+    public RequestSpecification getREQ_SPEC_ENCODED() {
+        if (REQ_SPEC_ENCODED == null) {
+            REQ_SPEC_ENCODED = new RequestSpecBuilder()
+                    .addHeader("cookie", cookie)
+                    .setBaseUri(BASE_URL)
+                    .setBasePath(getBasePath())
+                    .setContentType(ContentType.URLENC).setConfig(RestAssured.config().encoderConfig(encoderConfig()
+                            .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+                    .build();
+        }
+        return REQ_SPEC_ENCODED;
+    }
+    public RequestSpecification getREQ_SPEC_FORM() {
+        if (REQ_SPEC_FORM == null) {
+            REQ_SPEC_FORM = new RequestSpecBuilder()
+                    .addHeader("cookie", cookie)
+                    .setBaseUri(BASE_URL)
+                    .setBasePath(getBasePath())
+                    .setContentType(ContentType.MULTIPART)
+                    .build();
+        }
+        return REQ_SPEC_FORM;
     }
 
     public RequestSpecification getSPEC_ENCODED_ID(int id) {
-        REQ_SPEC_ENCODED = new RequestSpecBuilder()
-                .addHeader("cookie", cookie)
-                .setBaseUri(BASE_URL)
-                .setBasePath(getBasePath()+id)
-                .setContentType(ContentType.URLENC).setConfig(RestAssured.config().encoderConfig(encoderConfig()
-                        .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-                .build();
-        return REQ_SPEC_ENCODED;
+        if (REQ_SPEC_ENCODED_ID == null) {
+            REQ_SPEC_ENCODED_ID = new RequestSpecBuilder()
+                    .addHeader("cookie", cookie)
+                    .setBaseUri(BASE_URL)
+                    .setBasePath(getBasePath() + id)
+                    .setContentType(ContentType.URLENC).setConfig(RestAssured.config().encoderConfig(encoderConfig()
+                            .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+                    .build();
+        }
+        return REQ_SPEC_ENCODED_ID;
     }
+
     public RequestSpecification getSPEC_ENCODED_PATH(int id, String path, ContentType type) {
-        REQ_SPEC_ENCODED = new RequestSpecBuilder()
-                .addHeader("cookie", cookie)
-                .setBaseUri(BASE_URL)
-                .setBasePath(getBasePath()+id+"/"+ path)
-                .setContentType(type).setConfig(RestAssured.config().encoderConfig(encoderConfig()
-                        .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-                .build();
-        return REQ_SPEC_ENCODED;
+        if (REQ_SPEC_ENCODED_PATH == null) {
+            REQ_SPEC_ENCODED_PATH = new RequestSpecBuilder()
+                    .addHeader("cookie", cookie)
+                    .setBaseUri(BASE_URL)
+                    .setBasePath(getBasePath() + id + "/" + path)
+                    .setContentType(type).setConfig(RestAssured.config().encoderConfig(encoderConfig()
+                            .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+                    .build();
+        }
+        return REQ_SPEC_ENCODED_PATH;
     }
+
     public RequestSpecification getSPEC_HTML() {
-        return REQ_SPEC_FORM = new RequestSpecBuilder()
-                .addHeader("cookie", cookie)
-                .setBaseUri(BASE_URL)
-                .setBasePath(getBasePath())
-                .setContentType(ContentType.HTML)
-                .build();
+        if (REQ_SPEC_HTML == null) {
+            REQ_SPEC_HTML = new RequestSpecBuilder()
+                    .addHeader("cookie", cookie)
+                    .setBaseUri(BASE_URL)
+                    .setBasePath(getBasePath())
+                    .setContentType(ContentType.HTML)
+                    .build();
+        }
+        return REQ_SPEC_HTML;
     }
-    public RequestSpecification getSPEC_ENCODED_ID_slash (int id) {
+
+    public RequestSpecification getSPEC_ENCODED_ID_slash(int id) {
         return new RequestSpecBuilder()
                 .addHeader("cookie", cookie)
                 .setBaseUri(BASE_URL)
-                .setBasePath(getBasePath()+"/"+id)
+                .setBasePath(getBasePath() + "/" + id)
                 .setContentType(ContentType.URLENC).setConfig(RestAssured.config().encoderConfig(encoderConfig()
                         .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
                 .build();
@@ -80,16 +104,8 @@ public abstract class RestService {
         return cookie;
     }
 
-    public boolean checkStatusCode(int status) {
-        if (status == 401) {
-            // Update access token and resend the request
-            RestWrapper.loginAs("alex.palchisky@gmail.com", "123456");
-            return false;
-        }
-        return true;
-    }
 
-    public static RequestSpecification requestSpecification(String basePath) {
+    public RequestSpecification requestSpecification(String basePath) {
         return new RequestSpecBuilder()
                 .setBaseUri(BASE_URL)
                 .setBasePath(basePath)
@@ -97,12 +113,12 @@ public abstract class RestService {
                 .build();
     }
 
-    public static ResponseSpecification responseSpecificationStatus(int status) {
+    public ResponseSpecification responseSpecificationStatus(int status) {
         return new ResponseSpecBuilder()
                 .expectStatusCode(status).build();
     }
 
-    public static void installSpecifications(ResponseSpecification response) {
+    public void installSpecifications(ResponseSpecification response) {
 //        RestAssured.requestSpecification = request;
         RestAssured.responseSpecification = response;
     }

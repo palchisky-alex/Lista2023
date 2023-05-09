@@ -26,9 +26,10 @@ public class ServiceTest extends BaseTest {
     @Test
     @Description("UI: Delete service")
     public void testServiceDelete() {
+
         step("API: generate service", () -> {
             ServiceCreateRequest simpleService = generateService(true);
-            api.service.create(simpleService, 201);
+            api.service().create(simpleService, 201);
 
             step("UI: search a service", () -> {
                 ServicesListPage servicesPage = calendar
@@ -75,11 +76,9 @@ public class ServiceTest extends BaseTest {
                         .initAddingNewService()
                         .setSimpleService(simpleService)
                         .submitService(ServicePage.Act.ADD);
-                ;
 
                 step("UI: search a service", () -> {
-                    ServicesListPage servicesPage = calendar
-                            .routing()
+                    ServicesListPage servicesPage = calendar.routing()
                             .toServicesListPage()
                             .findService(simpleService.getServiceName());
 
@@ -101,7 +100,7 @@ public class ServiceTest extends BaseTest {
             ServiceCreateRequest simpleService = generateService(true);
             ServiceCreateRequest simpleService2 = generateService(true);
 
-            api.service.create(simpleService, 201);
+            api.service().create(simpleService, 201);
 
             step("UI: Change calendar cell duration", () -> {
                 calendar.routing()
@@ -129,7 +128,7 @@ public class ServiceTest extends BaseTest {
                                     .submitService(ServicePage.Act.Update);
 
                             step("API: assert - updated service has been found", () -> {
-                                List<ServiceCreateRequest> servicesViaAPI = api.service.getServiceList(200);
+                                List<ServiceCreateRequest> servicesViaAPI = api.service().getServiceList(200);
 
                                 assertThat(servicesViaAPI)
                                         .as("verify that serviceName,serviceDuration,price updated")
@@ -146,4 +145,5 @@ public class ServiceTest extends BaseTest {
             });
         });
     }
+
 }

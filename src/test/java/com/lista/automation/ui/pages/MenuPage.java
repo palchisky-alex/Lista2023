@@ -27,7 +27,7 @@ public class MenuPage extends BasePage {
     public <T> T choosePage(Pages calendarPages, Class<T> clazz) throws Exception {
         clickBy(getLocator(MENU_LIST_LOCATOR)
                 .getByRole(AriaRole.LINK)
-                .filter(new Locator.FilterOptions().setHasText(Pattern.compile(calendarPages.name()))),0,true);
+                .filter(new Locator.FilterOptions().setHasText(Pattern.compile(calendarPages.name()))),0,false);
 
 
         T pageInstance = clazz.getDeclaredConstructor(Page.class).newInstance(page);

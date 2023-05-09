@@ -1,17 +1,17 @@
 package com.lista.automation.ui.core;
 
 import com.lista.automation.api.utils.RestWrapper;
-import com.lista.automation.ui.core.utils.Properties;
+import com.lista.automation.api.Properties;
 import com.lista.automation.ui.pages.calendar.CalendarPage;
 import com.lista.automation.ui.pages.client.ClientsPage;
-import com.lista.automation.ui.pages.service.ServicesListPage;
 import com.microsoft.playwright.Page;
-import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import java.io.IOException;
 import java.lang.reflect.Method;
+
+import static com.lista.automation.api.Properties.getProp;
 
 public class BaseTest {
 
@@ -24,8 +24,9 @@ public class BaseTest {
 
     @BeforeMethod
     public void setUp() {
-        api = RestWrapper.loginAs(Properties.getProp().username().replaceAll("\"",""),
-                Properties.getProp().password().replaceAll("\"",""));
+//        api = RestWrapper.loginAs(getProp().username().replaceAll("\"",""),
+//                getProp().password().replaceAll("\"",""));
+        api = RestWrapper.loginAs();
         pf = new PlaywrightFactory();
         page = pf.initBrowser();
         calendar = new CalendarPage(page);

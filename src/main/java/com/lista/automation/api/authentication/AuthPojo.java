@@ -1,16 +1,12 @@
-package com.lista.automation.api.pojo;
+package com.lista.automation.api.authentication;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.io.File;
 
 @Data
 @AllArgsConstructor
-public class UserLoginRequest  {
+public class AuthPojo {
     @JsonProperty("time_zone")
     private String timeZone;
     private String email;

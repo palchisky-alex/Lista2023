@@ -30,7 +30,7 @@ public class GroupTest extends BaseTest {
         step("UI: verify that client group can be rename", () -> {
             step("API: generate group", () -> {
                 GroupCreateRequest simpleGroup = generateGroup(true);
-                api.group.create(simpleGroup, 201);
+                api.group().create(simpleGroup, 201);
 
                 step("UI: rename group", () -> {
                     calendar.routing()
@@ -39,7 +39,7 @@ public class GroupTest extends BaseTest {
                             .configureGroup(GroupsListPage.ACTION.Rename);
 
                     step("API: search renamed group", () -> {
-                        assertThat(api.group.getGroupsOfClient())
+                        assertThat(api.group().getGroupsOfClient())
                                 .extracting(GroupsGetResponse::getName)
                                 .contains(generateGroup(false).getName());
                     });
@@ -55,7 +55,7 @@ public class GroupTest extends BaseTest {
 
             step("API: generate group", () -> {
                 GroupCreateRequest simpleGroup = generateGroup(true);
-                int ID = api.group.create(simpleGroup, 201);
+                int ID = api.group().create(simpleGroup, 201);
 
                 step("UI: delete group", () -> {
                     calendar.routing()
@@ -64,7 +64,7 @@ public class GroupTest extends BaseTest {
                             .configureGroup(GroupsListPage.ACTION.Delete);
 
                     step("API: search deleted group", () -> {
-                        assertThat(api.group.getGroupsOfClient())
+                        assertThat(api.group().getGroupsOfClient())
                                 .extracting(GroupsGetResponse::getId)
                                 .doesNotContain(ID);
                     });
@@ -80,7 +80,7 @@ public class GroupTest extends BaseTest {
 
             step("API: generate group", () -> {
                 GroupCreateRequest simpleGroup = generateGroup(true);
-                int ID = api.group.create(simpleGroup, 201);
+                int ID = api.group().create(simpleGroup, 201);
 
                 step("UI: add new group", () -> {
                     calendar.routing().toGroupsListPage()
@@ -88,7 +88,7 @@ public class GroupTest extends BaseTest {
                             .returnToListGroups();
 
                     step("API: search deleted group", () -> {
-                        assertThat(api.group.getGroupsOfClient())
+                        assertThat(api.group().getGroupsOfClient())
                                 .extracting(GroupsGetResponse::getId)
                                 .contains(ID);
                     });
@@ -103,15 +103,15 @@ public class GroupTest extends BaseTest {
     public void testAddMemberIntoGroup() {
         step("API: generate simple client", () -> {
             ClientCreateRequest simpleClient = generateClient(true);
-            String clientID = api.client.create(simpleClient, 201);
+            String clientID = api.client().create(simpleClient, 201);
 
             step("API: check that the simple client has been created", () -> {
-                api.client.find(simpleClient.getPhone().replaceAll("\\D+", ""), 200);
+                api.client().find(simpleClient.getPhone().replaceAll("\\D+", ""), 200);
             });
 
             step("API: generate simple group", () -> {
                 GroupCreateRequest simpleGroup = generateGroup(true);
-                int ID = api.group.create(simpleGroup, 201);
+                int ID = api.group().create(simpleGroup, 201);
 
                 step("UI: add member into group", () -> {
                     calendar.routing()
@@ -122,7 +122,7 @@ public class GroupTest extends BaseTest {
                             .addToGroup();
 
                     step("API: get group with member", () -> {
-                        assertThat(api.group.getClientsOfGroup(ID, "clients", 200))
+                        assertThat(api.group().getClientsOfGroup(ID, "clients", 200))
                                 .as("group contains ID of api client")
                                 .extracting(ClientGetResponse::getId)
                                 .contains(clientID);
@@ -137,14 +137,14 @@ public class GroupTest extends BaseTest {
     public void testDeleteMemberFromGroup() {
         step("API: generate client", () -> {
             ClientCreateRequest simpleClient = generateClient(true);
-            String clientID = api.client.create(simpleClient, 201);
+            String clientID = api.client().create(simpleClient, 201);
 
             step("API: generate group", () -> {
                 GroupCreateRequest simpleGroup = generateGroup(true);
-                int groupID = api.group.create(simpleGroup, 201);
+                int groupID = api.group().create(simpleGroup, 201);
 
                 step("API: put member into group", () -> {
-                    api.group.putClientIntoGroup(groupID, "clients", clientID, 204);
+                    api.group().putClientIntoGroup(groupID, "clients", clientID, 204);
 
                     step("UI: delete member from group", () -> {
                         calendar.routing()
@@ -157,7 +157,7 @@ public class GroupTest extends BaseTest {
                                 .setMenuOptions(GroupPage.Menu.Opts.Delete);
 
                         step("API: get group with member", () -> {
-                            assertThat(api.group.getClientsOfGroup(groupID, "clients", 200))
+                            assertThat(api.group().getClientsOfGroup(groupID, "clients", 200))
                                     .as("group not contains ID of api client")
                                     .extracting(ClientGetResponse::getId)
                                     .doesNotContain(clientID);
@@ -173,7 +173,7 @@ public class GroupTest extends BaseTest {
     public void testMenuDefaultGroups() {
         step("API: get all Lista's default groups", () -> {
             List<String> defaultGroupsName =
-                    api.group.getAutomaticGroups()
+                    api.group().getAutomaticGroups()
                             .stream().map(GroupsGetResponse::getName)
                             .collect(Collectors.toList());
 

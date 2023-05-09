@@ -1,8 +1,9 @@
-package com.lista.automation.api.utils;
+package com.lista.automation.api.services;
 
 import com.lista.automation.api.pojo.client.ClientGetResponse;
 import com.lista.automation.api.pojo.group.GroupCreateRequest;
 import com.lista.automation.api.pojo.group.GroupsGetResponse;
+import com.lista.automation.api.utils.RestService;
 import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
@@ -24,7 +25,7 @@ public class GroupsService extends RestService {
 
     @Step("api: group post")
     public int create(GroupCreateRequest group, int expectStatus) {
-        ValidatableResponse response = given().spec(REQ_SPEC_ENCODED).log().all()
+        ValidatableResponse response = given().spec(getREQ_SPEC_ENCODED()).log().all()
                 .formParam("clients", "[]")
                 .formParam("name", group.getName()).log().all()
                 .post().then().log().all().statusCode(expectStatus);
@@ -45,7 +46,7 @@ public class GroupsService extends RestService {
 
     @Step("api: get list of all groups")
     public List<GroupsGetResponse> getAllGroups(int expectStatus) {
-        return given().spec(REQ_SPEC_FORM).log().all()
+        return given().spec(getREQ_SPEC_FORM()).log().all()
                 .get()
                 .then().log().all().statusCode(expectStatus)
                 .extract().body().jsonPath().getList("", GroupsGetResponse.class);

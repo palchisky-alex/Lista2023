@@ -1,5 +1,6 @@
-package com.lista.automation.api.utils;
+package com.lista.automation.api.services;
 
+import com.lista.automation.api.utils.RestService;
 import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 
@@ -20,7 +21,7 @@ public class CalendarSettingsService extends RestService {
 
     @Step("api: put calendar settings")
     public void create(int expectStatus) {
-        given().spec(REQ_SPEC_ENCODED).log().all()
+        given().spec(getREQ_SPEC_ENCODED()).log().all()
                 .formParam("calendar_view", "daily")
                 .when().put().then().log().all().statusCode(expectStatus);
 

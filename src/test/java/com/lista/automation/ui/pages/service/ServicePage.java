@@ -51,7 +51,7 @@ public class ServicePage extends BasePage {
     @Step("submit service")
     public void submitService(Act act) {
         clickBy(getByRole(AriaRole.BUTTON).filter(new Locator.FilterOptions()
-                .setHasText(Pattern.compile(act.name(), Pattern.CASE_INSENSITIVE))), 0, true);
+                .setHasText(Pattern.compile(act.name(), Pattern.CASE_INSENSITIVE))), 0, false);
     }
 
     public enum Act {

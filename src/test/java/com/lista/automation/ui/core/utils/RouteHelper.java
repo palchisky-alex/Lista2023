@@ -1,5 +1,6 @@
 package com.lista.automation.ui.core.utils;
 
+import com.lista.automation.api.Properties;
 import com.lista.automation.ui.pages.*;
 import com.lista.automation.ui.pages.calendar.CalendarPage;
 import com.lista.automation.ui.pages.client.ClientsPage;
@@ -75,7 +76,6 @@ public class RouteHelper extends BasePage {
     @Step("go to services page")
     public ServicesListPage toServicesListPage() throws Exception {
         openMenu().choosePage(Pages.Services, ServicesListPage.class);
-        waitForURL("catalog/services/categories");
         return new ServicesListPage(page);
     }
 

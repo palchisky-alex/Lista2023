@@ -1,4 +1,4 @@
-package com.lista.automation.api.utils;
+package com.lista.automation.api.services;
 
 import com.lista.automation.api.pojo.appointment.AppointmentCreateResponse;
 import com.lista.automation.api.pojo.appointment.AppointmentGetRequest;
@@ -7,6 +7,7 @@ import com.lista.automation.api.pojo.client.ClientCreateRequest;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.lista.automation.api.utils.RestService;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 
@@ -31,7 +32,7 @@ public class AppointmentService extends RestService {
     public String create(ClientCreateRequest client, String clientID, List<String> service, String dateTime, int expectStatus) {
         Response response;
         if(clientID.equals("-1")) {
-            response = given().spec(REQ_SPEC_ENCODED).log().all()
+            response = given().spec(getREQ_SPEC_ENCODED()).log().all()
                     .formParam("start", dateTime)
                     .formParam("client_id", clientID)
                     .formParam("worker_id", 1)
@@ -42,7 +43,7 @@ public class AppointmentService extends RestService {
         }
         else {
 
-            response = given().spec(REQ_SPEC_ENCODED).log().all()
+            response = given().spec(getREQ_SPEC_ENCODED()).log().all()
                     .formParam("start", dateTime)
                     .formParam("client_id", clientID)
                     .formParam("worker_id", 1)
@@ -60,7 +61,7 @@ public class AppointmentService extends RestService {
 
     @Step("api: get appointment by date")
     public List<AppointmentGetRequest> getAppointmentsByDate(String start, String end, int expectStatus) {
-        return given().spec(REQ_SPEC_ENCODED).log().all()
+        return given().spec(getREQ_SPEC_ENCODED()).log().all()
                 .param("start", start)
                 .param("end", end)
                 .param("worker_id", "1")
