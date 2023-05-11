@@ -24,12 +24,12 @@ public class GeneralSettingsService extends RestService {
     }
 
     @Step("api: get services by date")
-    public GeneralSettingsPojo getCalendarSettings(int expectStatus) {
+    public GeneralSettingsPojo getCalendarSettings() {
 
         String response = given().spec(getSPEC_HTML()).log().all()
                 .queryParam("page", "calendar")
                 .get()
-                .then().log().all().assertThat().statusCode(expectStatus)
+                .then().log().all().assertThat().statusCode(200)
                 .extract().body().htmlPath().get().toString();
 
         return extractValue(response);

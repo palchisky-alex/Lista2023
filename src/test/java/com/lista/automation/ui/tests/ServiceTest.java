@@ -97,6 +97,7 @@ public class ServiceTest extends BaseTest {
     @Description("UI: Update service")
     public void testServiceUpdate() {
         step("API: create service", () -> {
+            api.service().deleteAll();
             ServiceCreateRequest simpleService = generateService(true);
             ServiceCreateRequest simpleService2 = generateService(true);
 
@@ -145,5 +146,4 @@ public class ServiceTest extends BaseTest {
             });
         });
     }
-
 }

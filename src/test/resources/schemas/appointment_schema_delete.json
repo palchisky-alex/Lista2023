@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "is_notification_sent": {
+      "type": "boolean"
+    },
+    "is_sms_failed": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "is_notification_sent",
+    "is_sms_failed"
+  ]
+}

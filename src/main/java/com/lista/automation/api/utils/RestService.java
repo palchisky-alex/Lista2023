@@ -52,29 +52,23 @@ public abstract class RestService {
     }
 
     public RequestSpecification getSPEC_ENCODED_ID(int id) {
-        if (REQ_SPEC_ENCODED_ID == null) {
-            REQ_SPEC_ENCODED_ID = new RequestSpecBuilder()
+            return REQ_SPEC_ENCODED_ID = new RequestSpecBuilder()
                     .addHeader("cookie", cookie)
                     .setBaseUri(BASE_URL)
                     .setBasePath(getBasePath() + id)
                     .setContentType(ContentType.URLENC).setConfig(RestAssured.config().encoderConfig(encoderConfig()
                             .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
                     .build();
-        }
-        return REQ_SPEC_ENCODED_ID;
     }
 
     public RequestSpecification getSPEC_ENCODED_PATH(int id, String path, ContentType type) {
-        if (REQ_SPEC_ENCODED_PATH == null) {
-            REQ_SPEC_ENCODED_PATH = new RequestSpecBuilder()
+            return REQ_SPEC_ENCODED_PATH = new RequestSpecBuilder()
                     .addHeader("cookie", cookie)
                     .setBaseUri(BASE_URL)
                     .setBasePath(getBasePath() + id + "/" + path)
                     .setContentType(type).setConfig(RestAssured.config().encoderConfig(encoderConfig()
                             .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
                     .build();
-        }
-        return REQ_SPEC_ENCODED_PATH;
     }
 
     public RequestSpecification getSPEC_HTML() {

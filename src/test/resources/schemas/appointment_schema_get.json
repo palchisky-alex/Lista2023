@@ -9,7 +9,7 @@
           "type": "integer"
         },
         "name": {
-          "type": "string"
+          "type": ["null", "string"]
         },
         "start": {
           "type": "string"
@@ -21,34 +21,34 @@
           "type": "string"
         },
         "phone": {
-          "type": "string"
+          "type": ["null", "string"]
         },
         "note": {
-          "type": "string"
+          "type": ["null", "string"]
         },
         "client_id": {
           "type": "integer"
         },
         "profile_picture": {
-          "type": "string"
+          "type": ["null", "string"]
         },
         "status": {
-          "type": "string"
+          "type": ["null", "string"]
         },
         "permit_ads": {
-          "type": "boolean"
+          "type": ["null", "boolean"]
         },
         "is_unsubscribed": {
-          "type": "boolean"
+          "type": ["null", "boolean"]
         },
         "off_time": {
           "type": "null"
         },
         "address": {
-          "type": "string"
+          "type": ["null", "string"]
         },
         "birthdate": {
-          "type": "string"
+          "type": ["null", "string"]
         },
         "added_date": {
           "type": "string"
@@ -102,7 +102,7 @@
           "type": "boolean"
         },
         "phone_canonical": {
-          "type": "string"
+          "type": ["null", "string"]
         },
         "is_recurring": {
           "type": "boolean"
@@ -130,7 +130,6 @@
         "is_confirmed",
         "services",
         "is_booked_remotely",
-        "phone_canonical",
         "is_recurring"
       ]
     }

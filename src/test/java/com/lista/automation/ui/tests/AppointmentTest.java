@@ -47,20 +47,19 @@ public class AppointmentTest extends BaseTest {
                         .backToSettingsPage();
 
                 step("API: get calendar settings", () -> {
-                    GeneralSettingsPojo generalSettings = api.generalSettingsService().getCalendarSettings(200);
+                    GeneralSettingsPojo generalSettings = api.generalSettingsService().getCalendarSettings();
                     String from = getCalendarTimeRange("From", generalSettings);
                     String to = getCalendarTimeRange("To", generalSettings);
 
                     step("API: delete all appointments", () -> {
-                        api.appointment().deleteAll(from, to, 200);
+                        api.appointment().deleteAll(from, to);
 
                         step("API: create client & service", () -> {
                             ClientCreateRequest simpleClient = generateClient(true);
                             ServiceCreateRequest simpleService = generateService(true);
 
-                            String clientID = api.client().create(simpleClient, 201);
-                            String serviceID = api.service().create(simpleService, 201);
-                            List<ServiceCreateRequest> serviceByID = api.service().getServiceByID(serviceID, 200);
+                            api.client().create(simpleClient, 201);
+                            api.service().create(simpleService, 201);
 
                             step("UI: create appointment", () -> {
                                 calendar.routing()
@@ -73,7 +72,7 @@ public class AppointmentTest extends BaseTest {
                                         .save();
 
                                 step("API: get appointment", () -> {
-                                    List<AppointmentGetRequest> appointmentsByDate = api.appointment().getAppointmentsByDate(from, to, 200);
+                                    List<AppointmentGetRequest> appointmentsByDate = api.appointment().getAppointmentsByDate(from, to);
                                     LocalTime time = LocalTime.parse(appointmentTime, DateTimeFormatter.ofPattern("HH:mm"));
                                     LocalTime modifiedTime = time.plusMinutes(simpleService.getServiceDuration());
                                     String appointmentEND = modifiedTime.format(DateTimeFormatter.ofPattern("HH:mm"));
@@ -128,12 +127,12 @@ public class AppointmentTest extends BaseTest {
                         .backToSettingsPage();
 
                 step("API: get calendar settings", () -> {
-                    GeneralSettingsPojo generalSettings = api.generalSettingsService().getCalendarSettings(200);
+                    GeneralSettingsPojo generalSettings = api.generalSettingsService().getCalendarSettings();
                     String from = getCalendarTimeRange("From", generalSettings);
                     String to = getCalendarTimeRange("To", generalSettings);
 
                     step("API: delete all appointments", () -> {
-                        api.appointment().deleteAll(from, to, 200);
+                        api.appointment().deleteAll(from, to);
 
                         step("UI: create appointment", () -> {
                             calendar.routing()
@@ -145,7 +144,7 @@ public class AppointmentTest extends BaseTest {
                                     .save();
 
                             step("API: get appointment", () -> {
-                                List<AppointmentGetRequest> appointmentsByDate = api.appointment().getAppointmentsByDate(from, to, 200);
+                                List<AppointmentGetRequest> appointmentsByDate = api.appointment().getAppointmentsByDate(from, to);
 
                                 step("API: assert created appointment", () -> {
                                     assertThat(appointmentsByDate)
@@ -185,13 +184,12 @@ public class AppointmentTest extends BaseTest {
                         .backToSettingsPage();
 
                 step("API: get calendar settings", () -> {
-                    GeneralSettingsPojo generalSettings = api.generalSettingsService().getCalendarSettings(200);
+                    GeneralSettingsPojo generalSettings = api.generalSettingsService().getCalendarSettings();
                     String from = getCalendarTimeRange("From", generalSettings);
                     String to = getCalendarTimeRange("To", generalSettings);
 
-
                     step("API: delete all appointments", () -> {
-                        api.appointment().deleteAll(from, to, 200);
+                        api.appointment().deleteAll(from, to);
 
                         step("API: generate client data", () -> {
                             ClientCreateRequest simpleClient = generateClient(true);
@@ -207,7 +205,7 @@ public class AppointmentTest extends BaseTest {
                                         .save();
 
                                 step("API: get appointment", () -> {
-                                    List<AppointmentGetRequest> appointmentsByDate = api.appointment().getAppointmentsByDate(from, to, 200);
+                                    List<AppointmentGetRequest> appointmentsByDate = api.appointment().getAppointmentsByDate(from, to);
 
                                     step("API: assert created appointment", () -> {
                                         assertThat(appointmentsByDate)
@@ -248,29 +246,29 @@ public class AppointmentTest extends BaseTest {
                         .backToSettingsPage();
 
                 step("API: get calendar settings", () -> {
-                    GeneralSettingsPojo generalSettings = api.generalSettingsService().getCalendarSettings(200);
+                    GeneralSettingsPojo generalSettings = api.generalSettingsService().getCalendarSettings();
                     String from = getCalendarTimeRange("From", generalSettings);
                     String to = getCalendarTimeRange("To", generalSettings);
 
                     step("API: delete all appointments in day of test", () -> {
-                        api.appointment().deleteAll(from, to, 200);
+                        api.appointment().deleteAll(from, to);
 
                         step("API: create client & service", () -> {
                             ClientCreateRequest simpleClient = generateClient(true);
                             ServiceCreateRequest simpleService = generateService(true);
 
                             String clientID = api.client().create(simpleClient, 201);
-                            String serviceID = api.service().create(simpleService, 201);
+                            int serviceID = api.service().create(simpleService, 201);
 
                             step("API: get Service HTML and convert to Service POJO class", () -> {
                                 List<ServiceCreateRequest> serviceByID = api.service().getServiceByID(serviceID, 200);
                                 List<String> serviceJsonList = api.service().convertServiceToJson(serviceByID);
 
                                 step("API: create appointment", () -> {
-                                    api.appointment().create(simpleClient, clientID, serviceJsonList, dayOfTest + appointmentTime, 201);
+                                    api.appointment().create(simpleClient, clientID, serviceJsonList, dayOfTest + appointmentTime);
 
                                     step("API: get appointment ID", () -> {
-                                        List<AppointmentGetRequest> appointments = api.appointment().getAppointmentsByDate(from, to, 200);
+                                        List<AppointmentGetRequest> appointments = api.appointment().getAppointmentsByDate(from, to);
                                         Integer appID = appointments.stream()
                                                 .filter(app -> app.getStart().contains(appointmentTime))
                                                 .map(AppointmentGetRequest::getAppointmentID)
@@ -283,7 +281,7 @@ public class AppointmentTest extends BaseTest {
                                                     .configureAppointment(AppointmentPage.ACTION.DELETE);
 
                                             step("API: get appointment from day of test and verify deletion", () -> {
-                                                List<Integer> appointmentIDs = api.appointment().getAppointmentsByDate(from, to, 200).stream()
+                                                List<Integer> appointmentIDs = api.appointment().getAppointmentsByDate(from, to).stream()
                                                         .map(AppointmentGetRequest::getAppointmentID)
                                                         .collect(Collectors.toList());
 
@@ -325,18 +323,18 @@ public class AppointmentTest extends BaseTest {
                         .backToSettingsPage();
 
                 step("API: get calendar settings", () -> {
-                    GeneralSettingsPojo generalSettings = api.generalSettingsService().getCalendarSettings(200);
+                    GeneralSettingsPojo generalSettings = api.generalSettingsService().getCalendarSettings();
                     String from = getCalendarTimeRange("From", generalSettings);
                     String to = getCalendarTimeRange("To", generalSettings);
 
                     step("API: delete all appointments", () -> {
-                        api.appointment().deleteAll(from, to, 200);
+                        api.appointment().deleteAll(from, to);
 
                         step("API: create empty appointment", () -> {
-                            api.appointment().create(simpleClient, "-1", new ArrayList<>(), dayOfTest + appointmentTime, 201);
+                            api.appointment().create(simpleClient, "-1", new ArrayList<>(), dayOfTest + appointmentTime);
 
                             step("API: get appointment IDs before dragging", () -> {
-                                List<AppointmentGetRequest> appointmentsByDate = api.appointment().getAppointmentsByDate(from, to, 200);
+                                List<AppointmentGetRequest> appointmentsByDate = api.appointment().getAppointmentsByDate(from, to);
 
                                 Integer appID = appointmentsByDate.stream()
                                         .filter(app -> app.getStart().contains(appointmentTime))
@@ -354,7 +352,7 @@ public class AppointmentTest extends BaseTest {
                                         calendar.routing().toCalendarPage().dragAndDropSlot(appID, appointmentTime2);
 
                                         step("API: get appointment after dragging", () -> {
-                                            List<AppointmentGetRequest> appointmentsByDateAfterDragging = api.appointment().getAppointmentsByDate(from, to, 200);
+                                            List<AppointmentGetRequest> appointmentsByDateAfterDragging = api.appointment().getAppointmentsByDate(from, to);
 
                                             step("API: assert dragged appointment", () -> {
                                                 assertThat(appointmentsByDateAfterDragging)

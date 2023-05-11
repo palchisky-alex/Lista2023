@@ -12,8 +12,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class AppointmentCreateResponse {
-
+public class AppointmentDeleteResponse {
     @JsonProperty("is_notification_sent")
     private boolean isNotificationSent;
     @JsonProperty("is_sms_failed")

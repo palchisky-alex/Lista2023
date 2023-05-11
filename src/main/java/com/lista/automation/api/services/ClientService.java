@@ -1,5 +1,6 @@
 package com.lista.automation.api.services;
 
+import com.lista.automation.api.Properties;
 import com.lista.automation.api.assert_response.VerifyClientResponse;
 import com.lista.automation.api.pojo.client.ClientCreateRequest;
 import com.lista.automation.api.pojo.client.ClientGetResponse;
@@ -7,6 +8,8 @@ import com.lista.automation.api.utils.RestService;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import static io.restassured.RestAssured.given;
@@ -50,22 +53,7 @@ public class ClientService extends RestService {
     }
 
     @Step("api: get client by")
-    public ClientGetResponse find(String findBy, int expectStatus) {
-        List<ClientGetResponse> clientList = given().spec(getREQ_SPEC_FORM()).log().all()
-                .param("limit", 40)
-                .param("offset", 0)
-                .param("q", findBy)
-                .get()
-                .then().log().all().statusCode(expectStatus)
-                .extract().body().jsonPath().getList("", ClientGetResponse.class);
-
-        if (clientList.isEmpty()) {
-            throw new RuntimeException("Client ['"+findBy+"'] not found - list of clients is empty");
-        }
-        return clientList.get(0);
-    }
-    @Step("api: get client by")
-    public ClientGetResponse find2(String findBy) {
+    public ClientGetResponse find(String findBy) {
         Response response= given().spec(getREQ_SPEC_FORM()).log().all()
                 .param("limit", 40)
                 .param("offset", 0)
@@ -75,8 +63,13 @@ public class ClientService extends RestService {
 
         VerifyClientResponse.assertThat(response)
                 .statusCodeIs(200)
-                .matchesSchema("schemas/client_schema.json")
+                .matchesSchema(Properties.getProp().schemaClient())
                 .assertAll();
+
+        List<ClientGetResponse> clientList = response.then().extract().body().jsonPath().getList("", ClientGetResponse.class);
+        if (clientList.isEmpty()) {
+            throw new RuntimeException("Client ['"+findBy+"'] not found - list of clients is empty");
+        }
 
         return response.then().extract().body().jsonPath().getList("", ClientGetResponse.class).get(0);
     }

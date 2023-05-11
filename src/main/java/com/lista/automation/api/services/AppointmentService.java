@@ -1,6 +1,8 @@
 package com.lista.automation.api.services;
 
-import com.lista.automation.api.pojo.appointment.AppointmentCreateResponse;
+import com.lista.automation.api.Properties;
+import com.lista.automation.api.assert_response.VerifyAppointmentRequest;
+import com.lista.automation.api.pojo.appointment.AppointmentDeleteResponse;
 import com.lista.automation.api.pojo.appointment.AppointmentGetRequest;
 import com.lista.automation.api.pojo.client.ClientCreateRequest;
 
@@ -29,7 +31,7 @@ public class AppointmentService extends RestService {
     }
 
     @Step("api: post appointment")
-    public String create(ClientCreateRequest client, String clientID, List<String> service, String dateTime, int expectStatus) {
+    public String create(ClientCreateRequest client, String clientID, List<String> service, String dateTime) {
         Response response;
         if(clientID.equals("-1")) {
             response = given().spec(getREQ_SPEC_ENCODED()).log().all()
@@ -56,35 +58,47 @@ public class AppointmentService extends RestService {
                     .when().post();
         }
 
-        return response.then().statusCode(expectStatus).extract().body().htmlPath().get().toString();
+        return response.then().statusCode(201).extract().body().htmlPath().get().toString();
     }
 
     @Step("api: get appointment by date")
-    public List<AppointmentGetRequest> getAppointmentsByDate(String start, String end, int expectStatus) {
-        return given().spec(getREQ_SPEC_ENCODED()).log().all()
+    public List<AppointmentGetRequest> getAppointmentsByDate(String start, String end) {
+         Response response = given().spec(getREQ_SPEC_ENCODED()).log().all()
                 .param("start", start)
                 .param("end", end)
                 .param("worker_id", "1")
                 .get()
-                .then().log().all().statusCode(expectStatus)
-                .extract().body().jsonPath().getList("", AppointmentGetRequest.class);
+                .then().log().all().extract().response();
+
+        VerifyAppointmentRequest.assertThat(response)
+                .statusCodeIs(200)
+                .matchesSchema(Properties.getProp().schemaAppointmentGet())
+                .assertAll();
+
+        return response.then().extract().body().jsonPath().getList("", AppointmentGetRequest.class);
     }
 
     @Step("api: delete all today's appointments")
-    public void deleteAll(String start, String end, int expectStatus)  {
-        List<AppointmentGetRequest> appointmentList = getAppointmentsByDate(start, end, 200);
+    public void deleteAll(String start, String end)  {
+        List<AppointmentGetRequest> appointmentList = getAppointmentsByDate(start, end);
 
         List<Integer> appointmentIDs = appointmentList.stream()
                 .map(AppointmentGetRequest::getAppointmentID).collect(Collectors.toList());
 
-
         for (int id : appointmentIDs) {
-            AppointmentCreateResponse response = given().spec(getSPEC_ENCODED_ID_slash(id)).log().all()
-                    .delete().then().log().all().statusCode(expectStatus)
-                    .extract().body().jsonPath().getObject("", AppointmentCreateResponse.class);
+            Response response = given().spec(getSPEC_ENCODED_ID_slash(id)).log().all()
+                    .delete().then().log().all()
+                    .extract().response();
+
+            VerifyAppointmentRequest.assertThat(response)
+                    .statusCodeIs(200)
+                    .matchesSchema(Properties.getProp().schemaAppointmentDelete())
+                    .assertAll();
+
+            AppointmentDeleteResponse deleteResponse = response.then().extract().body().as(AppointmentDeleteResponse.class);
 
             await().atMost(5, SECONDS).untilAsserted(() ->
-                    assertThat(response).as("delete appointment response")
+                    assertThat(deleteResponse).as("delete appointment response")
                             .extracting("isNotificationSent", "isSmsFailed")
                             .contains(false, false));
 

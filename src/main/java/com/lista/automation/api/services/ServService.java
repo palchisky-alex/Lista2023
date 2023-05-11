@@ -2,6 +2,7 @@ package com.lista.automation.api.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lista.automation.api.pojo.group.GroupsGetResponse;
 import com.lista.automation.api.pojo.service.ServiceCreateRequest;
 import com.lista.automation.api.utils.RestService;
 import io.qameta.allure.Step;
@@ -19,11 +20,11 @@ public class ServService extends RestService {
 
     @Override
     protected String getBasePath() {
-        return "catalog/services";
+        return "catalog/services/";
     }
 
     @Step("api: post service")
-    public String create(ServiceCreateRequest simpleService, int expectStatus) {
+    public int create(ServiceCreateRequest simpleService, int expectStatus) {
         int categoryID = Integer.parseInt(new CategoryService(getCookie()).createCategory(simpleService));
 
         Response response = given().spec(getREQ_SPEC_ENCODED()).log().all()
@@ -34,13 +35,15 @@ public class ServService extends RestService {
                 .formParam("category_id", categoryID)
                 .when().post();
 
-        return response.then().statusCode(expectStatus).extract().body().htmlPath().get().toString();
+        return Integer.parseInt(response.then().statusCode(expectStatus).extract().body().htmlPath().get().toString());
     }
     @Step("api: get services")
     public List<ServiceCreateRequest> getServiceList(int expectStatus) {
         Response response = given().spec(getREQ_SPEC_ENCODED()).log().all().get();
+
         List<ServiceCreateRequest> services = response.then().log().all().statusCode(expectStatus)
                 .extract().body().jsonPath().getList("", ServiceCreateRequest.class);
+
         if (services.isEmpty()) {
             throw new RuntimeException("Services were not found");
         }
@@ -48,12 +51,13 @@ public class ServService extends RestService {
                 .extract().body().jsonPath().getList("", ServiceCreateRequest.class);
     }
     @Step("api: get service by ID")
-    public List<ServiceCreateRequest> getServiceByID(String serviceID, int expectStatus) {
+    public List<ServiceCreateRequest> getServiceByID(int serviceID, int expectStatus) {
         Response response = given().spec(getREQ_SPEC_ENCODED()).log().all().get();
+
         List<ServiceCreateRequest> services = response.then().log().all().statusCode(expectStatus)
                 .extract().body().jsonPath().getList("", ServiceCreateRequest.class);
 
-        List<ServiceCreateRequest> service = services.stream().filter(s -> s.getServiceID().equals(serviceID)).collect(Collectors.toList());
+        List<ServiceCreateRequest> service = services.stream().filter(s -> s.getServiceID() == serviceID).collect(Collectors.toList());
         if (service.isEmpty()) {
             throw new RuntimeException("Can't find service by ID = '"+serviceID+"'");
         }
@@ -84,6 +88,20 @@ public class ServService extends RestService {
         List<String>serviceJsonList = new ArrayList<>();
         serviceJsonList.add(jsonString);
         return serviceJsonList;
+    }
+    public void deleteAll() {
+        List<ServiceCreateRequest> serviceList = getServiceList(200);
+        List<Integer> serviceIDs = serviceList.stream().map(ServiceCreateRequest::getServiceID).collect(Collectors.toList());
+
+//        serviceIDs.forEach(s-> {
+//            given().spec(getSPEC_ENCODED_ID(s)).log().all()
+//                    .delete().then().log().all().statusCode(204);
+//        });
+
+        for(int i: serviceIDs) {
+            given().spec(getSPEC_ENCODED_ID(i)).log().all()
+                    .delete().then().log().all().statusCode(204);
+        }
     }
 
     public static class CategoryService extends RestService {

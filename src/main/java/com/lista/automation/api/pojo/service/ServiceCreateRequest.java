@@ -20,7 +20,7 @@ import uk.co.jemos.podam.common.PodamStrategyValue;
 public class ServiceCreateRequest {
 
     @JsonProperty("id")
-    private String serviceID;
+    private int serviceID;
 
     @JsonProperty("name")
     @PodamStrategyValue(LongNameStrategy.class)

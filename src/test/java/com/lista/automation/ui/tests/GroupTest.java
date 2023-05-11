@@ -110,7 +110,7 @@ public class GroupTest extends BaseTest {
             String clientID = api.client().create(simpleClient, 201);
 
             step("API: check that the simple client has been created", () -> {
-                api.client().find(simpleClient.getPhone().replaceAll("\\D+", ""), 200);
+                api.client().find(simpleClient.getPhone().replaceAll("\\D+", ""));
             });
 
             step("API: generate simple group", () -> {

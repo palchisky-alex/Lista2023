@@ -20,9 +20,9 @@ import java.util.List;
 @EqualsAndHashCode
 public class AppointmentGetRequest {
 
-        private Object offTime;
-        private Object note;
-        private Object address;
+        private String offTime;
+        private String note;
+        private String address;
         private String birthdate;
         private String totalPrice;
         private String addedDate;
@@ -35,8 +35,8 @@ public class AppointmentGetRequest {
         private List<ServicesList> services;
         @JsonProperty("client_id")
         private int clientId;
-        private Object thankingSmsId;
-        private Object reminderSmsId;
+        private String thankingSmsId;
+        private String reminderSmsId;
         private String phone;
         @JsonProperty("name")
         private String clientName;
@@ -46,6 +46,7 @@ public class AppointmentGetRequest {
         private String phoneCanonical;
         private boolean isRecurring;
         private String status;
+        private String phone_canonical;
 
 
         @Data

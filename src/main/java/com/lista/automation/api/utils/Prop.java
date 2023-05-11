@@ -55,4 +55,10 @@ public interface Prop extends Config {
     @Key("path.image2")
     String imagePath2();
 
+    @Key("path.schema.client")
+    String schemaClient();
+    @Key("path.schema.appointment.get")
+    String schemaAppointmentGet();
+    @Key("path.schema.appointment.delete")
+    String schemaAppointmentDelete();
 }
