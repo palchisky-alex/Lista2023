@@ -1,0 +1,1 @@
+locator/text: Locator@.gender_item:not(.gender_active) >> nth=1|
