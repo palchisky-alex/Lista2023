@@ -2,6 +2,7 @@ package com.lista.automation.ui.core.utils;
 
 import com.lista.automation.api.Properties;
 import com.lista.automation.api.pojo.appointment.AppointmentCreateRequest;
+import com.lista.automation.api.pojo.general_settings.GeneralSettingsPojo;
 import com.lista.automation.api.pojo.service.ServiceCreateRequest;
 import com.lista.automation.api.pojo.client.ClientCreateRequest;
 import com.lista.automation.api.pojo.group.GroupCreateRequest;
@@ -185,11 +186,22 @@ public class BasePage {
             roundedTime = now.truncatedTo(ChronoUnit.DAYS);
         }
         else {
-            return "no time";
+            return "wrong time";
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return roundedTime.format(formatter);
+    }
+    public static String getCalendarTimeRange(String rangeTime ,GeneralSettingsPojo calendarSettings) {
+        String range = "00:00:00";
+        String dayOfTest = getCurrentTime("yyyy-MM-dd");
+        if(rangeTime.equals("From")) {
+            range = dayOfTest + "T" + calendarSettings.getShowCalendarFrom() + ":00";
+
+        } else if(rangeTime.equals("To")) {
+            range = dayOfTest + "T" + calendarSettings.getShowCalendarTo() + ":00";
+        }
+        return range;
     }
 
     @Step("generate data for client")

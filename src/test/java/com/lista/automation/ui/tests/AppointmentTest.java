@@ -33,6 +33,8 @@ public class AppointmentTest extends BaseTest {
     @Description("Create appointment in UI")
     public void testCreateAppointment() {
         String appointmentTime = "12:00";
+        String dayOfTest = getCurrentTime("yyyy-MM-dd");
+
         step("Preconditions: change calendar view -> get calendar settings ->" +
                 " delete all appointments -> create client & service", () -> {
 
@@ -46,9 +48,8 @@ public class AppointmentTest extends BaseTest {
 
                 step("API: get calendar settings", () -> {
                     GeneralSettingsPojo generalSettings = api.generalSettingsService().getCalendarSettings(200);
-                    String dayOfTest = getCurrentTime("yyyy-MM-dd");
-                    String from = dayOfTest + "T" + generalSettings.getShowCalendarFrom();
-                    String to = dayOfTest + "T" + generalSettings.getShowCalendarTo();
+                    String from = getCalendarTimeRange("From", generalSettings);
+                    String to = getCalendarTimeRange("To", generalSettings);
 
                     step("API: delete all appointments", () -> {
                         api.appointment().deleteAll(from, to, 200);
@@ -113,6 +114,8 @@ public class AppointmentTest extends BaseTest {
     @Description("Create empty appointment in UI")
     public void testCreateEmptyAppointment() {
         String appointmentTime = "12:30";
+        String dayOfTest = getCurrentTime("yyyy-MM-dd");
+
         step("Preconditions: change calendar view -> get calendar settings ->" +
                 " delete all appointments -> create client & service", () -> {
 
@@ -126,9 +129,8 @@ public class AppointmentTest extends BaseTest {
 
                 step("API: get calendar settings", () -> {
                     GeneralSettingsPojo generalSettings = api.generalSettingsService().getCalendarSettings(200);
-                    String dayOfTest = getCurrentTime("yyyy-MM-dd");
-                    String from = dayOfTest + "T" + generalSettings.getShowCalendarFrom();
-                    String to = dayOfTest + "T" + generalSettings.getShowCalendarTo();
+                    String from = getCalendarTimeRange("From", generalSettings);
+                    String to = getCalendarTimeRange("To", generalSettings);
 
                     step("API: delete all appointments", () -> {
                         api.appointment().deleteAll(from, to, 200);
@@ -169,6 +171,8 @@ public class AppointmentTest extends BaseTest {
     @Description("Add new client during appointment creation in UI")
     public void testAddClientDuringAppointmentCreation() {
         String appointmentTime = "12:30";
+        String dayOfTest = getCurrentTime("yyyy-MM-dd");
+
         step("Preconditions: change calendar view -> get calendar settings ->" +
                 " delete all appointments -> create client & service", () -> {
 
@@ -182,9 +186,9 @@ public class AppointmentTest extends BaseTest {
 
                 step("API: get calendar settings", () -> {
                     GeneralSettingsPojo generalSettings = api.generalSettingsService().getCalendarSettings(200);
-                    String dayOfTest = getCurrentTime("yyyy-MM-dd");
-                    String from = dayOfTest + "T" + generalSettings.getShowCalendarFrom();
-                    String to = dayOfTest + "T" + generalSettings.getShowCalendarTo();
+                    String from = getCalendarTimeRange("From", generalSettings);
+                    String to = getCalendarTimeRange("To", generalSettings);
+
 
                     step("API: delete all appointments", () -> {
                         api.appointment().deleteAll(from, to, 200);
@@ -227,8 +231,9 @@ public class AppointmentTest extends BaseTest {
     @Test(dataProvider = "calendar_view")
     @Description("Change calendar view and delete appointment in UI")
     public void testDeleteAppointment(CalendarView views, ViewStartOn viewStartOn, String cellDuration) {
-
         String appointmentTime = "12:30";
+        String dayOfTest = getCurrentTime("yyyy-MM-dd") + "T";
+
         step("Preconditions: change calendar view -> create client & service " +
                 "-> create appointment -> delete appointment", () -> {
 
@@ -244,9 +249,8 @@ public class AppointmentTest extends BaseTest {
 
                 step("API: get calendar settings", () -> {
                     GeneralSettingsPojo generalSettings = api.generalSettingsService().getCalendarSettings(200);
-                    String dayOfTest = getCurrentTime("yyyy-MM-dd") + "T";
-                    String from = dayOfTest + generalSettings.getShowCalendarFrom();
-                    String to = dayOfTest + generalSettings.getShowCalendarTo();
+                    String from = getCalendarTimeRange("From", generalSettings);
+                    String to = getCalendarTimeRange("To", generalSettings);
 
                     step("API: delete all appointments in day of test", () -> {
                         api.appointment().deleteAll(from, to, 200);
@@ -307,6 +311,7 @@ public class AppointmentTest extends BaseTest {
     public void testDragAndDropAppointment() {
         String appointmentTime = "12:00";
         String appointmentTime2 = "16:00";
+        String dayOfTest = getCurrentTime("yyyy-MM-dd");
 
         step("Preconditions: change calendar view -> get calendar settings ->" +
                 "delete all appointments -> create client & service", () -> {
@@ -321,9 +326,8 @@ public class AppointmentTest extends BaseTest {
 
                 step("API: get calendar settings", () -> {
                     GeneralSettingsPojo generalSettings = api.generalSettingsService().getCalendarSettings(200);
-                    String dayOfTest = getCurrentTime("yyyy-MM-dd");
-                    String from = dayOfTest + "T" + generalSettings.getShowCalendarFrom();
-                    String to = dayOfTest + "T" + generalSettings.getShowCalendarTo();
+                    String from = getCalendarTimeRange("From", generalSettings);
+                    String to = getCalendarTimeRange("To", generalSettings);
 
                     step("API: delete all appointments", () -> {
                         api.appointment().deleteAll(from, to, 200);

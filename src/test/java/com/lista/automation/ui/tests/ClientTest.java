@@ -29,7 +29,7 @@ public class ClientTest extends BaseTest {
                 String phoneNumber = simpleClient.getPhone().replaceAll("\\D+", "");
 
                 api.client().create(simpleClient, 201);
-                ClientGetResponse client = api.client().find(phoneNumber, 200);
+                ClientGetResponse client = api.client().find2(phoneNumber);
 
                 step("API: check that the simple client has been created", () -> {
                     assertThat(client.getName()).isEqualTo(simpleClient.getName());
