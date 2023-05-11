@@ -1,5 +1,6 @@
 package com.lista.automation.api.assert_response;
 
+import com.lista.automation.api.Properties;
 import com.lista.automation.api.pojo.service.ServiceCreateRequest;
 import io.restassured.response.Response;
 import org.assertj.core.api.SoftAssertions;

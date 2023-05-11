@@ -11,9 +11,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-
 import java.util.List;
-
 import static com.lista.automation.ui.core.utils.BasePage.generateService;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;

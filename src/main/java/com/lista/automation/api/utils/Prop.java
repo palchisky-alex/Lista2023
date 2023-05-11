@@ -54,4 +54,5 @@ public interface Prop extends Config {
     String imagePath();
     @Key("path.image2")
     String imagePath2();
+
 }

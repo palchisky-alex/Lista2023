@@ -1,0 +1,138 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "items": [
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "start": {
+          "type": "string"
+        },
+        "end": {
+          "type": "string"
+        },
+        "total_price": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        },
+        "client_id": {
+          "type": "integer"
+        },
+        "profile_picture": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "permit_ads": {
+          "type": "boolean"
+        },
+        "is_unsubscribed": {
+          "type": "boolean"
+        },
+        "off_time": {
+          "type": "null"
+        },
+        "address": {
+          "type": "string"
+        },
+        "birthdate": {
+          "type": "string"
+        },
+        "added_date": {
+          "type": "string"
+        },
+        "reminder_sms_id": {
+          "type": "null"
+        },
+        "thanking_sms_id": {
+          "type": "null"
+        },
+        "is_confirmed": {
+          "type": "boolean"
+        },
+        "services": {
+          "type": "array",
+          "items": [
+            {
+              "type": "object",
+              "properties": {
+                "color": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": "string"
+                },
+                "duration": {
+                  "type": "integer"
+                },
+                "count": {
+                  "type": "integer"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "color",
+                "price",
+                "duration",
+                "count",
+                "id",
+                "name"
+              ]
+            }
+          ]
+        },
+        "is_booked_remotely": {
+          "type": "boolean"
+        },
+        "phone_canonical": {
+          "type": "string"
+        },
+        "is_recurring": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "start",
+        "end",
+        "total_price",
+        "phone",
+        "note",
+        "client_id",
+        "profile_picture",
+        "status",
+        "permit_ads",
+        "is_unsubscribed",
+        "off_time",
+        "address",
+        "birthdate",
+        "added_date",
+        "reminder_sms_id",
+        "thanking_sms_id",
+        "is_confirmed",
+        "services",
+        "is_booked_remotely",
+        "phone_canonical",
+        "is_recurring"
+      ]
+    }
+  ]
+}

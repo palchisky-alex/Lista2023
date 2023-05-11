@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "items": [
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "profile_image": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "permit_ads": {
+          "type": "boolean"
+        },
+        "is_unsubscribed": {
+          "type": "boolean"
+        },
+        "last_appointment": {
+          "type": "null"
+        },
+        "phone_canonical": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "phone",
+        "profile_image",
+        "address",
+        "status",
+        "permit_ads",
+        "is_unsubscribed",
+        "last_appointment",
+        "phone_canonical"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

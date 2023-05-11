@@ -65,20 +65,20 @@ public class ClientService extends RestService {
         return clientList.get(0);
     }
     @Step("api: get client by")
-    public Response find2(String findBy) {
+    public List<ClientGetResponse> find2(String findBy) {
         Response response= given().spec(getREQ_SPEC_FORM()).log().all()
                 .param("limit", 40)
                 .param("offset", 0)
                 .param("q", findBy)
                 .get()
-                .then().extract().response();
+                .then().log().all().extract().response();
 
         VerifyClientResponse.assertThat(response)
                 .statusCodeIs(200)
                 .matchesSchema("schemas/client_schema.json")
                 .assertAll();
 
-        return response;
+        return response.then().extract().body().jsonPath().getList("", ClientGetResponse.class);
     }
 
     @Step("api: delete client by id")
