@@ -1,10 +1,12 @@
 package com.lista.automation.api.services;
 
+import com.lista.automation.api.assert_response.VerifyClientResponse;
 import com.lista.automation.api.pojo.client.ClientCreateRequest;
 import com.lista.automation.api.pojo.client.ClientGetResponse;
 import com.lista.automation.api.utils.RestService;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import static io.restassured.RestAssured.given;
@@ -61,6 +63,22 @@ public class ClientService extends RestService {
             throw new RuntimeException("Client ['"+findBy+"'] not found - list of clients is empty");
         }
         return clientList.get(0);
+    }
+    @Step("api: get client by")
+    public Response find2(String findBy) {
+        Response response= given().spec(getREQ_SPEC_FORM()).log().all()
+                .param("limit", 40)
+                .param("offset", 0)
+                .param("q", findBy)
+                .get()
+                .then().extract().response();
+
+        VerifyClientResponse.assertThat(response)
+                .statusCodeIs(200)
+                .matchesSchema("schemas/client_schema.json")
+                .assertAll();
+
+        return response;
     }
 
     @Step("api: delete client by id")

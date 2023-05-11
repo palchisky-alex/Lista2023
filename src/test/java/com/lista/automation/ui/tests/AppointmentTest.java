@@ -1,5 +1,6 @@
 package com.lista.automation.ui.tests;
 
+import com.lista.automation.api.TestListener;
 import com.lista.automation.api.pojo.appointment.AppointmentGetRequest;
 import com.lista.automation.api.pojo.client.ClientCreateRequest;
 import com.lista.automation.api.pojo.general_settings.GeneralSettingsPojo;
@@ -12,6 +13,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -24,6 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Epic("Appointment UI GRUD")
 @Feature("Appointment")
+@Listeners(TestListener.class)
 public class AppointmentTest extends BaseTest {
 
     @Test

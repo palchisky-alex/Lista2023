@@ -1,14 +1,15 @@
 package com.lista.automation.ui.tests;
 
+import com.lista.automation.api.TestListener;
 import com.lista.automation.api.pojo.service.ServiceCreateRequest;
 import com.lista.automation.ui.core.BaseTest;
-import com.lista.automation.ui.core.utils.CalendarView;
 import com.lista.automation.ui.pages.service.ServicePage;
 import com.lista.automation.ui.pages.service.ServicesListPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import static org.assertj.core.api.Assertions.tuple;
 @Story("Verify services")
 @Epic("Service UI GRUD")
 @Feature("Service")
+@Listeners(TestListener.class)
 public class ServiceTest extends BaseTest {
 
     @Test

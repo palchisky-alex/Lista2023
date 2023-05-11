@@ -1,27 +1,25 @@
 package com.lista.automation.api;
 
 import com.lista.automation.api.pojo.client.ClientCreateRequest;
-import com.lista.automation.api.pojo.client.ClientGetResponse;
-import com.lista.automation.api.pojo.service.ServiceCreateRequest;
-import com.lista.automation.api.utils.DataGenerator;
-import com.lista.automation.api.utils.RestWrapper;
-import io.qameta.allure.Description;
-import io.qameta.allure.Owner;
+import com.lista.automation.ui.core.BaseTest;
+import io.restassured.response.Response;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static com.lista.automation.ui.core.utils.BasePage.generateClient;
+import static io.restassured.RestAssured.given;
 
 @Listeners(TestListener.class)
-public class RestTest {
-    private static RestWrapper api;
+public class RestTest extends BaseTest {
+
+    void createService() {
+        ClientCreateRequest simpleClient = generateClient(true);
+        String phoneNumber = simpleClient.getPhone().replaceAll("\\D+", "");
+        Response response = api.client().find2(phoneNumber);
 
 
 
-    @Owner("Alex")
-    @Description("Create client and delete")
 
-    void createClient() {
 //        ServiceCreateRequest serviceData = ServiceCreateRequest.getInstance();
 //        serviceData.setPrice(2).setServiceDuration(3);
 //

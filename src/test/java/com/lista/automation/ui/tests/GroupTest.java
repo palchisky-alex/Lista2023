@@ -3,6 +3,8 @@ package com.lista.automation.ui.tests;
 import static com.lista.automation.ui.core.utils.BasePage.*;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import com.lista.automation.api.TestListener;
 import com.lista.automation.api.pojo.client.ClientCreateRequest;
 import com.lista.automation.api.pojo.client.ClientGetResponse;
 import com.lista.automation.api.pojo.group.GroupCreateRequest;
@@ -14,6 +16,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -22,6 +25,7 @@ import java.util.stream.Collectors;
 @Story("Verify groups")
 @Epic("Group UI GRUD")
 @Feature("Group")
+@Listeners(TestListener.class)
 public class GroupTest extends BaseTest {
 
     @Test
