@@ -12,6 +12,8 @@ import io.qameta.allure.Story;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import java.util.List;
+
+import static com.lista.automation.api.authentication.Scope.JUNIOR;
 import static com.lista.automation.ui.core.utils.BasePage.generateService;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,7 +28,6 @@ public class ServiceTest extends BaseTest {
     @Test
     @Description("UI: Delete service")
     public void testServiceDelete() {
-
         step("API: generate service", () -> {
             ServiceCreateRequest simpleService = generateService(true);
             api.service().create(simpleService, 201);

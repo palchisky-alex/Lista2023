@@ -2,8 +2,6 @@ package com.lista.automation.api.services;
 
 import com.lista.automation.api.utils.RestService;
 import io.qameta.allure.Step;
-import io.restassured.response.ValidatableResponse;
-
 import static io.restassured.RestAssured.given;
 
 /**
@@ -16,14 +14,14 @@ public class CalendarSettingsService extends RestService {
 
     @Override
     protected String getBasePath() {
-        return "settings/calendar/calendar_view";
+        return "settings/calendar";
     }
 
-    @Step("api: put calendar settings")
-    public void create(int expectStatus) {
-        given().spec(getREQ_SPEC_ENCODED()).log().all()
-                .formParam("calendar_view", "daily")
-                .when().put().then().log().all().statusCode(expectStatus);
+    @Step("api: put calendar settings - view")
+    public void update(String view, String path) {
+        given().spec(getSPEC_ENCODED_PATH(path)).log().all()
+                .formParam(path, view)
+                .when().put().then().log().all().statusCode(204);
 
     }
 }

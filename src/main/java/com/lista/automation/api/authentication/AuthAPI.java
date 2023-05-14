@@ -8,8 +8,7 @@ import static io.restassured.config.EncoderConfig.encoderConfig;
 
 public class AuthAPI {
 
-    public static ValidatableResponse login() {
-        AuthPojo field = new AuthPojo("Asia/Jerusalem", getProp().username(), getProp().password());
+    public static ValidatableResponse getToken(AuthPojo auth) {
 
         return   given().log().all()
                 .header("Content-Type", "application/x-www-form-urlencoded")
@@ -20,9 +19,9 @@ public class AuthAPI {
                 .basePath("check-login")
                 .header("referer", getProp().baseURL()+"/en/login")
 
-                .formParam("time_zone",field.getTimeZone())
-                .formParam("email",field.getEmail())
-                .formParam("current-password",field.getCurrentPassword())
+                .formParam("time_zone",auth.getTimeZone())
+                .formParam("email",auth.getEmail())
+                .formParam("current-password",auth.getCurrentPassword())
 
                 .post()
                 .then().log().all().statusCode(302);

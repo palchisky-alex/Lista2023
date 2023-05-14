@@ -50,6 +50,7 @@ public class RouteHelper extends BasePage {
     public SettingsAllPage toSettingsPage() throws Exception {
         openMenu().choosePage(Pages.Settings, SettingsAllPage.class);
         waitForURL("settings");
+        waitForLoadState();
         return new SettingsAllPage(page);
     }
 
@@ -57,6 +58,7 @@ public class RouteHelper extends BasePage {
     public ClientsPage toClientPage() throws Exception {
         openMenu().choosePage(Pages.Client, ClientsPage.class);
         waitForURL("clients");
+        waitForLoadState();
         return new ClientsPage(page);
     }
     @Step("go to calendar page")
@@ -71,11 +73,13 @@ public class RouteHelper extends BasePage {
     public GroupsListPage toGroupsListPage() throws Exception {
         openMenu().choosePage(Pages.Groups, GroupsListPage.class);
         waitForURL("groups");
+        waitForLoadState();
         return new GroupsListPage(page);
     }
     @Step("go to services page")
     public ServicesListPage toServicesListPage() throws Exception {
         openMenu().choosePage(Pages.Services, ServicesListPage.class);
+        waitForLoadState();
         return new ServicesListPage(page);
     }
 

@@ -20,6 +20,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.lista.automation.api.authentication.Scope.ADMIN;
 import static com.lista.automation.ui.core.utils.BasePage.*;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -52,7 +54,7 @@ public class AppointmentTest extends BaseTest {
                     String to = getCalendarTimeRange("To", generalSettings);
 
                     step("API: delete all appointments", () -> {
-                        api.appointment().deleteAll(from, to);
+                        api.appointment().deleteAll(ADMIN.getValue(), from, to);
 
                         step("API: create client & service", () -> {
                             ClientCreateRequest simpleClient = generateClient(true);
@@ -72,7 +74,7 @@ public class AppointmentTest extends BaseTest {
                                         .save();
 
                                 step("API: get appointment", () -> {
-                                    List<AppointmentGetRequest> appointmentsByDate = api.appointment().getAppointmentsByDate(from, to);
+                                    List<AppointmentGetRequest> appointmentsByDate = api.appointment().getAppointmentsByDate(ADMIN.getValue(), from, to);
                                     LocalTime time = LocalTime.parse(appointmentTime, DateTimeFormatter.ofPattern("HH:mm"));
                                     LocalTime modifiedTime = time.plusMinutes(simpleService.getServiceDuration());
                                     String appointmentEND = modifiedTime.format(DateTimeFormatter.ofPattern("HH:mm"));
@@ -109,6 +111,8 @@ public class AppointmentTest extends BaseTest {
         });
     }
 
+    //TODO change UI settings to API
+
     @Test
     @Description("Create empty appointment in UI")
     public void testCreateEmptyAppointment() {
@@ -132,7 +136,7 @@ public class AppointmentTest extends BaseTest {
                     String to = getCalendarTimeRange("To", generalSettings);
 
                     step("API: delete all appointments", () -> {
-                        api.appointment().deleteAll(from, to);
+                        api.appointment().deleteAll(ADMIN.getValue(), from, to);
 
                         step("UI: create appointment", () -> {
                             calendar.routing()
@@ -144,7 +148,7 @@ public class AppointmentTest extends BaseTest {
                                     .save();
 
                             step("API: get appointment", () -> {
-                                List<AppointmentGetRequest> appointmentsByDate = api.appointment().getAppointmentsByDate(from, to);
+                                List<AppointmentGetRequest> appointmentsByDate = api.appointment().getAppointmentsByDate(ADMIN.getValue(), from, to);
 
                                 step("API: assert created appointment", () -> {
                                     assertThat(appointmentsByDate)
@@ -189,7 +193,7 @@ public class AppointmentTest extends BaseTest {
                     String to = getCalendarTimeRange("To", generalSettings);
 
                     step("API: delete all appointments", () -> {
-                        api.appointment().deleteAll(from, to);
+                        api.appointment().deleteAll(ADMIN.getValue(), from, to);
 
                         step("API: generate client data", () -> {
                             ClientCreateRequest simpleClient = generateClient(true);
@@ -205,7 +209,7 @@ public class AppointmentTest extends BaseTest {
                                         .save();
 
                                 step("API: get appointment", () -> {
-                                    List<AppointmentGetRequest> appointmentsByDate = api.appointment().getAppointmentsByDate(from, to);
+                                    List<AppointmentGetRequest> appointmentsByDate = api.appointment().getAppointmentsByDate(ADMIN.getValue(), from, to);
 
                                     step("API: assert created appointment", () -> {
                                         assertThat(appointmentsByDate)
@@ -251,7 +255,7 @@ public class AppointmentTest extends BaseTest {
                     String to = getCalendarTimeRange("To", generalSettings);
 
                     step("API: delete all appointments in day of test", () -> {
-                        api.appointment().deleteAll(from, to);
+                        api.appointment().deleteAll(ADMIN.getValue(), from, to);
 
                         step("API: create client & service", () -> {
                             ClientCreateRequest simpleClient = generateClient(true);
@@ -265,10 +269,10 @@ public class AppointmentTest extends BaseTest {
                                 List<String> serviceJsonList = api.service().convertServiceToJson(serviceByID);
 
                                 step("API: create appointment", () -> {
-                                    api.appointment().create(simpleClient, clientID, serviceJsonList, dayOfTest + appointmentTime);
+                                    api.appointment().create(ADMIN.getValue(), simpleClient, clientID, serviceJsonList, dayOfTest + appointmentTime);
 
                                     step("API: get appointment ID", () -> {
-                                        List<AppointmentGetRequest> appointments = api.appointment().getAppointmentsByDate(from, to);
+                                        List<AppointmentGetRequest> appointments = api.appointment().getAppointmentsByDate(ADMIN.getValue(), from, to);
                                         Integer appID = appointments.stream()
                                                 .filter(app -> app.getStart().contains(appointmentTime))
                                                 .map(AppointmentGetRequest::getAppointmentID)
@@ -281,7 +285,7 @@ public class AppointmentTest extends BaseTest {
                                                     .configureAppointment(AppointmentPage.ACTION.DELETE);
 
                                             step("API: get appointment from day of test and verify deletion", () -> {
-                                                List<Integer> appointmentIDs = api.appointment().getAppointmentsByDate(from, to).stream()
+                                                List<Integer> appointmentIDs = api.appointment().getAppointmentsByDate(ADMIN.getValue(), from, to).stream()
                                                         .map(AppointmentGetRequest::getAppointmentID)
                                                         .collect(Collectors.toList());
 
@@ -328,13 +332,13 @@ public class AppointmentTest extends BaseTest {
                     String to = getCalendarTimeRange("To", generalSettings);
 
                     step("API: delete all appointments", () -> {
-                        api.appointment().deleteAll(from, to);
+                        api.appointment().deleteAll(ADMIN.getValue(), from, to);
 
                         step("API: create empty appointment", () -> {
-                            api.appointment().create(simpleClient, "-1", new ArrayList<>(), dayOfTest + appointmentTime);
+                            api.appointment().create(ADMIN.getValue(), simpleClient, "-1", new ArrayList<>(), dayOfTest + appointmentTime);
 
                             step("API: get appointment IDs before dragging", () -> {
-                                List<AppointmentGetRequest> appointmentsByDate = api.appointment().getAppointmentsByDate(from, to);
+                                List<AppointmentGetRequest> appointmentsByDate = api.appointment().getAppointmentsByDate(ADMIN.getValue(), from, to);
 
                                 Integer appID = appointmentsByDate.stream()
                                         .filter(app -> app.getStart().contains(appointmentTime))
@@ -352,7 +356,7 @@ public class AppointmentTest extends BaseTest {
                                         calendar.routing().toCalendarPage().dragAndDropSlot(appID, appointmentTime2);
 
                                         step("API: get appointment after dragging", () -> {
-                                            List<AppointmentGetRequest> appointmentsByDateAfterDragging = api.appointment().getAppointmentsByDate(from, to);
+                                            List<AppointmentGetRequest> appointmentsByDateAfterDragging = api.appointment().getAppointmentsByDate(ADMIN.getValue(), from, to);
 
                                             step("API: assert dragged appointment", () -> {
                                                 assertThat(appointmentsByDateAfterDragging)

@@ -70,6 +70,15 @@ public abstract class RestService {
                             .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
                     .build();
     }
+    public RequestSpecification getSPEC_ENCODED_PATH(String path) {
+        return REQ_SPEC_ENCODED_PATH = new RequestSpecBuilder()
+                .addHeader("cookie", cookie)
+                .setBaseUri(BASE_URL)
+                .setBasePath(getBasePath() + "/" + path)
+                .setContentType(ContentType.URLENC).setConfig(RestAssured.config().encoderConfig(encoderConfig()
+                        .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+                .build();
+    }
 
     public RequestSpecification getSPEC_HTML() {
         if (REQ_SPEC_HTML == null) {

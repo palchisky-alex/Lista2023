@@ -157,6 +157,9 @@ public class BasePage {
     public boolean isVisible(Locator locator) {
         return locator.isVisible();
     }
+    public String getAttribute(String selector, String attr) {
+        return page.locator(selector).getAttribute(attr);
+    }
 
     public static String getMethodNaming() {
         return Thread.currentThread().getStackTrace()[1].getMethodName();
@@ -225,6 +228,16 @@ public class BasePage {
             simpleService = DataGenerator.getSimpleData(ServiceCreateRequest.class);
         }
         return simpleService;
+    }
+
+    public String getPermissionLevel() {
+        String result = page.evaluate("() => userData.permission_level").toString();
+        Allure.addAttachment("current permission level", result);
+        return result;
+    }
+    public void clearCookies() {
+        page.context().clearCookies();
+        page.reload();
     }
 
     private void attachAllureLog(String description, Locator locator, String text) {

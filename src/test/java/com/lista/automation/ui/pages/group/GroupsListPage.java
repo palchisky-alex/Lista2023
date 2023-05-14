@@ -9,8 +9,8 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static io.qameta.allure.Allure.step;
 
@@ -85,6 +85,10 @@ public class GroupsListPage extends BasePage {
     public GroupsListPage longPressOnGroup(String groupName) {
         clickBy(getByExactText(groupName), 2000, false);
         return this;
+    }
+
+    public List<Locator> getGroupsList() {
+        return getLocator(".groupName").all();
     }
 
     public static class SubmitForm extends GroupsListPage {

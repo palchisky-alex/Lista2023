@@ -1,11 +1,8 @@
 package com.lista.automation.ui.pages.appointment;
 
-import com.lista.automation.api.pojo.general_settings.GeneralSettingsPojo;
 import com.lista.automation.ui.core.utils.BasePage;
 import com.lista.automation.ui.pages.calendar.CalendarPage;
-import com.lista.automation.ui.pages.group.GroupsListPage;
 import com.microsoft.playwright.Page;
-import com.microsoft.playwright.options.AriaRole;
 
 import static io.qameta.allure.Allure.step;
 

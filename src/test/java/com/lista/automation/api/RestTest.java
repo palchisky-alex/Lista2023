@@ -11,6 +11,7 @@ import static com.lista.automation.ui.core.utils.BasePage.generateClient;
 public class RestTest extends BaseTest {
 
     void createService() {
+
 //        ClientCreateRequest simpleClient = generateClient(true);
 //        String phoneNumber = simpleClient.getPhone().replaceAll("\\D+", "");
 //        api.client().find2("054796431");

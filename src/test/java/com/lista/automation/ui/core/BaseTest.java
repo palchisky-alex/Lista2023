@@ -8,6 +8,8 @@ import com.microsoft.playwright.Page;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
+
 import java.io.IOException;
 import java.lang.reflect.Method;
 
@@ -22,14 +24,20 @@ public class BaseTest {
     protected CalendarPage calendar;
     protected ClientsPage clientsPage;
 
+    @BeforeSuite
+    public void clean() {
+
+    }
+
     @BeforeMethod
     public void setUp() {
-//        api = RestWrapper.loginAs(getProp().username().replaceAll("\"",""),
-//                getProp().password().replaceAll("\"",""));
-        api = RestWrapper.loginAs();
         pf = new PlaywrightFactory();
         page = pf.initBrowser();
+
         calendar = new CalendarPage(page);
+        String permissionLevel = calendar.getPermissionLevel();
+        api = RestWrapper.loginAs(permissionLevel);
+
     }
 
     @AfterMethod

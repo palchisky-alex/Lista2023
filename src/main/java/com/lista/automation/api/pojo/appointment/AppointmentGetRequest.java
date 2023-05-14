@@ -24,6 +24,7 @@ public class AppointmentGetRequest {
         private String note;
         private String address;
         private String birthdate;
+        @JsonProperty("total_price")
         private String totalPrice;
         private String addedDate;
         private boolean permitAds;

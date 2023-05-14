@@ -31,13 +31,13 @@ public class AppointmentService extends RestService {
     }
 
     @Step("api: post appointment")
-    public String create(ClientCreateRequest client, String clientID, List<String> service, String dateTime) {
+    public String create(int workerID, ClientCreateRequest client, String clientID, List<String> service, String dateTime) {
         Response response;
         if(clientID.equals("-1")) {
             response = given().spec(getREQ_SPEC_ENCODED()).log().all()
                     .formParam("start", dateTime)
                     .formParam("client_id", clientID)
-                    .formParam("worker_id", 1)
+                    .formParam("worker_id", workerID)
                     .formParam("total_price", 0)
                     .formParam("services", "[]")
                     .formParam("duration", 60)
@@ -48,7 +48,7 @@ public class AppointmentService extends RestService {
             response = given().spec(getREQ_SPEC_ENCODED()).log().all()
                     .formParam("start", dateTime)
                     .formParam("client_id", clientID)
-                    .formParam("worker_id", 1)
+                    .formParam("worker_id", workerID)
                     .formParam("total_price", 10)
                     .formParam("services", service)
                     .formParam("note", client.getNotes())
@@ -61,12 +61,13 @@ public class AppointmentService extends RestService {
         return response.then().statusCode(201).extract().body().htmlPath().get().toString();
     }
 
+    //TODO - change workerID type
     @Step("api: get appointment by date")
-    public List<AppointmentGetRequest> getAppointmentsByDate(String start, String end) {
+    public List<AppointmentGetRequest> getAppointmentsByDate(int workerID, String start, String end) {
          Response response = given().spec(getREQ_SPEC_ENCODED()).log().all()
                 .param("start", start)
                 .param("end", end)
-                .param("worker_id", "1")
+                .param("worker_id", workerID)
                 .get()
                 .then().log().all().extract().response();
 
@@ -79,8 +80,8 @@ public class AppointmentService extends RestService {
     }
 
     @Step("api: delete all today's appointments")
-    public void deleteAll(String start, String end)  {
-        List<AppointmentGetRequest> appointmentList = getAppointmentsByDate(start, end);
+    public void deleteAll(int workerID, String start, String end)  {
+        List<AppointmentGetRequest> appointmentList = getAppointmentsByDate(workerID, start, end);
 
         List<Integer> appointmentIDs = appointmentList.stream()
                 .map(AppointmentGetRequest::getAppointmentID).collect(Collectors.toList());

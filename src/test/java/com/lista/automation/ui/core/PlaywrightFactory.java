@@ -4,6 +4,7 @@ import com.lista.automation.api.Properties;
 import com.lista.automation.ui.pages.LoginPage;
 import com.microsoft.playwright.*;
 import io.qameta.allure.Allure;
+import io.qameta.allure.Step;
 import org.testng.ITestResult;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -68,12 +69,18 @@ public class PlaywrightFactory {
         tlPage.set(getTlContext().newPage());
 //        getTlPage().onRequest(request -> System.out.println(">> " + request.method() + " " + request.url()));
 //        getTlPage().onResponse(response -> System.out.println("<<" + response.status() + " " + response.url()));
+        getTlPage().onConsoleMessage(msg -> System.out.println(msg.text()));
+
         getTlPage().navigate(Properties.getProp().pageCalendar());
         if(!getTlPage().url().contains("calendar")) {
             recordCookies();
         }
 
         return getTlPage();
+    }
+
+    public BrowserContext getContext() {
+        return getTlContext();
     }
 
     public void stop(Method testInfo, ITestResult result) throws IOException {
@@ -122,6 +129,7 @@ public class PlaywrightFactory {
         return Paths.get(customPath);
     }
 
+    @Step("login and record new cookies to file")
     private void recordCookies() {
         new LoginPage(getTlPage()).login();
         getTlContext().storageState(new BrowserContext.StorageStateOptions().setPath(Paths.get(Properties.getProp().cookiesPath())));

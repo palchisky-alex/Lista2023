@@ -7,11 +7,23 @@ import org.aeonbits.owner.Config;
 @Config.Sources({"file:./src/test/resources/config.properties", "system:env"})
 public interface Prop extends Config {
 
-    @Key("username")
-    String username();
-    @Key("password")
-    String password();
+    @Key("login.as")
+    String loginAs();
 
+    @Key("user.name.admin")
+    String userNameAdmin();
+    @Key("user.pass.admin")
+    String userPassAdmin();
+
+    @Key("user.name.junior")
+    String userNameJunior();
+    @Key("user.pass.junior")
+    String userPassJunior();
+
+    @Key("user.name.readonly")
+    String userNameReadonly();
+    @Key("user.pass.readonly")
+    String userPassReadonly();
 
     @Key("headless.browser.mode")
     Boolean mode();
