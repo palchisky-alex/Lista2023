@@ -7,9 +7,6 @@ import org.aeonbits.owner.Config;
 @Config.Sources({"file:./src/test/resources/config.properties", "system:env"})
 public interface Prop extends Config {
 
-    @Key("login.as")
-    String loginAs();
-
     @Key("user.name.admin")
     String userNameAdmin();
     @Key("user.pass.admin")
