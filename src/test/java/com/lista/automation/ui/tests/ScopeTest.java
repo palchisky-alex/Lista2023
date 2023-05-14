@@ -1,5 +1,6 @@
 package com.lista.automation.ui.tests;
 
+import com.lista.automation.api.TestListener;
 import com.lista.automation.api.pojo.appointment.AppointmentGetRequest;
 import com.lista.automation.api.pojo.client.ClientCreateRequest;
 import com.lista.automation.api.pojo.client.ClientGetResponse;
@@ -13,8 +14,10 @@ import com.lista.automation.ui.pages.group.GroupsListPage;
 import com.lista.automation.ui.pages.service.ServicesListPage;
 import com.microsoft.playwright.Locator;
 import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +31,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Created by Palchitsky Alex
  */
+
+@Epic("Scope UI")
+@Feature("Scope shifting")
+@Listeners(TestListener.class)
 public class ScopeTest extends BaseTest {
 
     @Test
