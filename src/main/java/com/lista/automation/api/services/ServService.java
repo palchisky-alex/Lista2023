@@ -2,7 +2,6 @@ package com.lista.automation.api.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lista.automation.api.pojo.group.GroupsGetResponse;
 import com.lista.automation.api.pojo.service.ServiceCreateRequest;
 import com.lista.automation.api.utils.RestService;
 import io.qameta.allure.Step;
@@ -27,7 +26,7 @@ public class ServService extends RestService {
     public int create(ServiceCreateRequest simpleService, int expectStatus) {
         int categoryID = Integer.parseInt(new CategoryService(getCookie()).createCategory(simpleService));
 
-        Response response = given().spec(getREQ_SPEC_ENCODED()).log().all()
+        Response response = given().spec(getREQ_SPEC_ENCODED()).log().ifValidationFails()
                 .formParam("name", "service_"+simpleService.getServiceName())
                 .formParam("duration", simpleService.getServiceDuration())
                 .formParam("price", simpleService.getPrice())
@@ -35,7 +34,8 @@ public class ServService extends RestService {
                 .formParam("category_id", categoryID)
                 .when().post();
 
-        return Integer.parseInt(response.then().statusCode(expectStatus).extract().body().htmlPath().get().toString());
+        return Integer.parseInt(response.then().log().ifError().statusCode(expectStatus)
+                .extract().body().htmlPath().get().toString());
     }
     @Step("api: get services")
     public List<ServiceCreateRequest> getServiceList(int expectStatus) {

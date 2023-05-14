@@ -1,19 +1,18 @@
 package com.lista.automation.ui.core;
 
 import com.lista.automation.api.utils.RestWrapper;
-import com.lista.automation.api.Properties;
 import com.lista.automation.ui.pages.calendar.CalendarPage;
 import com.lista.automation.ui.pages.client.ClientsPage;
 import com.microsoft.playwright.Page;
+import io.qameta.allure.restassured.AllureRestAssured;
+import io.restassured.RestAssured;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
-
-import static com.lista.automation.api.Properties.getProp;
 
 public class BaseTest {
 
@@ -24,9 +23,9 @@ public class BaseTest {
     protected CalendarPage calendar;
     protected ClientsPage clientsPage;
 
-    @BeforeSuite
-    public void clean() {
-
+    @BeforeTest
+    public void setFilter() {
+        RestAssured.filters(new AllureRestAssured());
     }
 
     @BeforeMethod

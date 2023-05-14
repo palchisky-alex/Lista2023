@@ -26,7 +26,6 @@ public class AppointmentPage extends BasePage {
             step("confirm deletion", () -> {
                 clickBy(getLocator(".confirm-block button")
                         .getByText(action.name()), 0, true);
-                page.reload();
             });
         }
         waitForTimeout(3000);

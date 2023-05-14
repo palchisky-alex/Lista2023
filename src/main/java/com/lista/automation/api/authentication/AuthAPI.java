@@ -10,7 +10,7 @@ public class AuthAPI {
 
     public static ValidatableResponse getToken(AuthPojo auth) {
 
-        return   given().log().all()
+        return   given().log().ifValidationFails()
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .config(RestAssured.config().encoderConfig(encoderConfig()
                         .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
@@ -24,6 +24,6 @@ public class AuthAPI {
                 .formParam("current-password",auth.getCurrentPassword())
 
                 .post()
-                .then().log().all().statusCode(302);
+                .then().log().ifError().statusCode(302);
     }
 }
