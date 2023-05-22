@@ -1,0 +1,1 @@
+locator/text: Locator@.debt-active .ink >> nth=1|
