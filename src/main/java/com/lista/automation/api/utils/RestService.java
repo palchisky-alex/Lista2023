@@ -104,7 +104,7 @@ public abstract class RestService {
                 .setConfig(
                         RestAssuredConfig.config()
                                 .logConfig(
-                                        LogConfig.logConfig().blacklistHeaders(List.of("cookie", "Multiparts"))));
+                                        LogConfig.logConfig().blacklistHeader("cookie")));
     }
 
     public RequestSpecification requestSpecification(String basePath) {

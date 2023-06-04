@@ -1,14 +1,20 @@
 package com.lista.automation.ui.tests;
 
+import com.lista.automation.api.Properties;
 import com.lista.automation.api.TestListener;
+import com.lista.automation.api.assert_response.RestResponse;
 import com.lista.automation.api.pojo.client.ClientCreateRequest;
 import com.lista.automation.api.pojo.client.ClientGetResponse;
 import com.lista.automation.ui.core.BaseTest;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.restassured.module.jsv.JsonSchemaValidator;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+
+import java.util.List;
+
 import static com.lista.automation.ui.core.utils.BasePage.generateClient;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,6 +24,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Feature("Client")
 @Listeners(TestListener.class)
 public class ClientTest extends BaseTest {
+
+    @Test
+    public void testGetUsers() {
+        RestResponse<List<ClientGetResponse>> usersResponse = api.client().findListNew();
+        usersResponse.validate().assertThat().body(JsonSchemaValidator.matchesJsonSchemaInClasspath(Properties.getProp().schemaClient()));
+    }
 
     @Test
     @Description("UI: Delete client")

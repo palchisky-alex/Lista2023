@@ -14,6 +14,7 @@ public class VerifyClientResponse extends VerifyResponse<VerifyClientResponse> {
     }
 
     public static VerifyClientResponse assertThat(Response response) {
+
         return new VerifyClientResponse(response);
     }
 

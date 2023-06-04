@@ -191,7 +191,6 @@ public class BasePage {
         else {
             return "wrong time";
         }
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return roundedTime.format(formatter);
     }

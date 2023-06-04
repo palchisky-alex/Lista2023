@@ -1,11 +1,13 @@
 package com.lista.automation.api.services;
 
 import com.lista.automation.api.Properties;
+import com.lista.automation.api.assert_response.RestResponse;
 import com.lista.automation.api.assert_response.VerifyClientResponse;
 import com.lista.automation.api.pojo.client.ClientCreateRequest;
 import com.lista.automation.api.pojo.client.ClientGetResponse;
 import com.lista.automation.api.utils.RestService;
 import io.qameta.allure.Step;
+import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.response.Response;
 
 import java.util.ArrayList;
@@ -40,6 +42,16 @@ public class ClientService extends RestService {
                 .when().post();
 
         return response.then().statusCode(expectStatus).extract().body().htmlPath().get().toString();
+    }
+
+    public RestResponse<List<ClientGetResponse>>findListNew() {
+        return new RestResponse<>(
+                given().spec(getREQ_SPEC_FORM()).log().all()
+                        .param("limit", 40)
+                        .param("offset", 0)
+                        .get(),
+                resp -> resp.body().jsonPath().getList("", ClientGetResponse.class)
+        );
     }
 
     @Step("api: get list of clients")
