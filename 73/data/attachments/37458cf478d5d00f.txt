@@ -1,0 +1,1 @@
+selector/text: .swiper-cont  [data-index='3']|
