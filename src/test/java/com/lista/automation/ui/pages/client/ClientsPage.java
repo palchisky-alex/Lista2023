@@ -30,32 +30,33 @@ public class ClientsPage extends BasePage {
     }
 
     public ClientsPage deleteClient() {
-        step("click on trash button", () -> {
-            clickBy(getByRole(AriaRole.BUTTON).nth(1),0,true);
+
+        clickBy(getByRole(AriaRole.BUTTON).nth(1), 0, true);
+
+
+        clickBy(CLIENT_SLOT, 0, true);
+
+
+        clickBy("button.activating", 0, true);
+
+
+        page.waitForResponse(Response::ok, () -> {
+            clickBy(".deletePopup .yes-btn", 0, true);
         });
-        step("select client checkbox", () -> {
-            clickBy(CLIENT_SLOT,0,true);
-        });
-        step("click on delete button", () -> {
-            clickBy("button.activating",0,true);
-        });
-        step("confirm deletion", () -> {
-            page.waitForResponse(Response::ok, () -> {
-                clickBy(".deletePopup .yes-btn",0,true);
-            });
-        });
+
         return this;
     }
 
     @Step("init new client adding")
     public AddClientPage initAddingNewClient() {
-        clickBy("#root .floating-button",0,true);
+        clickBy("#root .floating-button", 0, true);
         waitForURL("adding-client");
         return new AddClientPage(page);
     }
+
     @Step("select client by ID")
     public ClientProfilePage selectClientById(String id) {
-        clickBy("//a[contains(@href, '"+id+"')]",0,true);
+        clickBy("//a[contains(@href, '" + id + "')]", 0, true);
         return new ClientProfilePage(page);
     }
 

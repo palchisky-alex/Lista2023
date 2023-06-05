@@ -30,169 +30,148 @@ public class GroupTest extends BaseTest {
 
     @Test
     @Description("UI: Rename client group")
-    public void testGroupRename() {
-        step("UI: verify that client group can be rename", () -> {
-            step("API: generate group", () -> {
-                GroupCreateRequest simpleGroup = generateGroup(true);
-                api.group().create(simpleGroup, 201);
+    public void testGroupRename() throws Exception {
 
-                step("UI: rename group", () -> {
-                    calendar.routing()
-                            .toGroupsListPage()
-                            .longPressOnGroup(simpleGroup.getName())
-                            .configureGroup(GroupsListPage.ACTION.Rename);
 
-                    step("API: search renamed group", () -> {
-                        assertThat(api.group().getGroupsOfClient())
-                                .extracting(GroupsGetResponse::getName)
-                                .contains(generateGroup(false).getName());
-                    });
-                });
-            });
-        });
+        GroupCreateRequest simpleGroup = generateGroup(true);
+        api.group().create(simpleGroup, 201);
+
+
+        calendar.routing()
+                .toGroupsListPage()
+                .longPressOnGroup(simpleGroup.getName())
+                .configureGroup(GroupsListPage.ACTION.Rename);
+
+
+        assertThat(api.group().getGroupsOfClient())
+                .extracting(GroupsGetResponse::getName)
+                .contains(generateGroup(false).getName());
+
     }
 
     @Test
     @Description("UI: Delete client group")
-    public void testGroupDelete() {
-        step("UI: verify that client group can be delete", () -> {
+    public void testGroupDelete() throws Exception {
 
-            step("API: generate group", () -> {
-                GroupCreateRequest simpleGroup = generateGroup(true);
-                int ID = api.group().create(simpleGroup, 201);
 
-                step("UI: delete group", () -> {
-                    calendar.routing()
-                            .toGroupsListPage()
-                            .longPressOnGroup(simpleGroup.getName())
-                            .configureGroup(GroupsListPage.ACTION.Delete);
+        GroupCreateRequest simpleGroup = generateGroup(true);
+        int ID = api.group().create(simpleGroup, 201);
 
-                    step("API: search deleted group", () -> {
-                        assertThat(api.group().getGroupsOfClient())
-                                .extracting(GroupsGetResponse::getId)
-                                .doesNotContain(ID);
-                    });
-                });
-            });
-        });
+
+        calendar.routing()
+                .toGroupsListPage()
+                .longPressOnGroup(simpleGroup.getName())
+                .configureGroup(GroupsListPage.ACTION.Delete);
+
+
+        assertThat(api.group().getGroupsOfClient())
+                .extracting(GroupsGetResponse::getId)
+                .doesNotContain(ID);
+
     }
 
     @Test
     @Description("UI: Create client group")
-    public void testGroupCreate() {
-        step("UI: verify that client group can be created", () -> {
+    public void testGroupCreate() throws Exception {
 
-            step("API: generate group", () -> {
-                GroupCreateRequest simpleGroup = generateGroup(true);
-                int ID = api.group().create(simpleGroup, 201);
 
-                step("UI: add new group", () -> {
-                    calendar.routing().toGroupsListPage()
-                            .addGroup(simpleGroup.getName())
-                            .returnToListGroups();
+        GroupCreateRequest simpleGroup = generateGroup(true);
+        int ID = api.group().create(simpleGroup, 201);
 
-                    step("API: search deleted group", () -> {
-                        assertThat(api.group().getGroupsOfClient())
-                                .extracting(GroupsGetResponse::getId)
-                                .contains(ID);
-                    });
-                });
-            });
-        });
+
+        calendar.routing().toGroupsListPage()
+                .addGroup(simpleGroup.getName())
+                .returnToListGroups();
+
+
+        assertThat(api.group().getGroupsOfClient())
+                .extracting(GroupsGetResponse::getId)
+                .contains(ID);
+
 
     }
 
     @Test
     @Description("UI: Add member into group")
-    public void testAddMemberIntoGroup() {
-        step("API: generate simple client", () -> {
-            ClientCreateRequest simpleClient = generateClient(true);
-            String clientID = api.client().create(simpleClient, 201);
+    public void testAddMemberIntoGroup() throws Exception {
 
-            step("API: check that the simple client has been created", () -> {
-                api.client().find(simpleClient.getPhone().replaceAll("\\D+", ""));
-            });
+        ClientCreateRequest simpleClient = generateClient(true);
+        String clientID = api.client().create(simpleClient, 201);
 
-            step("API: generate simple group", () -> {
-                GroupCreateRequest simpleGroup = generateGroup(true);
-                int ID = api.group().create(simpleGroup, 201);
 
-                step("UI: add member into group", () -> {
-                    calendar.routing()
-                            .toGroupsListPage()
-                            .selectGroup(simpleGroup.getName())
-                            .initAddingMember()
-                            .searchMember(simpleClient.getName())
-                            .addToGroup();
+        api.client().find(simpleClient.getPhone().replaceAll("\\D+", ""));
 
-                    step("API: get group with member", () -> {
-                        assertThat(api.group().getClientsOfGroup(ID, "clients", 200))
-                                .as("group contains ID of api client")
-                                .extracting(ClientGetResponse::getId)
-                                .contains(clientID);
-                    });
-                });
-            });
-        });
+
+        GroupCreateRequest simpleGroup = generateGroup(true);
+        int ID = api.group().create(simpleGroup, 201);
+
+
+        calendar.routing()
+                .toGroupsListPage()
+                .selectGroup(simpleGroup.getName())
+                .initAddingMember()
+                .searchMember(simpleClient.getName())
+                .addToGroup();
+
+
+        assertThat(api.group().getClientsOfGroup(ID, "clients", 200))
+                .as("group contains ID of api client")
+                .extracting(ClientGetResponse::getId)
+                .contains(clientID);
+
     }
 
     @Test
     @Description("UI: Delete member from group")
-    public void testDeleteMemberFromGroup() {
-        step("API: generate client", () -> {
-            ClientCreateRequest simpleClient = generateClient(true);
-            String clientID = api.client().create(simpleClient, 201);
+    public void testDeleteMemberFromGroup() throws Exception {
 
-            step("API: generate group", () -> {
-                GroupCreateRequest simpleGroup = generateGroup(true);
-                int groupID = api.group().create(simpleGroup, 201);
+        ClientCreateRequest simpleClient = generateClient(true);
+        String clientID = api.client().create(simpleClient, 201);
 
-                step("API: put member into group", () -> {
-                    api.group().putClientIntoGroup(groupID, "clients", clientID, 204);
 
-                    step("UI: delete member from group", () -> {
-                        calendar.routing()
-                                .toGroupsListPage()
-                                .selectGroup(simpleGroup.getName())
-                                .initMenuForMember()
-                                .setMenuOptions(GroupPage.Menu.Opts.Select_All)
-                                .setMenuOptions(GroupPage.Menu.Opts.Cancel)
-                                .setMenuOptions(GroupPage.Menu.Opts.Select_All)
-                                .setMenuOptions(GroupPage.Menu.Opts.Delete);
+        GroupCreateRequest simpleGroup = generateGroup(true);
+        int groupID = api.group().create(simpleGroup, 201);
 
-                        step("API: get group with member", () -> {
-                            assertThat(api.group().getClientsOfGroup(groupID, "clients", 200))
-                                    .as("group not contains ID of api client")
-                                    .extracting(ClientGetResponse::getId)
-                                    .doesNotContain(clientID);
-                        });
-                    });
-                });
-            });
-        });
+
+        api.group().putClientIntoGroup(groupID, "clients", clientID, 204);
+
+
+        calendar.routing()
+                .toGroupsListPage()
+                .selectGroup(simpleGroup.getName())
+                .initMenuForMember()
+                .setMenuOptions(GroupPage.Menu.Opts.Select_All)
+                .setMenuOptions(GroupPage.Menu.Opts.Cancel)
+                .setMenuOptions(GroupPage.Menu.Opts.Select_All)
+                .setMenuOptions(GroupPage.Menu.Opts.Delete);
+
+
+        assertThat(api.group().getClientsOfGroup(groupID, "clients", 200))
+                .as("group not contains ID of api client")
+                .extracting(ClientGetResponse::getId)
+                .doesNotContain(clientID);
+
     }
 
     @Test
     @Description("UI: Menu of default groups")
-    public void testMenuDefaultGroups() {
-        step("API: get all Lista's default groups", () -> {
-            List<String> defaultGroupsName =
-                    api.group().getAutomaticGroups()
-                            .stream().map(GroupsGetResponse::getName)
-                            .collect(Collectors.toList());
+    public void testMenuDefaultGroups() throws Exception {
 
-            assertThat(defaultGroupsName.size()).as("The Lista contains 8 default groups").isEqualTo(8);
+        List<String> defaultGroupsName =
+                api.group().getAutomaticGroups()
+                        .stream().map(GroupsGetResponse::getName)
+                        .collect(Collectors.toList());
 
-            step("UI: init menu of all default groups one by one", () -> {
-                GroupsListPage groupsListPage = calendar.routing().toGroupsListPage();
+        assertThat(defaultGroupsName.size()).as("The Lista contains 8 default groups").isEqualTo(8);
 
-                for (String name : defaultGroupsName) {
-                    groupsListPage
-                            .longPressOnGroup(name)
-                            .configureGroup(GroupsListPage.ACTION.ClosePopup);
-                }
 
-            });
-        });
+        GroupsListPage groupsListPage = calendar.routing().toGroupsListPage();
+
+        for (String name : defaultGroupsName) {
+            groupsListPage
+                    .longPressOnGroup(name)
+                    .configureGroup(GroupsListPage.ACTION.ClosePopup);
+        }
+
     }
 }

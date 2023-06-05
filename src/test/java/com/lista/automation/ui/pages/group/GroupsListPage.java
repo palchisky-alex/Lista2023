@@ -26,51 +26,47 @@ public class GroupsListPage extends BasePage {
     public GroupsListPage configureGroup(ACTION act) {
 
         if (act.name().equals("Rename")) {
-            step("click on button Rename group", () -> {
-                clickBy(getByRoleWithText(AriaRole.BUTTON, act.name()), 0, true);
-            });
-            step("type new name", () -> {
-                typeIn(getByPlaceholder("Group name"), generateGroup(true).getName());
-                clickBy(getByRoleWithText(AriaRole.BUTTON, SubmitForm.LAST_ACTION.SAVE.name()), 0, true);
-            });
+
+            clickBy(getByRoleWithText(AriaRole.BUTTON, act.name()), 0, true);
+
+
+            typeIn(getByPlaceholder("Group name"), generateGroup(true).getName());
+            clickBy(getByRoleWithText(AriaRole.BUTTON, SubmitForm.LAST_ACTION.SAVE.name()), 0, true);
+
 
         } else if (act.name().equals("Delete")) {
-            step("click on button Delete group", () -> {
-                clickBy(getByRoleWithText(AriaRole.BUTTON, act.name()), 0, true);
-            });
-            step("confirm deletion", () -> {
-                clickBy(getLocator(".confirm-block button")
-                        .getByText(SubmitForm.LAST_ACTION.DELETE.name()), 0, true);
-            });
+
+            clickBy(getByRoleWithText(AriaRole.BUTTON, act.name()), 0, true);
+
+
+            clickBy(getLocator(".confirm-block button")
+                    .getByText(SubmitForm.LAST_ACTION.DELETE.name()), 0, true);
+
 
         } else if (act.name().equals("ClosePopup")) {
-            step("UI: assert warning text of default group", () -> {
-                String popupText = getInnerTextBy(".warning_popup").toLowerCase();
 
-                assertThat(popupText).as("warning popup of group %s", popupText)
-                        .isEqualToIgnoringWhitespace("renaming or deleting this group is not possible" +
-                                " since it's managed by lista got it");
+            String popupText = getInnerTextBy(".warning_popup").toLowerCase();
 
-                step("close warning popup of default group", () -> {
-                    clickBy(getLocator(".warning_popup button")
-                            .getByText(SubmitForm.LAST_ACTION.GOT_IT.name().replace("_", " ")), 0, false);
-                });
-            });
+            assertThat(popupText).as("warning popup of group %s", popupText)
+                    .isEqualToIgnoringWhitespace("renaming or deleting this group is not possible" +
+                            " since it's managed by lista got it");
+
+
+            clickBy(getLocator(".warning_popup button")
+                    .getByText(SubmitForm.LAST_ACTION.GOT_IT.name().replace("_", " ")), 0, false);
+
+
         }
         return this;
     }
 
     @Step("add new group and save")
     public GroupPage addGroup(String name) {
-        step("click on button +", () -> {
-            clickBy("#add-button", 0, true);
-        });
-        step("type group name", () -> {
-            typeIn(getByPlaceholder("Group name"), name);
-        });
-        step("click on button Save", () -> {
-            clickBy(getLocator("form button").getByText(SubmitForm.LAST_ACTION.SAVE.name()), 0, true);
-        });
+
+        clickBy("#add-button", 0, true);
+        typeIn(getByPlaceholder("Group name"), name);
+        clickBy(getLocator("form button").getByText(SubmitForm.LAST_ACTION.SAVE.name()), 0, true);
+
         return new GroupPage(page);
     }
 

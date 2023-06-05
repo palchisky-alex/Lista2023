@@ -11,6 +11,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+
 import java.util.List;
 
 import static com.lista.automation.api.authentication.Scope.JUNIOR;
@@ -27,124 +28,112 @@ public class ServiceTest extends BaseTest {
 
     @Test
     @Description("UI: Delete service")
-    public void testServiceDelete() {
-        step("API: generate service", () -> {
-            ServiceCreateRequest simpleService = generateService(true);
-            api.service().create(simpleService, 201);
+    public void testServiceDelete() throws Exception {
 
-            step("UI: search a service", () -> {
-                ServicesListPage servicesPage = calendar
-                        .routing()
-                        .toServicesListPage()
-                        .findService(simpleService.getServiceName());
+        ServiceCreateRequest simpleService = generateService(true);
+        api.service().create(simpleService, 201);
 
-                step("UI: search returns a one service", () -> {
-                    assertThat(servicesPage.countServices())
-                            .as("one service was found")
-                            .isEqualTo(1);
 
-                    step("UI: delete service", () -> {
-                        servicesPage
-                                .findService(simpleService.getServiceName())
-                                .delete();
-                    });
-                });
-            });
-            step("UI: search a service", () -> {
-                ServicesListPage servicesPage = calendar
-                        .routing()
-                        .toServicesListPage()
-                        .findService(simpleService.getServiceName());
+        ServicesListPage servicesPage = calendar
+                .routing()
+                .toServicesListPage()
+                .findService(simpleService.getServiceName());
 
-                step("UI: search for deleted service", () -> {
-                    assertThat(servicesPage.countServices())
-                            .as("no service found")
-                            .isEqualTo(0);
-                });
-            });
-        });
+
+        assertThat(servicesPage.countServices())
+                .as("one service was found")
+                .isEqualTo(1);
+
+
+        servicesPage
+                .findService(simpleService.getServiceName())
+                .delete();
+
+
+        servicesPage = calendar
+                .routing()
+                .toServicesListPage()
+                .findService(simpleService.getServiceName());
+
+
+        assertThat(servicesPage.countServices())
+                .as("no service found")
+                .isEqualTo(0);
+
+
     }
 
     @Test
     @Description("UI: Create service")
-    public void testServiceCreate() {
-        step("API: generate service", () -> {
-            ServiceCreateRequest simpleService = generateService(true);
+    public void testServiceCreate() throws Exception {
 
-            step("UI: create service", () -> {
-                calendar.routing()
-                        .toServicesListPage()
-                        .initAddingNewService()
-                        .setSimpleService(simpleService)
-                        .submitService(ServicePage.Act.ADD);
+        ServiceCreateRequest simpleService = generateService(true);
 
-                step("UI: search a service", () -> {
-                    ServicesListPage servicesPage = calendar.routing()
-                            .toServicesListPage()
-                            .findService(simpleService.getServiceName());
 
-                    step("UI: assert - search returns a one service", () -> {
-                        assertThat(servicesPage.countServices())
-                                .as("one service was found")
-                                .isEqualTo(1);
+        calendar.routing()
+                .toServicesListPage()
+                .initAddingNewService()
+                .setSimpleService(simpleService)
+                .submitService(ServicePage.Act.ADD);
 
-                    });
-                });
-            });
-        });
+
+        ServicesListPage servicesPage = calendar.routing()
+                .toServicesListPage()
+                .findService(simpleService.getServiceName());
+
+
+        assertThat(servicesPage.countServices())
+                .as("one service was found")
+                .isEqualTo(1);
+
+
     }
 
     @Test
     @Description("UI: Update service")
-    public void testServiceUpdate() {
-        step("API: create service", () -> {
-            api.service().deleteAll();
-            ServiceCreateRequest simpleService = generateService(true);
-            ServiceCreateRequest simpleService2 = generateService(true);
+    public void testServiceUpdate() throws Exception {
 
-            api.service().create(simpleService, 201);
+        api.service().deleteAll();
+        ServiceCreateRequest simpleService = generateService(true);
+        ServiceCreateRequest simpleService2 = generateService(true);
 
-            step("UI: Change calendar cell duration", () -> {
-                calendar.routing()
-                        .toSettingsPage()
-                        .toCalendarSettings()
-                        .changeEachCell("5")
-                        .backToSettingsPage();
+        api.service().create(simpleService, 201);
 
-                step("UI: search a service", () -> {
-                    ServicesListPage servicesPage = calendar
-                            .routing()
-                            .toServicesListPage()
-                            .findService(simpleService.getServiceName());
 
-                    step("UI: assert - search returns a one service", () -> {
-                        assertThat(servicesPage.countServices())
-                                .as("one service was found")
-                                .isEqualTo(1);
+        calendar.routing()
+                .toSettingsPage()
+                .toCalendarSettings()
+                .changeEachCell("5")
+                .backToSettingsPage();
 
-                        step("UI: update service", () -> {
-                            servicesPage
-                                    .findService(simpleService.getServiceName())
-                                    .selectService()
-                                    .setSimpleService(simpleService2)
-                                    .submitService(ServicePage.Act.Update);
 
-                            step("API: assert - updated service has been found", () -> {
-                                List<ServiceCreateRequest> servicesViaAPI = api.service().getServiceList(200);
+        ServicesListPage servicesPage = calendar
+                .routing()
+                .toServicesListPage()
+                .findService(simpleService.getServiceName());
 
-                                assertThat(servicesViaAPI)
-                                        .as("verify that serviceName,serviceDuration,price updated")
-                                        .as("Calendar cell duration - 5 min")
-                                        .extracting("serviceName", "serviceDuration", "price")
-                                        .contains(tuple(simpleService2.getServiceName(),
-                                                simpleService2.getServiceDuration(),
-                                                simpleService2.getPrice()));
+        assertThat(servicesPage.countServices())
+                .as("one service was found")
+                .isEqualTo(1);
 
-                            });
-                        });
-                    });
-                });
-            });
-        });
+
+        servicesPage
+                .findService(simpleService.getServiceName())
+                .selectService()
+                .setSimpleService(simpleService2)
+                .submitService(ServicePage.Act.Update);
+
+
+        List<ServiceCreateRequest> servicesViaAPI = api.service().getServiceList(200);
+
+        assertThat(servicesViaAPI)
+                .as("verify that serviceName,serviceDuration,price updated")
+                .as("Calendar cell duration - 5 min")
+                .extracting("serviceName", "serviceDuration", "price")
+                .contains(tuple(simpleService2.getServiceName(),
+                        simpleService2.getServiceDuration(),
+                        simpleService2.getPrice()));
+
+
     }
 }

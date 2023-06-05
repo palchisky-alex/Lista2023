@@ -62,16 +62,16 @@ public class ClientProfilePage extends BasePage {
 
     @Step("initiate Profile gallery editing")
     public GalleryPage editGallery() {
-        step("open gallery slot", () -> {
-            String showAllFieldsBtn = "Show All Fields";
-            boolean visible = isVisible(getByText(showAllFieldsBtn));
-            if (visible) {
-                clickBy(getByText(showAllFieldsBtn), 0, true);
-            }
-        });
-        step("load picture to gallery", () -> {
-            getByText("Add New File").setInputFiles(Paths.get(Properties.getProp().imagePath2()));
-        });
+
+        String showAllFieldsBtn = "Show All Fields";
+        boolean visible = isVisible(getByText(showAllFieldsBtn));
+        if (visible) {
+            clickBy(getByText(showAllFieldsBtn), 0, true);
+        }
+
+
+        getByText("Add New File").setInputFiles(Paths.get(Properties.getProp().imagePath2()));
+
 
         return new GalleryPage(page);
     }
@@ -97,18 +97,18 @@ public class ClientProfilePage extends BasePage {
 
     @Step("set debts")
     public ClientProfilePage setDebts(ClientCreateRequest data) {
-        step("type new text", () -> {
-            typeIn(debtsDescriptions, data.getNotes());
-        });
-        step("click on button minus", () -> {
-            clickBy(getLocator(".debt-active .ink").first(), 0, false);
-        });
-        step("click on button plus", () -> {
-            dblClickBy(getLocator(".debt-active .ink").nth(1), false);
-        });
-        step("click on Success button", () -> {
-            clickBy(getLocator("#debts").getByText("Success"), 0, false);
-        });
+
+        typeIn(debtsDescriptions, data.getNotes());
+
+
+        clickBy(getLocator(".debt-active .ink").first(), 0, false);
+
+
+        dblClickBy(getLocator(".debt-active .ink").nth(1), false);
+
+
+        clickBy(getLocator("#debts").getByText("Success"), 0, false);
+
         return this;
     }
 
@@ -182,12 +182,12 @@ public class ClientProfilePage extends BasePage {
 
     @Step("set profile note")
     public ClientProfilePage setNotes(ClientCreateRequest data) {
-        step("type note text", () -> {
-            getLocator("#notes").locator("textarea").fill(data.getNotes());
-        });
-        step("click on button Success", () -> {
-            clickBy(getLocator("#notes").getByText("Success"), 0, true);
-        });
+
+        getLocator("#notes").locator("textarea").fill(data.getNotes());
+
+
+        clickBy(getLocator("#notes").getByText("Success"), 0, true);
+
         return this;
     }
 

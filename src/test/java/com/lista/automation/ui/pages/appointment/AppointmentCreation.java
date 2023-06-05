@@ -41,6 +41,7 @@ public class AppointmentCreation extends BasePage {
             clickBy(getByRoleWithText(AriaRole.BUTTON, "Back"), 0, true);
             return this;
         }
+
         @Step("Menu: ADD AND CONTINUE")
         public SetService addAndContinue() {
 //            page.locator("[class*='bottom--next']").dblclick();
@@ -49,24 +50,25 @@ public class AppointmentCreation extends BasePage {
         }
 
         public SetService searchClientAndPick(String clientName) {
-            step("search client by name", () -> {
-                typeIn(getByPlaceholder("Search by name or phone"), clientName);
-                waitForTimeout(2000);
-            });
-            step("select a client", () -> {
-                clickBy(getByText(clientName), 0, true);
-                waitForURL("creating-appointment/selecting-procedure");
-            });
+
+            typeIn(getByPlaceholder("Search by name or phone"), clientName);
+            waitForTimeout(2000);
+
+
+            clickBy(getByText(clientName), 0, true);
+            waitForURL("creating-appointment/selecting-procedure");
+
             return new SetService(page);
         }
+
         public SetClient searchClientAndCreate(ClientCreateRequest client) {
-            step("search client by name", () -> {
-                typeIn(getByPlaceholder("Search by name or phone"), client.getName());
-                waitForTimeout(2000);
-            });
-            step("fill client phone", () -> {
-                typeIn(getByPlaceholder("Type phone number"), client.getPhone().replaceAll("\\D+", ""));
-            });
+
+            typeIn(getByPlaceholder("Search by name or phone"), client.getName());
+            waitForTimeout(2000);
+
+
+            typeIn(getByPlaceholder("Type phone number"), client.getPhone().replaceAll("\\D+", ""));
+
             return this;
         }
 
@@ -85,13 +87,13 @@ public class AppointmentCreation extends BasePage {
 
 
             public SetService chooseServiceAndPick(String serviceName) {
-                step("search service by name", () -> {
-                    typeIn(getByPlaceholder("Search a service or create one"), "service_" + serviceName);
-                    waitForTimeout(2000);
-                });
-                step("select service", () -> {
-                    clickBy(".filter-procedures", 0, false);
-                });
+
+                typeIn(getByPlaceholder("Search a service or create one"), "service_" + serviceName);
+                waitForTimeout(2000);
+
+
+                clickBy(".filter-procedures", 0, false);
+
                 return this;
             }
 

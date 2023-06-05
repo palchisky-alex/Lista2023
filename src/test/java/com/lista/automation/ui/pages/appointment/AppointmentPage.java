@@ -23,10 +23,10 @@ public class AppointmentPage extends BasePage {
         if (action.name().equals("DELETE")) {
             clickBy(btnDeleteAppointment, 0, true);
 
-            step("confirm deletion", () -> {
-                clickBy(getLocator(".confirm-block button")
-                        .getByText(action.name()), 0, true);
-            });
+
+            clickBy(getLocator(".confirm-block button")
+                    .getByText(action.name()), 0, true);
+
         }
         waitForTimeout(3000);
         return new CalendarPage(page);

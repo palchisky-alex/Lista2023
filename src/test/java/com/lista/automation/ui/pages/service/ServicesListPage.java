@@ -3,6 +3,7 @@ package com.lista.automation.ui.pages.service;
 import com.lista.automation.ui.core.utils.BasePage;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static io.qameta.allure.Allure.step;
 
@@ -26,6 +27,7 @@ public class ServicesListPage extends BasePage {
         clickBy(getLocator("label"), 0, true);
         return this;
     }
+
     @Step("select a service")
     public ServicePage selectService() {
         clickBy(getLocator("#category-container"), 0, true);
@@ -34,7 +36,7 @@ public class ServicesListPage extends BasePage {
 
     @Step("init new service adding")
     public ServicePage initAddingNewService() {
-        clickBy(".add-button",0,true);
+        clickBy(".add-button", 0, true);
         waitForURL("catalog/services/adding");
         return new ServicePage(page);
     }
@@ -42,11 +44,11 @@ public class ServicesListPage extends BasePage {
     @Step("delete service")
     public ServicesListPage delete() {
         markService();
-        step("init deletion", () -> {
-            clickBy(".delete-btn", 0, true);
-            clickBy(getLocator("#modal-content .yes-btn"), 0, true);
-            waitForTimeout(2000);
-        });
+
+        clickBy(".delete-btn", 0, true);
+        clickBy(getLocator("#modal-content .yes-btn"), 0, true);
+        waitForTimeout(2000);
+
         assertThat(!isVisible("#modal-content")).as("modal popup closed").isTrue();
         return this;
     }

@@ -26,51 +26,51 @@ public class CalendarSettingsPage extends BasePage {
 
     @Step("change Calendar View")
     public CalendarSettingsPage changeCalendarView(CalendarView view) {
-        step("open CalendarView slot", () -> {
-            clickBy(getByText("Calendar View")
-                    .locator("..")
-                    .locator(selectOptions),0,false);
-        });
-        step("select view", () -> {
-            clickBy(getByRole(AriaRole.LISTITEM).filter(new Locator.FilterOptions()
-                    .setHasText(Pattern.compile(view.name(), Pattern.CASE_INSENSITIVE))),0,false);
-        });
+
+        clickBy(getByText("Calendar View")
+                .locator("..")
+                .locator(selectOptions), 0, false);
+
+
+        clickBy(getByRole(AriaRole.LISTITEM).filter(new Locator.FilterOptions()
+                .setHasText(Pattern.compile(view.name(), Pattern.CASE_INSENSITIVE))), 0, false);
+
         return this;
     }
 
     @Step("change first day of week")
     public CalendarSettingsPage changeViewStartOn(ViewStartOn view) {
-        step("open ViewStartsOn slot", () -> {
-            clickBy(getByText("View Starts On")
-                    .locator("..")
-                    .locator(selectOptions),0,false);
-        });
-        step("select day", () -> {
-            clickBy(getByRole(AriaRole.LISTITEM).filter(new Locator.FilterOptions()
-                    .setHasText(Pattern.compile(view.name(), Pattern.CASE_INSENSITIVE))),0,false);
-        });
+
+        clickBy(getByText("View Starts On")
+                .locator("..")
+                .locator(selectOptions), 0, false);
+
+
+        clickBy(getByRole(AriaRole.LISTITEM).filter(new Locator.FilterOptions()
+                .setHasText(Pattern.compile(view.name(), Pattern.CASE_INSENSITIVE))), 0, false);
+
         return this;
     }
 
     @Step("change cell duration")
     public CalendarSettingsPage changeEachCell(String text) {
-        step("open cell duration slot", () -> {
-            clickBy(getByText("Each cell in the calendar")
-                    .locator("..")
-                    .locator(selectOptions),0,false);
-        });
-        step("select duration", () -> {
-            clickBy(getLocator(".select-options")
-                    .getByRole(AriaRole.LISTITEM)
-                    .filter(new Locator.FilterOptions()
-                            .setHasText(Pattern.compile("^"+text+"$"))),0,false);
-        });
+
+        clickBy(getByText("Each cell in the calendar")
+                .locator("..")
+                .locator(selectOptions), 0, false);
+
+
+        clickBy(getLocator(".select-options")
+                .getByRole(AriaRole.LISTITEM)
+                .filter(new Locator.FilterOptions()
+                        .setHasText(Pattern.compile("^" + text + "$"))), 0, false);
+
         return this;
     }
 
     @Step("click on backToSettingsPage button")
     public SettingsAllPage backToSettingsPage() {
-        clickBy(getLocator(header).locator(backToSettingsPage),0,false);
+        clickBy(getLocator(header).locator(backToSettingsPage), 0, false);
         return new SettingsAllPage(page);
     }
 }

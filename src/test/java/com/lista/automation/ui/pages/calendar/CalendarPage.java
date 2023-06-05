@@ -92,11 +92,11 @@ public class CalendarPage extends BasePage {
     public AppointmentPage enterTheAppointmentSlot(int appointmentID, CalendarView views) {
         clickBy("[data-appointment_id='" + appointmentID + "']", 0, true);
 
-        step("if calendar view is Monthly, need click twice", () -> {
-            if (views.name().equals("Monthly")) {
-                clickBy("[data-appointment_id='" + appointmentID + "']", 0, true);
-            }
-        });
+
+        if (views.name().equals("Monthly")) {
+            clickBy("[data-appointment_id='" + appointmentID + "']", 0, true);
+        }
+
         waitForURL("appointments");
         return new AppointmentPage(page);
     }
@@ -118,31 +118,31 @@ public class CalendarPage extends BasePage {
     }
 
     public void removeWeekendMarker() {
-        step("remove element form DOM for weekend", () -> {
-            Locator locator = page.locator(".fc-nonbusiness.fc-bgevent");
-            if (locator.isVisible()) {
-                locator.evaluate("element => element.style.display = 'none'");
-            }
-        });
+
+        Locator locator = page.locator(".fc-nonbusiness.fc-bgevent");
+        if (locator.isVisible()) {
+            locator.evaluate("element => element.style.display = 'none'");
+        }
+
     }
 
     public CalendarPage switchWorkerId(Scope scope) {
         String activeSwiper = ".swiper-cont  [class~=active]";
-        step("change worker", () -> {
-            String currentWorkerID = getAttribute(activeSwiper, "data-index");
-            String scopeID = String.valueOf(scope.getValue());
 
-            if (!currentWorkerID.equals(scopeID)) {
-                clickBy(".swiper-cont  [data-index='" + scope.getValue() + "']", 0, false);
-            }
-        });
+        String currentWorkerID = getAttribute(activeSwiper, "data-index");
+        String scopeID = String.valueOf(scope.getValue());
+
+        if (!currentWorkerID.equals(scopeID)) {
+            clickBy(".swiper-cont  [data-index='" + scope.getValue() + "']", 0, false);
+        }
+
         waitForTimeout(2000);
-        step("change worker", () -> {
-            String currentWorkerID = getAttribute(activeSwiper, "data-index");
-            String scopeID = String.valueOf(scope.getValue());
 
-            assertThat(currentWorkerID).as("worker %s is active", scope.name()).isEqualTo(scopeID);
-        });
+        currentWorkerID = getAttribute(activeSwiper, "data-index");
+        scopeID = String.valueOf(scope.getValue());
+
+        assertThat(currentWorkerID).as("worker %s is active", scope.name()).isEqualTo(scopeID);
+
 
         return this;
     }

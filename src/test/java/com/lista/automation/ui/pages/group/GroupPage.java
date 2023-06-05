@@ -5,6 +5,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
+
 import static io.qameta.allure.Allure.step;
 
 public class GroupPage extends BasePage {
@@ -17,20 +18,20 @@ public class GroupPage extends BasePage {
 
     @Step("return to list of groups from group")
     public void returnToListGroups() {
-        step("click on button <", () -> {
-            clickBy("#topnav .right-abs",0,true);
-        });
+
+        clickBy("#topnav .right-abs", 0, true);
+
     }
 
     @Step("click on button +")
     public GroupAddClientsPage initAddingMember() {
-        clickBy("#add-button",0,true);
+        clickBy("#add-button", 0, true);
         return new GroupAddClientsPage(page);
     }
 
     @Step("initiate group menu")
     public Menu initMenuForMember() {
-        clickBy(".icon-del-wrap",0,true);
+        clickBy(".icon-del-wrap", 0, true);
         return new Menu(page);
     }
 
@@ -40,18 +41,17 @@ public class GroupPage extends BasePage {
         }
 
         public Menu setMenuOptions(Opts opts) {
-            step("click on button '" + opts.name() + "'", () -> {
-                clickBy(getByRole(AriaRole.BUTTON)
-                        .filter(new Locator.FilterOptions()
-                                .setHasText(opts.name()
-                                        .replace("_", " "))),0,false);
 
-            });
+            clickBy(getByRole(AriaRole.BUTTON)
+                    .filter(new Locator.FilterOptions()
+                            .setHasText(opts.name()
+                                    .replace("_", " "))), 0, false);
+
             if (opts.name().equals("Delete")) {
-                step("confirm deletion", () -> {
-                    clickBy(getLocator(".confirm-block button")
-                            .getByText(GroupsListPage.SubmitForm.LAST_ACTION.DELETE.name()),0,false);
-                });
+
+                clickBy(getLocator(".confirm-block button")
+                        .getByText(GroupsListPage.SubmitForm.LAST_ACTION.DELETE.name()), 0, false);
+
             }
             return this;
         }

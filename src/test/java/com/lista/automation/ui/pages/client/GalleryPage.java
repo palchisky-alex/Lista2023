@@ -17,12 +17,12 @@ public class GalleryPage extends BasePage {
 
     @Step("add note to picture")
     public GalleryPage addNotesToPicture(String notes) {
-        step("type notes", () -> {
+
             getByPlaceholder("Add a caption...").fill(notes);
-        });
-        step("click Send button", () -> {
+
+
             clickBy("button .text-submit",0,true);
-        });
+
         return this;
     }
 }
