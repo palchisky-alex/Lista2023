@@ -1,0 +1,1 @@
+locator/text: Locator@[class^='del-info'] >> nth=5|
