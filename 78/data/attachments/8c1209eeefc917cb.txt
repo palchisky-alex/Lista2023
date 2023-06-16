@@ -1,0 +1,1 @@
+locator/text: Locator@#debts >> .decrement|
