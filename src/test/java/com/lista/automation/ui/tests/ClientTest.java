@@ -232,7 +232,6 @@ public class ClientTest extends BaseTest {
                 .toClientPage()
                 .findClient(phoneNumber);
 
-
         assertThat(clientsPage.countClients()).isEqualTo(1);
 
 
