@@ -1,0 +1,1 @@
+locator/text: Locator@.confirm-block button >> internal:text=DELETE|
