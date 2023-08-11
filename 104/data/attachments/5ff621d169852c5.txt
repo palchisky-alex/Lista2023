@@ -1,0 +1,1 @@
+locator/text: Locator@.warning_popup button >> internal:text=GOT IT|
