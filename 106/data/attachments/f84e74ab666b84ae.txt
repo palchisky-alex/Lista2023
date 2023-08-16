@@ -1,0 +1,1 @@
+locator/text: Locator@.menu-list >> internal:role=link >> internal:has-text=/Calendar/|
