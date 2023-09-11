@@ -1,0 +1,104 @@
+<div>Status code 200 </div>
+
+
+<h4>Body</h4>
+<div>
+    <pre class="preformated-text">
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;base href=&quot;/&quot;/&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width&quot;/&gt;
+    &lt;meta charset=&quot;UTF-8&quot;/&gt;
+    &lt;link href=&quot;/public/settings/main.bundle.min.css?cache_date=2022-10-12&quot; rel=&quot;stylesheet&quot;/&gt;
+    &lt;script&gt;
+			const baseUrl = &#39;&#39;;
+			const activeWorkerId = 1;
+			const worker_id = 1;
+			const currency = &quot;₪&quot;;
+			const lang = &#39;en&#39;;
+			const is_rtl = false;
+			const business_id = 2;
+			const permission_level = &#39;admin&#39;;
+			const business_logo = &#39;service_providers_for_home_and_business.svg&#39;;
+			const business_name = `lex`;
+			const business_address = &#39;&#39;;
+
+			const plugins = [&quot;notes&quot;,&quot;debts&quot;,&quot;gallery&quot;,&quot;punch_cards&quot;];
+
+			const showCalendarFrom = &#39;00:00&#39;
+			const showCalendarTo = &#39;22:00&#39;
+			const calendarDefaultView = &#39;daily&#39;
+			const calendarViewStartsOn = 6
+			const slotDuration = &#39;00:30:00&#39;
+			const eventOverlap = true
+			const calendarEventLength = 60
+			const calendarAllowSchedulingOutsideOfTimeSlots = true
+
+			var business_types = [{&quot;type_id&quot;:15,&quot;name_canonical&quot;:&quot;service_providers_for_home_and_business&quot;,&quot;name_en&quot;:&quot;Service providers for home and business&quot;,&quot;name_he&quot;:&quot;נותני שירותים&quot;,&quot;name_ru&quot;:&quot;Предоставление услуг&quot;,&quot;icon&quot;:&quot;service_providers_for_home_and_business.svg&quot;}].map(bt =&amp;gt; ({id: bt.type_id, icon: bt.icon, ordering: bt.ordering, name: bt[&#39;name_&#39; + lang]}))
+			const business_data = {&quot;address&quot;:null,&quot;address_based&quot;:false,&quot;billing_additional_info&quot;:null,&quot;billing_address&quot;:null,&quot;billing_email&quot;:&quot;alex.palchisky@gmail.com&quot;,&quot;billing_name&quot;:&quot;repito&quot;,&quot;billing_vat_number&quot;:null,&quot;business_desc&quot;:null,&quot;business_facebook_url&quot;:null,&quot;business_instagram_url&quot;:null,&quot;business_logo&quot;:&quot;service_providers_for_home_and_business.svg&quot;,&quot;business_name&quot;:&quot;lex&quot;,&quot;business_thank_you_msg&quot;:null,&quot;business_website_url&quot;:null,&quot;calendarAllowSchedulingOutsideOfTimeSlots&quot;:true,&quot;calendarDefaultView&quot;:&quot;daily&quot;,&quot;calendarEventLength&quot;:&quot;60&quot;,&quot;calendarEventOverlap&quot;:true,&quot;calendarShowFrom&quot;:&quot;00:00&quot;,&quot;calendarShowTo&quot;:&quot;22:00&quot;,&quot;calendarSlotDuration&quot;:&quot;00:30:00&quot;,&quot;calendarViewStartsOn&quot;:&quot;6&quot;,&quot;country&quot;:&quot;IL&quot;,&quot;currency&quot;:&quot;₪&quot;,&quot;email&quot;:&quot;alex.palchisky@gmail.com&quot;,&quot;lang&quot;:&quot;en&quot;,&quot;phone&quot;:null,&quot;sms_automatic_filling_up_sending&quot;:null,&quot;sms_greetings_before_birthdays&quot;:null,&quot;sms_greetings_before_birthdays_days&quot;:&quot;1&quot;,&quot;sms_greetings_before_birthdays_time&quot;:&quot;16:30&quot;,&quot;sms_notification_delete_event&quot;:null,&quot;sms_notification_new_event&quot;:null,&quot;sms_notification_reschedule_event&quot;:null,&quot;sms_reminders_before_event&quot;:null,&quot;sms_reminders_before_event_mins&quot;:&quot;2880&quot;,&quot;sms_reminders_before_event_time&quot;:null,&quot;sms_sender_phone&quot;:&quot;business_phone&quot;,&quot;sms_sending_type&quot;:&quot;019&quot;,&quot;sms_thank_for_visiting&quot;:null,&quot;sms_thank_for_visiting_mins&quot;:&quot;60&quot;,&quot;start_page&quot;:&quot;calendar&quot;,&quot;timezone&quot;:&quot;Asia/Jerusalem&quot;}
+
+			const is_sms_enabled = true
+			const smsSent = 0
+			const smsCredits = 2558
+			const templatesTexts = {&quot;appointment_notification&quot;:&quot;Dear $$client_first_name$$, your appointment at $$business_name$$ was booked at $$appointment_date_dd_mm$$ $$appointment_time_hh_mm$$&quot;,&quot;appointment_rescheduling&quot;:&quot;Dear $$client_first_name$$, your appointment $$business_name$$ was rescheduled to $$appointment_date_dd_mm$$ $$appointment_time_hh_mm$$&quot;,&quot;appointment_deleting&quot;:&quot;Dear $$client_first_name$$, your appointment at $$business_name$$ at $$appointment_date_dd_mm$$ $$appointment_time_hh_mm$$ is canceled&quot;,&quot;appointment_reminder&quot;:&quot;Dear fucking sir $$client_first_name$$, reminder about the appointment at $$business_name$$ booked at $$appointment_date_dd_mm$$ $$appointment_time_hh_mm$$&quot;,&quot;appointment_thank_for_visiting&quot;:&quot;Dear $$client_first_name$$, thank you for visiting us. We&#39;ll be glad to see you again at $$business_name$$&quot;,&quot;automatic_filling_up_sending&quot;:&quot;Dear $$client_first_name$$\nYou&#39;re invited to $$business_name$$ customers club. We will be able to send you salges and discounts\n\nTo join: $$filling_up_link$$$$unsubscribe_link$$&quot;,&quot;automatic_birthdays_greetings&quot;:&quot;Dear $$client_first_name$$\n$$business_name$$ sends you best wishes$$unsubscribe_link$$&quot;}
+			const is_filling_up_setting_shown = true
+
+			const pageVisits = 6767
+		&lt;/script&gt;
+    &lt;script&gt;var config = {}&lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;script src=&quot;/public/common/user_data.js?cache_date=2022-10-12&quot;/&gt;
+    &lt;script src=&quot;/public/menu/menu.js?cache_date=2022-10-12&quot;/&gt;
+    &lt;script src=&quot;/translations/menu/all.js?cache_date=2022-10-12&quot;/&gt;
+    &lt;script src=&quot;/translations/settings/all.js?cache_date=2022-10-12&quot;/&gt;
+    &lt;script&gt;
+		config.menu = menu;
+		config.user = userData;
+		config.translations = all_translations[lang];
+		config.translations.menu = all_menu_translations[lang]
+	&lt;/script&gt;
+    &lt;script src=&quot;/public/settings/settings-config.js?cache_date=2022-10-12&quot;/&gt;
+    &lt;script src=&quot;/public/cdn/moment.min.js&quot;/&gt;
+    &lt;script src=&quot;/public/cdn/react.production.min.js&quot;/&gt;
+    &lt;script src=&quot;/public/cdn/react-dom.production.min.js&quot;/&gt;
+    &lt;script src=&quot;/public/cdn/react-router-dom.min.js&quot;/&gt;
+    &lt;script src=&quot;/public/cdn/prop-types.min.js&quot;/&gt;
+    &lt;script src=&quot;/public/cdn/swiper.min.js&quot;/&gt;
+    &lt;div id=&quot;root&quot;/&gt;
+    &lt;script src=&quot;/public/settings/main.bundle.min.js?cache_date=2022-10-12&quot;/&gt;
+    &lt;script async=&quot;async&quot; src=&quot;/public/cdn/gtag-blocked.js&quot;/&gt;
+    &lt;script src=&quot;/public/cdn/sentry-browser.min.js&quot;/&gt;
+    &lt;script&gt;
+	Sentry.init({ dsn: &#39;https://e3eafd80c7504eceb2c6483ecbc794d3@sentry.io/221096&#39; });
+	Sentry.configureScope(scope =&amp;gt; {
+		scope.setTag(&quot;bid&quot;, userData.business_id);
+		scope.setTag(&quot;wid&quot;, userData.worker_id);
+		scope.setTag(&quot;bname&quot;, userData.business_name);
+		scope.setUser({
+			id: userData.worker_id,
+			bname: userData.business_name
+		});
+	});
+&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;    </pre>
+</div>
+
+<h4>Headers</h4>
+<div>
+        <div>Server: Microsoft-IIS/7.5</div>
+        <div>X-Content-Type-Options: nosniff</div>
+        <div>Connection: keep-alive</div>
+        <div>Pragma: public</div>
+        <div>Date: Mon, 11 Sep 2023 01:10:07 GMT</div>
+        <div>X-AspNetMvc-Version: 3.0</div>
+        <div>Cache-Control: no-cache, no-store, must-revalidate</div>
+        <div>X-AspNet-Version: 4.0.30319</div>
+        <div>Set-Cookie: PHPSESSID=08rtvlq03bd9d57qor4abjg7q4; Path=/; SameSite=Lax; Expires=Sun, 31 Dec 2023 00:00:00 GMT; HttpOnly</div>
+        <div>Content-Length: 5603</div>
+        <div>Content-Type: text/html; charset=utf-8</div>
+        <div>X-Powered-By: ASP.NET</div>
+</div>
+
+
