@@ -1,0 +1,1 @@
+locator/text: Locator@.select-options >> internal:role=listitem >> internal:has-text=/^10$/|
